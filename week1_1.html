@@ -1,0 +1,3048 @@
+<!DOCTYPE html>
+<html lange="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Python Review</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<div id="title">
+			<h1 id="title">Week One: Python Review</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#binding">Binding</a></h4></li>
+				<li><h4><a href="#statements">Statements vs. Expressions</a></h4></li>
+				<li><h4><a href="#none">None</a></h4></li>
+				<li><h4><a href="#pass">Pass</a></h4></li>
+				<li><h4><a href="#importing">Importing</a></h4></li>
+				<li><h4><a href="#literation">List Iteration</a></h4></li>
+				<li><h4><a href="#argP">Arguments and Paramaters</a></h4></li>
+				<li><h4><a href="#functioncalls">Function Calls</a></h4></li>
+				<li><h4><a href="#legb">LEGB Rule</a></h4></li>
+				<li><h4><a href="#funcMeth">Functions vs. Methods</a></h4></li>
+				<li><h4><a href="#lambda">Lambdas</a></h4></li>
+				<li><h4><a href="#unpacking">Sequence Unpacking</a></h4></li>
+				<li><h4><a href="#sort">Sort</a></h4></li>
+				<li><h4><a href="#print">Print</a></h4></li>
+				<li><h4><a href="#slicing">Slicing</a></h4></li>
+				<li><h4><a href="#condition">Conditional Statement vs. Conditional Expression</a></h4></li>
+				<li><h4><a href="#else">Else</a></h4></li>
+				<li><h4><a href="#matching">Argument/Parameter Matching</a></h4></li>
+				<li><h4><a href="#constructors">Constructors</a></h4></li>
+				<li><h4><a href="#sharing">Sharing vs. Copying</a></h4></li>
+				<li><h4><a href="#hashable">Hashable vs. Mutable</a></h4></li>
+				<li><h4><a href="#comp">Comprehensions</a></h4></li>
+				<li><h4><a href="#functions">Nine Important/Useful Functions</a></h4></li>
+				<li><h4><a href="#allAny">All/Any Functions</a></h4></li>
+				<li><h4><a href="#morefunc">Sum/Max/Min Functions</a></h4></li>
+				<li><h4><a href="#zip">Zip and Enumerate Functions</a></h4></li>
+				<li><h4><a href="#kargs">**kargs</a></h4></li>
+				<li><h4><a href="#lists">Lists, Tuples, Set, Dictionaries</a></h4></li>
+				<li><h4><a href="#ordered">Printing Dictionaries in Order</a></h4></li>
+				<li><h4><a href="exceptions">Exceptions</a></h4></li>
+				<li><h4><a href="#namespace">Name Spaces</a></h4></li>
+				<li><h4><a href="#trivial">Trivial Things</a></h4></li>
+				<li><h4><a href="#questions">Questions</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+When reading the following material, I suggest that you have Eclipse open,
+including a project with an empty module; then copy/paste some of the code
+below into it, to see what it does. Explore the code by experimenting with
+(changing) it and predicting what results from the changes. I always have an
+Eclipse folder/module named "experiment" open for this purpose.
+
+This lecture note is long (it is really three lectures), but the information is
+not deep (for ICS-31/ICS-32 graduates). I hope that this is mostly review for
+you, but there are likely to be many things that come up as new (or a few new
+perspectives and connections to the material you already know). Pay close
+attention to the terminology used here, as I will use it (I hope consistently)
+throughout the entire quarter. If you do not know any of these technical terms,
+try looking them up online, or post a message on the "Lecture Material"
+MessageBoard Forum: if you didn't understand a term, probably other students
+didn't as well. Here are 3 quotes relevant to this lecture:
+
+  1) The first step towards wisdom is calling things by their right names.
+
+  2) He/She who is ashamed of asking is ashamed of learning.
+
+  3) The voyage of discovery is not in seeking new landscapes but in having new
+     eyes. - M. Proust
+</pre>
+
+		<a name="binding"><h1>Binding</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">The process of making a name refer to a value: e.g., x = 1 binds the name x to
+the value 1 ((which is an object/instance of the int class); later we can bind
+x to another value (possibly from another class) in another assignment: e.g.,
+x = 'abc'. We speak about "the binding (noun) of a name" to mean the value
+(such values are always objects) that the name is currently associated with.
+
+In Python, every data instance, module, function, and class is objects that has
+a dictionary that stores its namespace: all its bindings. We will learn much
+more about namespaces (and how to manipulate them) later in the quarter, when we
+study classes in more detail.
+
+Typically we illustrate the binding of a name to an object (below, x = 1) as
+follows. We write the name over a rectangle, in which the tail of an arrow is
+INSIDE, specifying the current reference stored for that name: the arrow's head
+refers to a rounded-edge rectangle object labeled by its type (here the class
+it is constructed from) and its value (inside).
+
+  x          int
++---+	    (---)
+| --+------>| 1 |
++---+	    (---)
+
+Technically, if we we write x = 1 inside the module m, Python has already
+created an object for module m (we show all objects as rounded-edge rectangles)
+and it puts x, its box, and its binding in the namespace of module m: here, the
+name x is defined inside module m and bound to object 1. That is, we would more
+formally write the result of x = 1 in module m as
+
+             module
+          (---------)
+  m       |    x    |      int
++---+     |  +---+  |     (---)
+| --+---->|  | --+--+---->| 1 |
++---+     |  +---+  |     (---)
+          (---------)
+
+Note that the del command in Python (e.g., del name) removes a name from the
+namespace/dictionary of the object in which name is bound. Writing del x
+inside module m would remove x and its box from m's namspace/dictionary.
+
+Finally, the "is" operator in Python determines whether two references refer to
+the same object; the == operator determines whether two references refer to
+objects that store the same internal state. If a is b is True then a== b must
+be True (because an object has the same state as itself).
+
+If we write
+
+  x = ['a','b']
+  y = ['a','b']
+  
+then x is y is False and x == y is True: the names x and y are bound to/refer
+to two different list objects, but these two objects store the same state ('a'
+at index 0; 'b' at index 1).
+
+                list
+            (-----------)
+  x         |   0   1   |        str
++---+	    | +---+---+ |       +---+
+| --+------>| | | | --+-+-----> |'b'|
++---+	    | +-+-+---+ |	+---+
+	    (---+-------)
+                |
+		v
+	       str		
+	      +---+
+	      |'a'|
+	      +---+
+
+                list
+            (-----------)
+  y         |   0   1   |        str
++---+	    | +---+---+ |       +---+
+| --+------>| | | | --+-+-----> |'b'|
++---+	    | +-+-+---+ |	+---+
+	    (---+-------)
+                |
+		v
+	       str		
+	      +---+
+	      |'a'|
+	      +---+
+
+
+
+Likewise, if we write
+
+  x = ['a','b']
+  y = x
+
+then x is y is True (and x == y is therefore True): the names x and y refer to
+the same list object.
+  x
++---+           list
+| --+------>(-----------)
++---+       |   0   1   |        str
+            | +---+---+ |       +---+
+  y         | | | | --+-+-----> |'b'|
++---+	    | +-+-+---+ |	+---+
+| --+------>(---+-------)
++---+           |
+		v
+	       str		
+	      +---+
+	      |'a'|
+	      +---+
+
+You should be able to draw simple picture of these names and objects (both the
+list and int objects) to illustrate the difference between the "is" and ==
+operators.
+</pre>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="statements"><h1>Statements vs Expressions</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+			Statement are executed to cause an effect (e.g., binding/rebinding a name or
+producing output). Expressions are evaluated to compute a result (e.g.,
+computing some formula, numeric, boolean, etc.). For example, the statement
+x = 1, when executed, causes a binding of the name x to an object representing
+the integer 1. The expression x+1, when evaluated, computes the object
+representing the integer 2. Typically we write expressions inside statements:
+two examples are x = x+1 and print(x+1): both "do something" with the computed
+value (the first binds x to it; the second prints it). The distinction between
+statements and expressions is important in most programming languages. 
+
+Control structures (even simple sequential ones, like blocks) are considered
+to be statements in Python (and Python has rules for how to execute them).
+Control structures might contain both statements and expressions. The following
+is a conditional statement using if/else
+
+  if x == None:
+      y = 0
+  else:
+      y = 1
+
+This if statement contains the expression x == None and the statements y = 0 and
+y = 1.
+
+The following statement includes a conditional expression that binds a value to
+y: the conditional expression includes the expressions 0 (yes, an object by
+itself, or just a name referting to an object, is an expression), x == None,
+and 1.
+
+  y = (0 if x == None else 1)
+
+We will discuss conditional statements vs. conditional expressions in more
+detail later in this lecture note.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="none"><h1>None</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+None is a value (object/instance) of NoneType it is the only value of that type.
+Sometimes None gets used as a default value for a parameter's argument;
+sometimes it gets used as a return value of a function: a Python function that
+terminates without executing a return statement automatically returns the value
+None. If None shows up as an unexpected result printed in your code or in a 
+raised exception, look for some function whose return value you forgot to
+specify explicitly (or whose return statement somehow didn't get executed).
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="pass"><h1>Pass</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+pass is the simplest statement in Python; semantically, it means "do nothing".
+Sometimes when we write statements, we aren't sure exactly which ones to write,
+so we migh use pass as a placeholder until we write the actual statement we
+need. Often, in tiny examples, we use pass as the meaning of a function.
+
+  def f(x) : pass     or     def f(x) :
+      	     	      	         pass
+
+If you are ever tempted to write the first if statement below, don't; instead
+write the second one, which is simpler: but, they are equivalent.
+
+  if a in s:			# DON'T write this code
+      pass
+  else:
+      print('a is not in s')
+
+
+  if a not in s:		# Write this code instead; it is equivalent
+      print('a is not in s')
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="importing"><h1>Importing: 5 Forms</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+There are five import forms; you should know what each does, and start to think
+about which is appropriate to use in any given situation. Note we will soon
+learn EBNF and see that [...] means option and {...}  means repeat 0 or more
+times, although this second form is sometimes written (...)* when describing
+Python syntax.
+
+Fundamentally, import statements bind names to objects (one or both of which
+come from the imported module).
+
+"import module-name" form:
+  1. import module-name{,module-name}
+  2. import module-name [as alt-name] {,module-name [as alt-name]}
+
+"from module-name import" form:
+  1. from module-name import attr-name{,attr-name}
+  2. from module-name import attr-name [as alt-name] {,attr-name [as alt-name]}
+  3. from module-name import *
+
+Above, alt-name is an alternative name, and attr-name is an attribute name
+already defined in the namespace of the module being imported.
+
+The "import module-name" forms import the names of modules (not their attribute
+names). (1) bind each module-name to the object representing that imported
+module-name. (2) bind each alt-name to the object representing its preceding
+imported module-name.
+
+The "from module-name import" forms don't import module-name, but instead
+import some/all names defined/bound inside module-name. (1) bind each attr-name
+to the object bound to that attr-name in module-name. (2) bind each alt-name to
+the object bound to the preceding attr-name in module-name. (3) bind each name
+that is bound in module-name to the same object it is bound to in module-name.
+
+Import (like an assignment, def, and class) creates a name (if that name is not
+already in the namespace) and binds it to an object: the "import module-name"
+form binds names to module objects; the "from module-name import" form binds
+names to objects (instances, functions, modules, classes, etc.) defined inside
+modules (so now two modules containse names bound to the same objects).
+
+The key idea as to which kind of import to use is to make it easy to refer to a
+name but not pollute the name space of the module doing the importing with too
+many names.
+
+If a lot of different names in the imported module are to be used, or we want
+to make it clear when an attribute name in another module is used, use the
+"import module-name" form (1) and then qualify the names when used: for example
+
+  import random
+  # use:  random.choice(...)  and  random.randint(...)
+
+If the imported module-name is too large for using repeatedly, use an
+abbreviaton by importing using an alt-name (2) : for example
+
+  import high_precision_math as hp_math
+  # use:  hp_math.sqrt(...)
+
+If only one name (or a few names) are to be used from a module, use the
+form (3):
+
+  from random import choice, randint
+  # use: choice(...)  and  randint(...)
+
+Again, use alt-name to simplify either form, if the name is too large and
+unwieldy to use. Such names are often very long to be clear, but awkward to use
+many times at that length. Generally we should apply the Goldilocks principle:
+name lengths shouldn't be too short (devoid of meaning) or too long (awkward to
+read/type) but their length should be "just right".
+
+We almost never write the * form of importing. It imports all the names defined
+in module-name, and pollutes our namespace by defining all sorts of names we
+may or may not use (and which might conflict with names that we have already
+defined). Better to explicitly import the names needed/used. Eclipse marks with
+a warning any names that are imported but unused.
+
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="literation"><h1>Directly iterating over values in a list vs. Using a range to iterate over indexes of values in a list</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We know that we can iterate (with a for loop) over ranges: e.g., if alist is a
+list, we can write
+
+alist = [5, 2, 3, 1, 4, 0]
+for i in range(0,len(alist)): # same as    for i in range(len(alist)):
+    print(alist[i])
+
+Here i takes on the values 0, 1, ... , len(alist)-1 but not len(alist), which
+is 6. The code above prints all six values in alist: alist[0], alist[1], ....
+alist[5].
+
+Often we want to iterate over the values in a list (alist) but don't need to
+know/use  their indexes at all: e.g., to print all the values in a list we can
+use the loop
+
+for x in alist:
+    print(x)
+
+which is much better (simpler/clearer) than the loop
+
+for i in range(0,len(alist)):
+    print(alist[i])
+
+although both produce the same result. Generally, choose to write the simplest
+loop possible for all your code. Sometimes you might write a loop correctly, but
+then realize that you can also write a simpler loop correctly: change your code
+to the simpler loop. Sometimes (when doing more complicated index processing)
+we need to iterate over indexes.
+
+In many cases where using range is appropriate, we want to go from the low to
+high value inclusively. I have written function named irange (for inclusive
+range) that we can import from the goody module and use like range.
+
+from goody import irange
+for i in irange(1,10):
+    print(i)
+
+prints the values 1 through 10 inclusive; range(1,10) would print only 1
+through 9. One goal for ICS-33 is to show you how to write alternatives to
+built-in Python features; we will study how irange is written later in quarter,
+but you can import and use it now.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="argP"><h1>Arguments and Parameters (and Binding): Terminology (much more details later)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Whenever we DEFINE a function (and later methods in classes), we specify the
+names of its parameters in its header (in parentheses, separated by commas).
+Whenever we CALL a function we specify the values of its arguments (also in
+parentheses, separated by commas). The definition below
+
+def f(x,y):
+    return x**y
+
+defines a function of two parameters: x and y. f(5,2*6) calls this function with
+two arguments: the arguments 5 and 2*6 are evaluated (producing objects) and
+the values/objects computed from these arguments (5 and 12) are bound to their
+matching parameters in the function header (and then the body of the function
+is executed). We will discuss the details of argument/parameter binding in much
+more detail below, but in a simple example like this one, parameter/argument
+binding is like writing: x,y = 5,2*6 which binds x to 5 and y to 12.
+
+Sometimes we can use the parameter of a function as an argument to another
+function call inside its body. If we define
+
+def factorial_sum(a,b):
+    return factorial(a) + factorial(b)
+
+Here the parameters a and b of factorial_sum function are used as arguments in
+the two calls to the factorial function.
+
+It is important that you understand the distinction between the technical term
+PARAMETER and ARGUMENT, and that calling a function first binds the parameter
+names to their associated argument values in the functon's HEADER (we will
+discuss the exact rules soon) and then executes the BODY of the function.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="functioncalls"><h1>Function calls ... always include ()</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Any time a reference to an object is followed by (...) it means to perform a
+function call on that object (some objects will raise an exception if they do
+not support function calls: writing 3() or 'abc'() will both raise exceptions).
+While this rule is simple to understand for the functions that you have been
+writing and calling, there are some much more interesting ramifications of this
+simple rule. Run the following code to define these three functions.
+
+def double(x):
+    return 2*x
+
+def triple(x):
+    return 3*x
+
+def magnitude(x):
+    return 10*x
+
+Note that each def defines the name of a function and binds that name to the
+function object that follows it.
+
+If we wrote
+
+f = double
+
+then f would become a defined name bound to the same (function) object that the
+name double is bound to. The expression "f is double" would evaluate to True,
+because these two names are bound to the same object. Note that there are no ()
+in the code above, so there is no function call. If we then write
+
+print( f(5) )
+
+Python would print 10, just as it would if we printed double(5), because f and
+double refer to the same function object, and it makes no difference whether we
+call that function object using f or double. The function call does not occur
+until we use (). Of course the () in print(...) means that the print function is
+also called: it is called on the result returned by calling f(5). So the two
+sets of () in th print( f(5) ) means that Python calls two functions.
+
+Here is a more intersting example, but using exactly the same idea.
+
+for f in [double, triple, magnitude]:
+    print( f(5) )
+
+Here f is a variable that iterates through the values in a list (we could also
+have used a tuple): each value in the list is a reference to a function object
+(the objects referred to by the names double, triple, and magnitude). This code
+prints the values computed by calling each of these function objects with the
+argument 5. Note that these functions are NOT called when creating the list (no
+parentheses there!): the list is just built to contain references to these
+three function objects: again, their names are not followed by () so there is
+no function call. This code prints 10, 15, and 50.
+
+Using the same logic, we could also write a dictionary whose keys are strings
+and whose values are function objects, and then use a string as a key needed to
+retrieve and call its associated function object.
+
+fs = {'2x' : double, '3x' : triple, '10x' : magnitude}
+print( fs['3x'](5) )
+
+Here fs is a dictionary that stores keys that are strings and associates each
+with a function object: there are no calls to functions when building the
+dictionary for fs in the first statement - no (); we then can retrieve the
+function associated with any key (here the key '3x') and then call the resulting
+function object (here fs['3x']) with the argument 5. Of course in the second
+statement we use the () to call the function selected from the dictionary.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="legb"><h1>Function calls can return references to function objects,
+   which are executed using the LEGB rule for bindings</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Look at the following function named bigger_than, which is a function of one
+parameter. Inside, it defines a local function named test which also has one
+parameter, then the bigger_than function returns a reference to the test
+function object that it defines. Have you seen functions that return functions
+before? This is powerful programming feature.
+
+def bigger_than(v) :
+    def test(x) :
+        return x > v
+    return test
+
+Note that the inner function (test) can refer to global names (defined in the
+module) and any local names defined in the outer function (bigger_than): here
+test refers to its own local parameter name (x) and to the parameter name (v)
+defined if the bigger_than function. Generally when Python looks up the binding
+of any name, it uses the LEGB rule, finding the object bound to the name using
+the following ordering.
+
+  (1) Look for the name Locally (parameter/local variable) in the function:   L
+  (2) Look for the name in an Enclosing function:                             E
+  (3) Look for the name Globaly (defined in the module outside the function): G
+  (4) Look for the name in the Builtins module (imported automatically):      B
+
+When we call bigger_than we execute its body, which creates a NEW function
+object bound to test; that function object can refer to v, which is a parameter
+bound to the argument passed to the call of bigger_than. Then the return
+statement returns a reference to that new function object.
+
+Now, we can write the following
+
+old     = bigger_than(60)
+ancient = bigger_than(90)
+print (old(10), old(70), old(90), ancient(70), ancient(95))
+
+Python prints
+
+False True True False True
+
+Each assignment statement binds its name (old and ancient) to a different
+function object that is returned by calling the bigger_than function. Each
+function object remembers in v the argument used to call bigger_than. Then,
+when we call each function, it uses the remembered value for v to compute its
+result.
+
+In fact, we even could even have written something like
+
+print ( bigger_than(60)(70) )
+
+We know that bigger_than(60) calls bigger_than with the argument 60, which
+returns a result that is a reference to its inner function test; by writing (70)
+after that, we are again just calling a function: that inner function object,
+the one bigger_than(60) returned. When calling this function using the argument
+70, it returns True.
+
+Note that
+
+def f(x):
+    return 2*x
+
+is really just creating a name f and binding it to a new function object. So
+
+    def test(x) :
+        return x > v
+
+binds the new function object to the local name test. And
+
+    return test
+
+returns the new function object currently bound to test (which remembers what
+value v has in the Enclosing scope, even after test is returned and bigger_than
+finishes executing).
+
+Note the difference between the following, which both print 6.
+
+x = f(3)
+print(x)
+
+and 
+
+g = f
+print(g(3))
+
+A large part of this course deals with understanding functions better, including
+but not restricted to function calls.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="funcMeth"><h1>Functions vs Methods</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Functions are typically called f(...) while methods are called on objects like
+o.m(...). Think of x ='candide' followed by calling print(x.replace('d','p'))
+
+In reality, a method call is just a special syntax to write a function
+call. The special "argument" o (normally arguments are written inside the
+parentheses) prefixes the method name. Functions and methods are related by
+what I call "The Fundamental Equation of Object-Oriented Programming."
+
+  o.m(...)     =     type(o).m(o,...)
+
+On the right side
+  1) type(o) returns a reference to the class object o was constructed from.
+  2) .m means call the function m declared in that class: look for
+       def m(self,...): .... in the class
+  3) pass o as the first argument to m: recall, that when defining methods in
+       classes we write def m(self, ....); where does the argument matching the
+       self parameter come from? It comes from the object o in calls like
+       o.m(...)
+
+So, calling 'candide'.replace('d','p') is exactly the same as calling
+str.replace('candide','d','p'), because type('candide') returns a reference to
+the str class, which defines many methods, including replace.
+
+How well do you understand self (or your-self, for that matter)? This equation
+is the key. I believe a deep understanding of this equation is the key to
+clarifying many aspects of object-oriented programming in Python (whose objects
+are constructed from classes). Just my two cents. But we will often return to
+this equation throughout this class. I've never seen any books that talk about
+this equation explicitly.
+
+Oh, by the way, I must say that this equation is true, but not completely true.
+As we will later see: (a) if m is in the object's namespaces, it will be called
+directly (bypassing looking in o's class/type), and (b) when we learn about
+class inheritance, the inheritance hierarcy of a class provides other classes in
+which to look for m if it is not declared directly in o's class/type.
+
+But this equation is so simple and clear (once you understand it) and useful
+for tons of examples, it is worth memorizing, even if it is not completely
+accurate.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="lambda"><h1>Lambda:</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Lambdas are used in expressions where we need a very simple function. Instead
+of defining a full function (with a def), we can just use a lambda: after the
+word lambda comes its parameters separated by commas, then a colon followed by
+a single EXPRESSION that computes the value of a lambda (no return needed, and
+the function cannot include control structures/statments, not even a sequence
+of statements).
+
+So, writing ...(lambda x,y : x+y)... in some context
+
+Is just like first defining
+
+def f(x,y):
+    return x+y
+
+and then writing ...f... in the same context
+
+A lambda is an unnamed function object. For example, we can also write the
+following code, whose first line binds to the name f the lambda/function
+object, and whose second line calls the lambda via the name.
+
+f = lambda x,y : x+y  # lambdas have one expression after : without a return
+print( f(1,3) )
+
+and Python will print 4. I often put lambdas in parentheses, to more clearly
+denote the start and end of the lambda, for example writing
+
+f =  (lambda x,y : x+y)
+
+Using this form, we can write code code above without defining f, writing just
+
+print( (lambda x,y : x+y)(1,3) )
+
+In my prompt module (MY PREFERRED WAY OF DOING PYTHON USER-INPUT), there is a
+function called for_int that has a parameter that specifies a boolean function
+(a function returning a boolean value: often called a predicate) that the
+int value must satisfy, to be returned by the prompt (otherwise the for_int
+function prompts the user again, for a legal value).
+
+That is, we pass a function object to prompt.for_int, which calls that function
+on the value the user enters to the prompt, to verify that the function returns
+True for that value.
+
+So the following code fragment is guaranteed to store a value between 0 to 5
+inclusive in the variable x. If the user enters a value like 7, an error will
+be printed and the user reprompted for the information.
+
+import prompt
+x = prompt.for_int('Enter a value in [0,5]', is_legal = (lambda x : 0<=x<=5))
+print(x)
+
+Execute this code in Python.
+
+In a later part of this lecture note, we will see how to use lambdas to
+simplify sorting lists (or simplify iterating through any data structures
+according to an ordering function).
+
+Again, I often put lambdas in parentheses for clarity: see the prompt.for_int
+example above. But there are certain places where lambdas are required to be in
+parentheses: calling g(1,(lambda x : x),3) requires the lambda to be in
+parenthese, because without the parentheses it would read as g(1,lambda x : x,3)
+In this function call, Python would not think that 3 was a third argument to
+function g: it would instead interpret the body of the lambda a x,3 meaning
+return a 2-tuple with x followed by 3.
+
+In a previous section (functions returning functions) we wrote the code
+
+def bigger_than(v) :
+    def test(x) :
+        return x > v
+    return test
+
+Because the test function is so simple, we can simplify this code by returning a
+lambda instead of defining/returning a named function:
+
+def bigger_than(v) :
+    return (lambda x : x > v)
+
+In each version of the bigger_than function, it returns a reference to a
+function object.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="unpacking"><h1>Parallel/Tuple/List Assignment (aka sequence unpacking)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Note that we can write code like the following: here both x,y and 1,2 are
+implicit tuples, and we can unpack them as follows
+
+x,y = 1,2
+
+In fact, you can replace the left hand side of the equal sign by either (x,y) or
+[x,y] and replace the right hand side of the equal sign by either (1,2) or [1,2]
+and x gets assigned 1 and y get assigned 2: even (x,y) = [1,2] works correctly.
+
+In most programming languages, to exchange the values of two variables x and y
+we write three assignments (can you prove that writing just x = y followed by
+y = x fails to exchange these values?):
+
+temp = x
+x    = y
+y    = temp
+
+In Python we can write this code using one tuple assignment
+
+x,y = y,x
+
+To do this parallel assignment Python
+  (a) computes all the objects on the right (1 and 2 from the top)
+  (b) binds the names on the left (x and y) to these objects (x to 2, y to 1)
+
+This is also called "sequence unpacking assignment". Note that x,y = 1,2,3 and
+x,y,z = 1,2 would both raise ValueError exceptions, because there are different
+numbers of names and values to assign to them. We will frequently use simple
+forms of parallel/unpacking assignment when looping through items in
+dictionaries (illustated below), but even more complicated forms are possible:
+for example.
+
+l,m,(n,o) = (1, 2, [3,4])
+print(l,m,n,o)
+
+prints: 1 2 3 4
+
+Generally sequence unpacking assignment is useful if we have a complex
+tuple/list structure and we want to bind names to its components, to refer to
+these components more easily: each name binds to part of the complicated
+structure.
+
+As another example, if we define a function that returns a tuple
+
+def reverse(a,b) :
+    return (b,a)    # we could also write just return b,a
+
+we can also write x,y = reverse(x,y) to also exchange these values.
+
+Finally, we can use unpacking assignment in for loops: for example, we can
+write the following for loop to print the sum of each triple in the list
+
+for i,j,k in [(1,2,3), (4,5,6), (7,8,9)]:
+    print (i+j+k)
+
+this is much simpler and clearer than usint one name for the entire tuple
+
+for t in [(1,2,3), (4,5,6), (7,8,9)]:
+    print (t[0] + t[1] + t[2])
+
+The loop above assigns i, j, and k the three values in each 3-tuple in the list
+that the for loop is iterating over. We will see more about such assignments
+when  iterating though items in dictionaries. A preview is
+
+for k,v in d.items():  #d is any dictionary
+    print(k,'->',v)    #  print its key and value pairs (abbreviated k,v)
+
+which prints each key and its associated value for each item (each key/value
+association) that we are iterating through in a dictionary.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="sort"><h1>sort(a list method)/sorted (a function) and their key and reverse parameters</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+First, we will examine the following similar definitions of sort/sorted. Then we
+will learn the differences between these features below.
+
+(1) sort is a method defined on arguments that are LIST objects; it returns
+      None but MUTATES its list argument to be in some specified order:
+      e.g., alist.sort(...)
+
+(2) sorted is a function defined on arguments that are any ITERABLE object; it
+      returns a LIST of its  argument's values, in some specified order. The
+      argument itself is NOT MUTATED: e.g., sorted(adict,...)
+
+So, the sort method can be applied only to lists, and the sorted function can
+be applied to any iterable (str, lists, tuples, sets, dict, etc.).
+
+For example, if votes is the list of 2-tuples (candidates, votes) below, we can
+execute the following code.
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker', 20), ('Dog', 15)]
+votes.sort()
+for c,v in votes:                         # parallel/unpacking assignment
+    print('Candidate',c,'received',v,'votes')
+print(votes)
+
+The call votes.sort() uses the sort METHOD to sort the LIST (MUTATE it); then
+the for loop iterates over this newly-ordered list and prints the information
+in the list in the order it now appears. When the entire votes list is printed
+after the loop, we see the list has been MUTATED and is now sorted.
+
+Contrast this with the following code.
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in sorted(votes):                 # parallel/unpacking assignment
+    print('Candidate',c,'received',v,'votes')
+print(votes)
+
+Here we never sort/mutate the votes list. Instead we use the sorted FUNCTION to 
+produce a NEW LIST that is sorted, and then iterate over that list to print
+the information in the votes list in sorted form. But when we print the votes
+list at the end, we see the list remained unchanged The sorted function makes a
+copy of its argument list, produces a new list with these values sorted, and
+then returns that new list (which the for loop iterates over): sorted does not
+mutate the original list it operates on.
+
+Question: What would the following code do? If you understand the definitions
+above, you won't be fooled and the answer won't suprise you. Hint: what does
+votes.sort() return?
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in votes.sort():
+    print('Candidate',c,'received',v,'votes')
+print(votes)
+
+If we were going to print some list in a sorted form many times, it would be
+more efficient to sort/mutate it once, and then use a regular for loop on that
+sorted list (either mutate the original or create a new, sorted list). But if
+we needed to keep the list in a certain order care about space efficiency
+and/or don't care as much about time efficienty, we would not sort/mutate the
+list and instead call the sorted function whenever we need to procss the list
+in a sorted order.
+
+Note that if we change votes to be dict data structure, and then tried to call
+the sort method, Python would raise an exception
+
+votes_dict = {'Charlie': 20, 'Able': 10, 'Baker': 20, 'Dog': 15}
+votes_dict.sort()
+
+It would show as
+  AttributeError: 'dict' object has no attribute 'sort'
+The problem is: the sort method is defined only on list class object, not dicts.
+
+So, Python cannot execute votes_dict.sort()! It makes no sense to sort a
+dictionary. In fact, we cannot sort strings (they are immutable); we cannot
+sort tuples (they are immutable); we cannot sort sets (they have no order,
+which actually allows them to operate more efficiently; we'll learn why later
+in the quarter); we cannot sort dicts (like sets, they have no order, which
+allows them to operate more efficiently; ditto).
+
+But, we can call the sorted function on all four of these data structures, and
+on any kind of iterable: Python executes sorted by creating a temporary list
+from all the values produced by the iterable, then sorts that list, and then
+returns it. Here is one example of how the sorted function processes votes as a
+dict. Note that executing sorted(votes_dict) is the same as executing
+sorted(votes_dict.keys()) which produces and iterates over a sorted list of the
+dict's keys.
+
+votes_dict = {'Charlie' : 20, 'Able' :  10, 'Baker' : 20, 'Dog' : 15}
+for c in sorted(votes_dict):       # same as: for c in sorted(votes_dict.keys())
+    print('Candidate',c,'received',votes_dict[c],'votes')
+print(votes_dict)
+
+---Start example
+Note: if we wrote
+
+votes_dict = {'Charlie' : 20, 'Able' :  10, 'Baker' : 20, 'Dog' : 15}
+print(sorted(votes_dict))
+
+Python prints a list of the dictionary's keys in sorted order:
+
+['Able', 'Baker', 'Charlie', 'Dog']
+---Stop example
+
+Well, this is one "normal" way to iterate over a sorted list built from a
+dictionary. We can also iterate over sorted "items" in a dictionary as follows
+(the difference is in the for loop and the print). We will examine more about
+dicts and the different ways to iterate over them later in this lecture. Recall
+that each item in a dictionary is a 2-tuple consisting of one key and its
+associated value.
+
+votes_dict = {'Charlie' : 20, 'Able' :  10, 'Baker' : 20, 'Dog' : 15}
+for c,v in sorted(votes_dict.items()):
+    print('Candidate',c,'received',v,'votes')
+print(votes_dict)
+
+---Start example
+Note: if we wrote
+
+votes_dict = {'Charlie' : 20, 'Able' :  10, 'Baker' : 20, 'Dog' : 15}
+print(list(votes_dict.items()))
+print(sorted(votes_dict.items()))
+
+Python first prints a list of the dictionary's items in an unspecified order,
+then it prints a list of the smae dictionary's items, in sorted order:
+
+[('Able', 10), ('Dog', 15), ('Charlie', 20), ('Baker', 20)]
+[('Able', 10), ('Baker', 20), ('Charlie', 20), ('Dog', 15)]
+---Stop example
+
+Notice that this print doesn't access votes[c] to get the votes, that is the
+second item in each 2-tuple being iterated over using .items(). This is because
+votes_dict.items() produces a sequence of 2-tuples, each containing one key and
+its associated value. The order that these 2-tuples appear in the list is
+unspecified, but using the sorted function ensures that the keys are examined in
+order.
+
+How does sort/sorted work? How do they know how to compare the values they are
+sorting? There is a standard way to compare any data structures, but we can also
+use the "key" and "reverse" parameters (which must be used with their names, not
+positionally) to tell Python how to do the sorting. The reverse parameter is
+simpler, so let's look at it first; writing sorted(votes,reverse=True) sorts,
+but in the reverse order (reverse=False is like not specifying reverse at all).
+So, returning to votes as a list,
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+print(sorted(votes,reverse=True))
+
+prints
+
+[('Dog', 15), ('Charlie', 20), ('Baker', 20), ('Able', 10)]
+
+What sort is doing is comparing each value in the list to the others using the
+standard meaning of <. You should know how Python compares str values, but how
+does Python compare whether one tuple is less than another? Or whether one list
+is less than another? The algorithm in analagous to strings, so let's first
+re-examine comparing strings. The ordering, by the way, is called lexicographic
+ordering, and also dictionary ordering (related to the order words appear in
+dictionaries, but unrelated to Python dicts).
+
+---------------
+Interlude: Comparing Strings in Python:
+
+String comparison: x to y (high level):
+
+Find the first/minimum index i such that the ith character in x and y are
+different (or, x[i] != y[i]). If that character in x is less than that
+character in y (by the standard ASCII table) then x is less than y; if that
+character in x is greater than that character in y then x is greater than y;
+if there is no such different character, then x compares to y as x's length
+compares to y's (either less than, equal or greater than).
+
+Here are three examples:
+
+  (1) How do we compare x = 'aunt' and y = 'anteater'? The first/minimum i such
+  that the characters are different is 1: x[1] is 'u' and y[1] is 'n'; 'u' is
+  greater than 'n' so x > y.
+
+  (2) How do we compare x = 'ant' and y = 'anteater'? There is no first/minimum
+  i such that the characters are different; len(x) < len(y) so x < y. The word
+  'ant' appears in an English dictionary before the word 'anteater'.
+
+  (3) How do we compare x = 'ant' and y = 'ant'? There is no first/minimum i
+  such that the characters are different; len(x) == len(y) so x == y. I show
+  this example, which is trivial, just to be complete.
+
+See the Handouts(General) webpage showing the ASCII character set, because
+there are some suprises. You should memorize that the digits and lower/upper
+case letters compare in order, and all digts < all upper-case letters < all
+lower-case letters. So 'HUGE' < 'tiny' is True because 'H' is < 't' (all
+upper-case letters have smaller ASCII values than any upper-lower case letters).
+Likewise, 'Aunt' < 'aunt' because 'A' < 'a'. Note that we can always use the
+upper() method (as in x.upper() < y.upper()) or lower() method to perform a
+comparison that ignores case.
+---------------
+
+Back to comparing tuples (or lists). We basically do the same thing. We look at
+what is in index 0 in the tuples; if different, then the tuples compare in the
+same way as the values in index 0 compare; if the values at this index are the
+same, we keep going until we find a difference, and compare the tuples the same
+way that the differences compare; if there are no differences the tuples
+compare the same way their lengths compare.
+
+So ('UCI', 100) < ('UCSD', 50) is True because at index 0, the string values are
+different and 'UCI' is < 'UCSD' because index 2 in these strings are different,
+and 'I' < 'S'. Whereas ('UCI', 100) < ('UCI', 200) is True because the values
+at index 0 are the same ('UCI' == 'UCI'), so we go to index 1, where we find
+different values, and 100 < 200. Finally, ('UCI', 100) < ('UCI', 100, 'extra')
+is True because the values at index 0 are the same ('UCI' == 'UCI') and the
+values at index 1 are the same (100 == 100), and the last tuple has a larger
+length.
+
+Recall the sorting code from above.
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in sorted(votes):
+    print('Candidate',c,'received',v,'votes')
+print(votes)
+
+The reason that the values come out in the order they do in the code above is
+because the names that are in the first index in each 2-tuple ensure the tuples
+are sorted alphabetically. Python never gets to looking at the second value in
+each tuple, because the first values (the candidate names) are always different.
+
+Now, what if we don't want to sort by the natural tuple ordering. We can
+specify a "key" function that computes a key value for every value in what is
+being sorted, and the computed key values are used for comparison, not the
+original values themselves. These are the "keys" for comparison.
+
+See the by_vote_count function below; it takes a 2-tuple argument and returns
+only the second value in the tuple (recall indexes start at 0) for the key on
+which Python will compare. For the argument tuple ('Baker' ,20) by_vote_count
+returns 20.
+
+def by_vote_count(t):
+    return t[1]            # remember t[0] is the first index.
+
+So, when we sort with key=by_vote_count, we are telling the sorted function to
+determine the order of values by calling the by_vote_count function on each
+value: so in this call of sorted, we are comparing tuples based solely on their
+vote part. So writing
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in sorted(votes, key=by_vote_count):
+    print('Candidate',c,'received',v,'votes')
+
+produces 
+
+Candidate Able received 10 votes
+Candidate Dog received 15 votes
+Candidate Charlie received 20 votes
+Candidate Baker received 20 votes
+
+First, notice in "key=by_vote_count" Python didn't CALL the by_vote_count
+function (there are no parentheses) it just passed its associated function
+object to the key parameter in sorted. Inside the sorted function,
+by_vote_count's function object automatically is called where needed, to
+compare two 2-tuples, to determine in which order these values will appear in
+the returned list.
+
+Also, because Charlie and Baker both received the same number of votes, they
+both appear at the bottom, in an unspeficied order.
+
+Notice that the tuples are printed in ascending votes; generally for elections
+we want the votes to be descending, so we can combine using key and reverse
+(with reverse=True) in the call to the sorted function.
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in sorted(votes, key=by_vote_count, reverse=True):
+    print('Candidate',c,'received',v,'votes')
+
+which produces 
+
+Candidate Charlie received 20 votes
+Candidate Baker received 20 votes
+Candidate Dog received 15 votes
+Candidate Able received 10 votes
+
+Again, since the top two candidates both received the same number of votes, they
+appear in an unspecified order.
+
+Now, rather than define this simple by_vote_count function, we can use a lambda
+instead, and write the following.
+
+...
+for c,v in sorted(votes, key=(lambda t : t[1]), reverse=True):
+    ...
+
+So, now we don't have to write/name that extra by_vote_count function. Of
+course, if we did write it, we could reuse it wherever we wanted, instead of
+rewriting the lambda (but the lambdas are pretty small). So, we now know how to
+use functions and lambdas in sorted: and, they are used the same way in sort.
+
+Another way to sort in reverse order (for integers) is to use the "negate" trick
+illustrated below.
+
+...
+for c,v in sorted(votes, key=(lambda t : -t[1]) ):
+    ...
+
+Here we have negated the vote count part of the tuple, and removed reverse=True.
+So it is sorting from smallest to largest, but by the negative of the vote
+values (because that is what key says to do). It is using -20, -10, -20, and -15
+to sort. So the biggest vote count corresponds to the smallest negative number
+(so that tuple will appear first). The tuples appear in the order specified by
+the key functions: -20, -20, -15, -10 (smallest to largest).
+
+Finally, typically when multiple candidates are tied for votes, we print their
+names close together (because they all have the same number of votes) but also
+in alphabetical order. We do this in Python by specifying a key function that
+returns a tuple in which the vote count is checked first and sorted in
+descending order; and only if they are tied will the names be checked and
+sorted in ascending order. Because we want the tuples in decreasing vote
+counts but increasing names, we cannot use reverse=True: it would reverse both
+the vote AND name comparisons; we need to resort to the "negation" trick above
+and write
+
+votes = [('Charlie', 20), ('Able', 10), ('Baker' ,20), ('Dog', 15)]
+for c,v in sorted(votes, key=lambda t : (-t[1],t[0]) ):
+    print('Candidate',c,'received',v,'votes')
+
+So it compares the key 2-tuples (-20, 'Charlie'), (-10, 'Able'), (-20, 'Baker'),
+and (-15, 'Dog') when ordering the actual 2-tuples, and by what we have learned
+
+(-20, 'Baker') < (-20, 'Charlie') < (-15, 'Dog') < (-10, 'Able')
+
+which produces 
+
+Candidate Baker received 20 votes
+Candidate Charlie received 20 votes
+Candidate Dog received 15 votes
+Candidate Able received 10 votes
+
+Note that the lambda in the key ensures Python compares ('Charlie', 20) and
+('Dog', 15) as if they were (-20, 'Charlie') and (-15, 'Dog') so the first
+tuple will be less and appear earlier (the one with the highest votes has the
+lowest negative votes). And when Python compares ('Charlie', 20) and
+('Baker' ,20) as if they were (-20, 'Charlie') and (-20, 'Baker') so the second
+tuple will be less and appear earlier (equal votes and 'Baker' < 'Charlie').
+
+So think of sorting
+
+('Charlie', 20)   ('Able', 10)   ('Baker' ,20)   ('Dog', 15)
+       |                |               |              |
+       |                |               |              |  using the key function
+       V                V               V              V
+(-20, 'Charlie')  (-10, 'Able')  (-20, 'Baker')  (-15, 'Dog')
+
+which sorts to 
+
+(-20,'Baker')  (-20,'Charlie')  (-15,'Dog')  (-10,'Able')
+
+so the order of the actual list returned by sorted is
+
+[('Baker', 20), ('Charlie', 20), ('Dog', 15),  ('Able', 10)]
+
+which is sorted by decreasing vote, with equal votes sorted alphabetically
+increasing by name.
+
+You now have a good tool bag for sorting various types of information.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="print"><h1>The print function</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Notice how the sep and end parameters in print help control how the printed
+values are separated and what is printed after the last one. Recall that print
+can have any number of arguments (we will see how this is done in Python soon),
+and it prints the str(...) of each parameter. By default, sep=' ' (space) and
+end='\n' (newline). So the following
+
+print(1,2,3,4,sep='--',end='/')
+print(5,6,7,8,sep='x',end='**')
+
+prints
+
+1--2--3--4/5x6x7x8**
+
+Also recall that all functions must return a value. The print function returns
+the value None: this function serves as a statement: it has an "effect" (of
+displaying information in the console window; we might say changing the state
+of the console) but returns no useful "value", just None.
+
+Sometimes we use sep='' to control spaces more finely. In this case we must put
+in all the spaces ourselves.
+
+print(1,2,' ',3,sep='')
+
+prints
+
+12 3
+
+Still, other times we can concatenate values together into one string (which
+requires us to explicitly use the str function on the things we want to print).
+
+x = 10
+print('Your answer of '+str(x)+' is too high.'+'\nThis is on the next line')
+
+Note the use of the "escape" sequence \n to generate a new line.
+
+Finally, we can also use the very general-purpose .format function. This
+function is illustrated in Section 6.1.3 in the documentation of The Python
+Standard Library. The following two statements print equivalently: for a string
+with many format substitutions, I prefer the form with a name (here x) in the
+braces of the string and as a named parameter in the arguments to format.
+
+print('Your answer of {} is too high\nThis is on the next line'.format(10))
+
+print('Your answer of {x} is too high\nThis is on the next line'.format(x=10))
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="slicing"><h1>String/List/Tuple (SLT) slicing:</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+SLTs represent sequences of indexable values, whose indexes start index 0, and
+go up to -but do not include- the length of the SLT (which we can compute using
+the len function).
+
+1) Indexing: We can index an SLT by writing SLT[i], where i is positive and in
+   the range 0 to len(SLT)-1 inclusive, or i is negative and i is in the range
+  -len(SLT) to -1 inclusive: SLT[0] is the first index, SLT[-1] is the last.
+
+2) Slicing: We can specify a slice by SLT[i:j] which includes SLT[i] followed
+   by SLT[i+1], ... SLT[j-1]. Slicing a string produces another string,
+   slicing a list produces another list, and slicing a tuple produces another
+   tuple. The resulting structures has j-i elements if indexes i through j are
+   in the SLT (or 0 if j-i is <= 0); this formula works for positive and
+   negative index values. If the first index is any character before index 0,
+   then index 0 is used; if the last index is any character beyond the last
+   index, then index lend(SLT) is used;
+
+s = 'abcde'
+x = s[1:3]
+print (x)     # prints 'bc' which is 3-1 = 2 values
+x = s[-4:-1]
+print (x)     # prints 'bcd' which is -1-(-4) = 3 values
+x = s[1:10]
+print (x)     # prints 'bcde' which is len(x)-1 = 4 values
+
+   likewise
+
+s = ('a','b','c','d','e')
+x = s[1:3]
+print (x)     # prints ('b','c') which is 3-1 = 2 values
+x = s[-4:-1]
+print (x)     # prints ('b','c','d') which is -1-(-4) = 3 values
+
+   s[:i] is index 0 up to but not including i (can be positive or negative)
+   s[i:] is index i up to and including the last index; so s[-2:] is the last
+         two values.
+
+3) Slicing with a stride: We can specify a slice by SLT[i:j:k] which includes
+   SLT[i] followed by SLT[i+k], SLT[i+2k] ... SLT[j-1]. This follows the rules
+   for slicing too, and allows negative numbers for indexing.
+
+s = ('a','b','c','d','e')
+x = s[::2]
+print (x)     # prints ('a','c','e')
+x = s[1::2]
+print (x)     # prints ('b','d'')
+
+x = s[3:1:-1]
+print (x)     # prints ('d','c')
+x = s[-1:1:-1]
+print (x)     # prints ('e','d','c')
+
+Experiment with various slices of strings (the easiest to write) to verify you
+understand what result they produce.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="condition"><h1>Conditional statement vs. Conditional expression</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python has an if/else STATEMENT, which is a conditional statement. It also has a
+conditional EXPRESSION that uses the same keywords (if and else), which while
+not as generally useful, sometimes is exactly the right tool to simplify a task.
+A conditional statement uses a boolean expression to decide which block to
+execute; a conditional expression uses a boolean expression to decide which
+other expression to evaluate: the value of that expression is the value of the
+conditional expression.
+
+The form of a conditional expression is
+
+  resultT if test else resultF
+
+This says, the expression evaluates to the value of resultT if test is True
+and the value of resultF if test is False; first it evaluates test, and then
+evaluates either resultT or resultF (but only one, not the other) as necessary.
+Like other short-circuit operators in Python (do you know which?) it evaluates
+only the subexpressions it needs to evaluate to determine the result.
+
+I often put conditional expresions inside parentheses for clarity (as I did for
+lambdas). See the examples below.
+
+Here is a simple example. We start with a conditional statement, which always
+stores a value into min: either x or y depending on whether x <= y. Note that
+regardless of the test, min is bound to a value.
+
+  if x <= y:
+      min = x
+  else:
+      min = y
+
+We can write this using a simpler conditional expression, capturing the fact
+that we are always storing into min, and just deciding which value to store.
+
+  min = (x if x <= y else y)
+
+Not all conditional statements can be converted into conditional expressions;
+typically only simple ones can: ones with a single statement in their blocks.
+But using conditional expressions in these cases simplifies the code even more.
+So attempt to use conditional expression, but use good judgement after you see
+what the code looks like.
+
+Here is another example; it always prints x followed by some message
+
+  if x % 2 == 0:
+      print(x,'is even')
+  else:
+      print(x,'is odd')
+
+We can rewrite it as as calling print with a conditional expression inside
+deciding what string to print at the end.
+
+      print(x, ('is even' if x%2 == 0 else 'is odd'))
+
+We can also write it as a one argument print:
+
+      print(str(x) + ' is ' +('even' if x%2 == 0 else 'odd'))
+
+Note that conditional expressions require using both the if and else keywords,
+along with the two expressions needed in the cases where the test is True or
+the test is False. Some conditional statements just use if (and no else)
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="else"><h1>The else: block-else option in for/while loops</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+For and while looping statements are described as follows. The else: block-else
+is optional, and not often used. But we will explore its meaning here.
+
+for_statement   <= for index(es) in iterable:
+                       block-body
+                   [else:
+                       block-else]
+
+while_statement <= while <bool-expression>:
+                       block-body
+                   [else:
+                       block-else]
+
+Here are the semantics of else: block-else.
+
+   If the else: block-else option appears, and the loop terminated normally,
+   (not with a break statement) then execute block-else.
+
+Here is an example that makes good use of the else: block-else option. This
+code prints the first/lowest value (looking at the values 0 to 100 inclusive)
+for which the function special_property returns True (and then breaks out of
+the loop); otherwise it prints that no value in this range had this property:
+so it prints exactly one of these two messages. Note you cannot run this code,
+because there is no special_property function: I'm using it for illustration
+only.
+
+for i in irange(100):
+    if special_property(i):
+        print(i,'is the first value with the special property')
+        break
+else:
+    print('No value in the range had the special property')
+
+Without the else: block-else option, the simplest code that I can write that has
+equivalent meaning is as follows.
+
+found_one = False
+for i in irange(100):
+    if special_property(i):
+        print(i,'is the first with the special property')
+        found_one = True
+        break
+if not found_one:
+    print('No value in the range had the special property')
+
+This solution requires an extra name (found_one), an assignment to set and
+reset the name, and an if statement. Although I came up with the example above,
+I have not used the else: block-else option much in Python. Most programming
+languages that I have used don't have this special feature, so I'm still
+exploring its usefulness. Every so often I have found an elegant use of this
+construct. 
+
+Can you predict what would happen if I removed the break statement in the
+bigger code above?
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="matching"><h1>Argument/Parameter Matching (leaves out **kargs, discussed later)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Let's explore the argument/parameter matching rules. First we classify
+arguments and parameters, according the options they include. Remember that
+arguments appear in function calls and parameter appear in function headers.
+
+Arguments
+  positional argument: an argument NOT preceded by the name= option
+  named      argument: an argument preceded by the name= option
+
+Parameters
+  name-only parameter       : a parameter with NO default value
+  default-argument parameter: a parameter including a default argument value
+
+When Python calls a function, it defines every parameter name in the
+function's header, and binds to each (just like an assignment statement) the
+argument value object matching that parameter's name. In the rules below, we
+will learn exactly how Python matches arguments to parameters according to three
+criteria: positions, parameter names, and default arguments for parameter
+names. We will also learn how to write functions that can receive an arbitrary
+number of arguments.
+
+Here is a concise statement of Python's rules for matching arguments to
+parameters. The rules are applied in this order (e.g., once you reach M3 we
+cannot go back to M1).
+
+M1. Match positional argument values in the call sequentially to the
+    parameters named in the header's corresponding positions (both name-only
+    and default-argument parameters are OK to match). Stop when reaching any
+    named argument in the call, or the * parameter (if any) in the header.
+
+M2. If matching a * parameter in the header, match all remaining positional
+    argument values to it. Python creates a tuple that stores all these
+    arguments. The parameter name (typically args) is bound to this tuple.
+
+M3. Match named-argument values in the call to their like-named parameters
+    in the header (both name-only and default-argument parameters are OK)
+
+M4. Match any remaining default-argument parameters in the header, un-
+    matched by rules M1 and M3, with their specified default arguments.
+
+M5. Exceptions: If at any time (a) an argument cannot match a parameter
+    (e.g., a positional-argument follows a named-argument) or (b) a parameter
+    is matched multiple times by arguments; or if at the end of the process
+    (c) any parameter has not been matched or (d) if a named-argument does not
+    match the name of a parameter, raise an exception: SyntaxError for (a) and
+    TypeError for (b), (c), and (d). These exceptions report that the function
+    call does not correctly match its header.
+
+(When we examine a **kargs as a parameter, we will learn what Python does when
+there are extra named arguments in a function call: names besides those of
+parameters: preview: it puts all remaing named arguments in a dictionary, with
+their name as the key and their value associated with that key). The parameter
+name (typically kargs) is bound to this dictionary.
+
+When this argument-parameter matching process if finished, Python defines,
+(in the function's namespace), a name for every parameter and binds each to
+the unique argument it matches using the above rules. Passing parameters is
+similar to performing a series of assignment statements between parameter names
+and their argument values.
+
+If a function call raises no exception, these rules ensure that each parameter
+in the function header matches the value of exactly one argument in the
+function call. After Python binds each parameter name to its argument, it
+executes the body of the function, which computes and returns the result of
+calling the function
+
+Here are some examples of functions that we can call to explore the rules for
+argument/parameter matching specified above. These functions just print their
+parameters, so we can see the arguments bound to them (or see which exception
+they raise).
+
+def f(a,b,c=10,d=None): print(a,b,c,d)
+def g(a=10,b=20,c=30) : print(a,b,c)
+def h(a,*b,c=10)      : print(a,b,c)
+
+Call              | Parameter/Argument Binding (matching rule)
+------------------+--------------------------------------------
+f(1,2,3,4)	  | a=1, b=2, c=3, d=4(M1)
+f(1,2,3)	  | a=1, b=2, c=3(M1); d=None(M4)
+f(1,2)		  | a=1, b=2(M1); c=10, d=None(M4)
+f(1)		  | a=1(M1); c=10, d=None(M4); TypeError(M5c:b not matched)
+f(1,2,b=3) 	  | a=1, b=2(M1); b=3(M3); TypeError(M5b:b matched twice)
+f(d=1,b=2)	  | d=1, b=2(M3); c=10(M4); TypeError(M5c:a not matched)
+f(b=1,a=2)	  | b=1, a=2(M3); c=10, d=None(M4)
+f(a=1,d=2,b=3)	  | a=1, d=2, b=3(M3); c=10(M4)
+f(c=1,2,3)	  | c=1(M3); SyntaxError(M5a:2)
+
+g()		  | a=10, b=20, c=30(M4)
+g(b=1)		  | b=1(M3); a=10, c=30(M4)
+g(a=1,2,c=3)	  | a=1(M3); SyntaxError(M5a:2)
+
+h(1,2,3,4,5)	  | a=1(M1); b=(2,3,4,5)(M2), c=10(M4)
+h(1,2,3,4,c=5)    | a=1(M1); b=(2,3,4)(M2), c=5(M3)
+h(a=1,2,3,4,c=5)  | a=1(M3); SyntaxError(M5a:2)
+h(1,2,3,4,c=5,a=1)| a=1(M1); b=(2,3,4)(M2); c=5(M3); TypeError(M5b:a matched twice)
+
+Here is a real but simple example of using *args, showing how the max function
+is implememented in Python; we dont' really need to write this function because
+it is in Python already, but here it is written in Python. We will cover raising
+exceptions later in this lecture note, so don't worry about that code .
+
+def max(*args) :     	   # Can refer to args inside; it is a tuple of values
+    if len(args) == 0:
+        raise TypeError('max: expected >=1 arguments, got 0')
+    answer = args[0]
+    for i in args[1:]:
+        if i > answer:
+            answer = i
+    return answer
+print(max(3,-4, 2, 8))
+
+Here is another real example of using *args, where I show how the print function
+is written in Python. The myprint calls a very simple version of print, just
+once at the end, to print the string that it builds from args along with sep
+and end; it prints the same thing the normal print would print with the same
+arguments. Notice the use of the conditional if in the first line, to
+initialize s to either '' or the string value of the first argument.
+
+def myprint(*args, sep=' ', end='\n'):
+    s = (str(args[0]) if len(args) >= 1 else '') # handle 1st (if there) special
+    for a in args[1:]:	 	      	     	 # all others with sep
+        s += sep + str(a)
+    s += end					 # end at the end
+    print(s,end='')				 # print the entire string s
+
+myprint('a',1,'x')			# prints a line
+myprint('a',1,'x',sep='*',end='E')	# prints a line but stays at end
+myprint('a',1,'x')			# continues at end of previous line
+
+These print.
+
+a 1 x
+a*1*xEa 1 x
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="constructors"><h1>Constructors operating on Iterable values to Construct Data</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+List, Tuples, Sets:
+
+Python's "for" loops allow us to iterate through all the components of any
+iterable data. We can even iterate through strings: iterating over their
+individual characters. Later in the quarter, we will study iterator protocols
+in detail, both the special iter/__iter__ and next/__next__ methods in classes,
+and generators (which are very very similar to functions, with a small but
+powerful twist). Both will improve our understanding of iterators and also
+allow us to write our own iterable data types (classes). 
+
+Certainly we know about using "for" loops and iterable data (as illustrated by
+lots of code above). What I want to illustrate here is how easy it is to
+create lists, tuples, and sets from anything that is iterable by using the
+list, tuple, and set constructors (we'll deal with dict constructors later in
+this section). For example, in each of the following the constructor for the
+list/tuple/set objects iterates over the string argument to get the 1-char
+strings that become the values in the list/tuple/set object.
+
+l = list ('radar') then l is ['r', 'a', 'd', 'a', 'r']
+t = tuple('radar') then t is ('r', 'a', 'd', 'a', 'r')
+s = set  ('radar') then s is {'a', 'r', 'd'} or {'d', 'r', 'a'} or ...
+
+Note that lists/tuples are ORDERED, so whatever the iteration order of their
+iterator argument is, the values in the list/tuple will be the same order.
+Contrast this with sets, which have (no duplicates and) no special order. So,
+set('abcde') can print its three different values in any order.
+
+Likewise, since tuples/sets are iterable, we can also compute a list from a
+list, a list from a a tuple, or a list from a set. Using l, t, and s from above.
+
+list(t) which is ['r', 'a', 'd', 'a', 'r']
+list(s) which is ['r', 'a', 'd']  assuming s iterates in the order 'r', 'a', 'd'
+list(l) which is ['r', 'a', 'd', 'a', 'r']
+
+The last of these iterates over the list to create a new list with the same
+values: note that l is list(l) is False, but l == list(l) is True.
+
+Likewise we could create a tuple from a list/set, or a set from a list/tuple.
+All the constructors handle iterable data, producing a result of the specified
+type by iterating over their argument.
+
+Note that students sometime try to use a list constructor create a list with one
+value. They write list(1), by Python responds with "TypeError: 'int' object is
+not iterable" because the list constructor is expecting an iterable argument.
+The correct way to specify this list with one value is [1]. Likewise for tuples,
+sets, and dictionaries.
+
+Program #1 will give you lots of experience with these data types and when and
+how to use them. The take-away now is it is trivial to convert from one of these
+data types to another, because the constructors for their classes all allow
+iterable values as their arguments, and all these data types (and strings as
+well) are iterable (can be iterated over).
+
+
+Dictionary Constructors:
+
+Before leaving this topic, we need to look at how dictionaries fit into the 
+notion of iterable. There is not ONE way to iterate through dictionaries, but
+there are actually THREE ways to iterate through dictionaries: by keys, by
+values, and by items (each item a 2-tuple with a key folowed by its associated
+value).  Each of these is summoned by a method name for dict, and the methods
+are named the same: keys, values, and items.
+
+So if we write the following to bind d to a dict (we will discuss this "magic"
+constructor soon)
+
+d = dict(a=1,b=2,c=3,d=4,e=5) # the same as d = {'a':1,'b':2,'c':3,'d':4,'e':5}
+
+Then we can create lists of three aspects of the dict:
+
+list(d.keys  ()) is like ['c', 'b', 'a', 'e', 'd']
+list(d.values()) is like [3, 2, 1, 5, 4]
+list(d.items ()) is like [('c', 3), ('b', 2), ('a', 1), ('e', 5), ('d', 4)]
+
+Note that like sets, dicts are NOT ORDERED: in the first case we get a list
+of the keys; in the second a list of the values; in the third a list of itme
+tuples, where each tuple contains one key and its associate value. But in all
+three cases, the values can appear in ANY ORDER.
+
+Note that the keys in a dict are always unique, but there might be duplicates
+among the values: try the code above with d = dict(a=1,b=2,c=1). Items are
+unique because they contain keys (which are unique).
+
+Also note that if we iterate over a dict without specifying how, it is
+equivalent to specifyihg d.keys(). That is
+
+list(d) is the same as list(d.keys()) which is like ['a', 'c', 'b', 'e', 'd']
+
+One way to construct a dict is to give it an iterable, where each value
+is either a 2-tuple or 2-list: a key followed by its associated value. So, we
+could have written any of the following to initialize d:
+
+d = dict( [['a', 1], ['b', 2], ['c', 3], ['d', 4], ['e', 5]] ) #list of  2-list
+d = dict( [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)] ) #list of  2-tuple
+d = dict( (['a', 1], ['b', 2], ['c', 3], ['d', 4], ['e', 5]) ) #tuple of 2-list
+d = dict( (('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)) ) #tuple of 2-tuple
+
+or, even (a tuple that has a mixture of 2-tuples and 2-lists in it)
+
+d = dict( (('a', 1), ['b', 2], ('c', 3), ['d', 4], ('e', 5)) )
+
+or even (a set of 2-tuples; we cannot have a set of 2-list (see hashable below)
+
+d = dict( {('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)} )
+
+The dict argument must be iterable, and each value in the iterable must have 2
+values (e.g., a 2-list or 2-tuple) that represent a key followed by its
+associated value.
+
+Finally, if we wanted to construct a dict using the keys/values in another
+dict, here are two easy ways to do it
+
+d_copy = dict(d))
+
+or
+
+d_copy = dict(d.items())
+
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="sharing"><h1>Sharing/Copying:  is vs. == (one more time)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+It is important to understand the fundamental difference between two names
+sharing an object (bound to the same object) and two names referring/bound to
+"copies of the same object". Note that if we mutate a shared object, both names
+"see" the change: both are bound to the same object which has mutated. But if
+they refer to different copies of an object, only one name "sees" the change.
+
+Note the difference between the Python operators is and ==. The first asks
+whether two references/binding are to the same object (this operator is called
+the object-identity operator); the second asks only whether the two objects
+store the same values. See the different results produced for the example
+below. Also note that if x is y is True, then x == y must be True too: an object
+stores the same values as itself. But if x == y is True, x is y may or may not
+be True.
+
+For example, compare execution of the following scripts: the only difference
+is the second statement in each: y = x vs. y = list(x)
+
+x = ['a']
+y = x		# Critical: y and x share the same reference
+print('x:',x,'y:',y,'x is y:',x is y,'x == y:',x==y)
+x [0] = 'z'	# Mutate x (could also append something to it)
+print('x:',x,'y:',y,'x is y:',x is y,'x == y:',x==y)
+
+This prints
+x: ['a'] y: ['a'] x is y: True x == y: True
+x: ['z'] y: ['z'] x is y: True x == y: True
+
+x = ['a']
+y = list(x)	# Critical: y refers to a new list with the same contents as x
+print('x:',x,'y:',y,'x is y:',x is y,'x == y:',x==y)
+x [0] = 'z'	# Mutate x (could also append something to it: x+)
+print('x:',x,'y:',y,'x is y:',x is y,'x == y:',x==y)
+
+This prints
+x: ['a'] y: ['a'] x is y: False x == y: True
+x: ['z'] y: ['a'] x is y: False x == y: False
+
+Finally there is a copy module in Python that defines a copy function: it
+copies some iterable without us having to specify the specific constructor
+(like list, set, tuple, or dict).
+
+So we can import it as: from copy import copy
+
+Assuming x is a list, we can replace y = list(x) by y = copy(x).
+Likewise, if x is a dict we can replace y = dict(x) by y = copy(x)
+
+We could also just: import copy (the module) and then write y = copy.copy(x)
+but it is clearer in this case to write "from copy import copy".
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="hashable"><h1>Hashable vs. Mutable and how to Change Things:</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python uses the term Hashable, which has the same meaning as Immutable. So
+hashable and mutable are OPPOSITES: You might see this message relating to
+errors when using sets with UNHASHABLE values or dicts with UNHASHABLE keys:
+since hashable means immutable, then un-hashable means un-immutable which
+simplifies (the two negatives cancel) to mutable. So unhashable is mutable. So
+
+hashable    is immutable
+unhashalble is mutable
+
+Here is a quick breakdown of standard Python types
+
+Hashable/immutable: strings, tuples, frozenset
+mutable/unhashable: list, sets, dicts
+
+The major difference between tuples and lists in Python is the former is
+immutable and the later is not. So if some other datatype (e.g., values in
+a set, or keys in a dictionary) needs to be hashable/immutable, use a tuple
+to represent its values.
+
+A frozenset can do everything that a set can do, but doesn't allow any mutator
+methods to be called (so we cannot add a value to or delete a value from a
+frozenset). Thus, we can use a frozen set as a value in a set or a key in a
+dictionary.
+
+The constructor for a frozenset is frozenset(...) not {}. Note that once you've
+constructed a frozen set you cannot change it (because it is immutable). If you
+have a set s and need an equivalent frozenset, just write frozenset(s).
+
+We will study hashing towards the end of the quarter: it is a technique for
+allowing very efficient operations on sets and dicts. ICS-46 (Data Structures)
+studies hash tables in much more depth, in which you will implement the
+equivalent of Python sets and dicts by using hash tables.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="comp"><h1>Comprehensions: list, tuple, set, dict</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+List, Tuple, Set Comprehensions:
+
+Comprehensions are compact ways to generate complicated (but not too
+complicated) lists, tuples, sets, and dicts. That is, they compactly solve some
+problems but cannot solve all problems (for example, we cannot use them to
+mutate values in an existing data structure). The general form of a list
+comprehension is as follows, where f means any function (or expression: we can
+also just write var because a name by itself is a simple expression having a
+value) using var and p means any predicate (or bool expresssion) using var.
+
+[f(var) for var in iterable if p(var)]
+
+Meaning: collect together into a list (because of the outer []) all of f(var)
+values, for var taking on every value in iterable, but only collect an f(var)
+value if it corresponding p(var) is True.
+
+For tuple or set comprehensions, we would use () and {} as the outermost
+grouping symbol instead of [] (we'll talk about dicts at the end, which use
+{} and : inside to get the job done and be distinguised from sets which use {}
+without : inside).
+
+Note that the "if p(var)" part is optional, so we can also write comprehensions
+as follows (in which case it has the same meaning as p(var) always being True).
+
+[f(var) for var in iterable]   meaning   [f(var) for var in iterable if True]
+
+for example
+
+x = [i**2 for i in irange(1,10) if i%2==0]	# note: irange not range
+print(x)
+
+prints the squares of all the integers from 1 to 10 inclusive, but only if the
+integer is even (computed as leaving a remainder of 0 when divided by 2). Run 
+it. Change it a bit to get is to do something else. Here is another example
+
+x = [2*c for c in 'some text' if c in 'bcdfghjklmnpqrstvwxy']
+print(x)
+
+which prints a list with strings that are doubled for all the consonants
+(no aeiouy -or spaces for that matter): ['ss', 'mm', 'tt', 'xx', 'tt']
+
+We can translate any list comprehension into equivalent code that uses more
+familiar Python looping/if/list appending features.
+
+x = []	       	  	   # start with an empty list
+for var in iterable:	   # iterate through iterable
+   if p(var):		   # if var is acceptable?
+       x.append(f(var))	   # add f(var) next in the list
+
+But often using a comprehension (in the right places: where you want to
+generate some list, tuple, set or dict) is simpler. Not all lists that we
+build can be written as simple comprehensions, but the ones that can are often
+very simple to write, read, and understand when written as comprehensions.
+
+What comprehensions aren't good for is putting information into a data structure
+and then mutating/changing it during the execution of the comprehension; for
+that job you need code more like the loop above. So when deciding whether or
+not to use a comprehension, ask youself if you can specify each value in the
+data structure without changing it (as was done above, using comprehensions).
+
+Note that we can add-to (mutate) lists, sets, and dicts, but not tuples. For
+tuples we would have to write this code with x = () at the top and
+x = x + (var,) in the middle: which builds an entirely new tuple by
+concatenating the old one and a one-tuple (containing only x) and then binding
+x to the newly constructed tuple. Don't worry about these details, but
+understand that unlike lists, tuples have no mutator methods (so x.append(...)
+is not allowed)
+
+Here is something interesting (using a set comprehension: notice {} around the
+comprehension.
+
+x = {c for c in "I've got plenty of nothing"}	# note ' in str delimited by "
+print(sorted(x))
+
+It prints a set of all the characters (in a list, in sorted order, created by
+sorted(x)) in the string but because it is a set, each character occurs one
+time. So even though a few c's have the same value, only one of each appears in
+the set because of the semantics/meaning of sets. Note it prints
+
+[' ', "'", 'I', 'e', 'f', 'g', 'h', 'i', 'l', 'n', 'o', 'p', 't', 'v', 'y']
+
+If we used a list comprehension, it would be much longer because, for example,
+the character 't' would occur 3 times in a list (but occurs only once in a set)
+
+
+Dict Comprehensions:
+
+The form for dict comprehensions is similar, here k and v are functions (or
+expressions) using var. Notice the {} on the outside and the : on the inside,
+separating the key from the value: that is how Python knows the comprehension
+is a dict not a set.
+
+{k(var) : v(var) for var in iterable if p(var)}
+
+So,
+
+x = {k : len(k) for k in ['one', 'two', 'three', 'four', 'five']}
+print(x)
+
+prints a dictionary that stores keys that are these five words whose associated
+values are the lengths of these words. Because dicts aren't ordered, it could
+print as {'four': 4, 'three': 5, 'one': 3, 'five': 4, 'two': 3}
+
+Finally, we can write a nested comprehensions, although they are harder to
+understand than simple comprehensions.
+
+x = {c for word in ['i', 'love', 'new', 'york'] for c in word if c not in 'aeiou'}
+print(x)
+
+It says to collect c's, by looking in each word w in the list, and looking at
+each character c in each word: so the c collected at the beginning is the c
+being iterated over in the second part of the comprehension (c in word...)
+
+It prints a set of each different letter that is not a vowel, in each word
+in the list. I could produce this same result by rewriting the outer part of the
+comprehension as a loop, but leaving the inner one as a comprehension (union
+merges two sets: does a bunch of adds).
+
+x = set()
+for word in ['i', 'love', 'new', 'york']:
+    x = x.union( {c for c in word if c not in 'aeiou'} )
+print(x)
+
+or write it with no comprehensions at all
+
+x = set()
+for word in ['i', 'love', 'new', 'york']:
+    for c in word:
+        if c not in 'aeiou':
+            x.add(c)
+print(x)
+
+So which of these is the most comprehendable: the pure comprehension, the
+hybrid loop/comprehension, or the pure nested loops? What is important is that
+we know how all three work, can write each correctly in any of these ways,
+and then we can decide afterwords which way we want the code to appear. As we
+program more, our preferences might change. I'd probably prefer the first one
+(because I've seen lots of do9uble comprehensions), but the middle one is
+also reasonable.
+
+What do you think the following nested (in a different way) comprehension
+produces?
+
+x = {word : {c for c in word} for word in ['i', 'love', 'new', 'york']}
+
+Check you answer by executing this code in Python and printing x.
+
+Finally, here is a version of myprint (written above in the section on the
+binding of arguments and parameters) that uses a combination of the .join
+function and a comprehension to create the string to print simply.
+
+The .join function (discussed more in depth below) joins all the string values
+in an iterable into a string using the prefix operator as a separator:
+'--'.join( ('My', 'dog', 'has', 'fleas') )
+returns the string 'My--Dog--has--fleas'
+
+def myprint(*args,sep=' ',end='\n'):
+    s = sep.join(str(x) for x in args)+end       # create string to print
+    print(s,end='')				 # print the string
+
+WARNING: Once students learn about comprehensions, sometimes they go a bit
+overboard as they learn about this feature. Here are some warning signs: When
+writing a comprehension, you should (1) use the result produced in a later part
+of the computation and (2) typically not mutate anything in the comprehension.
+If the purpose of your computation is to mutate something, don't use a
+comprehension. Over time you will develop good instincts for when to use
+comprehensions.
+
+
+Tuple Comprehensions are special:
+
+The result of a tuple comprehension is special. You might expect it to produce
+a tuple, but what it does is produce a special "generator" object that we can
+iterate over. We will discuss generators in detail later in the quarter, so for
+now we will examine just some simple examples. Given the code
+
+x = (i for i in 'abc')  # tuple comprehension
+print(x)
+
+You might expect this to print as ('a', 'b', 'c') but it prints as
+<generator object <genexpr> at 0x02AAD710>
+
+The result of a tuple comprehension is not a tuple: it is actually a generator.
+The only thing that you need to know now about a generator now is that you can
+iterate over it, but ONLY ONCE. So, given the code
+
+x = (i for i in 'abc')
+for i in x:
+    print(i)
+for i in x:
+    print(i)
+
+it prints
+a
+b
+c
+
+Yes, it prints a, b, c and just prints it once: after the first loop finishes,
+the generator is exhausted so the second loop prints no more values.
+
+Recall our discussion of changing any iterable into a list, tuple, set; so if
+we wrote t  = tuple(x) or t = tuple( (i for i in 'abc') ), then
+print(t) would print ('a', 'b', 'c'). In fact, we could even write
+t = tuple(i for i in 'abc') because by default, comprehensions are tuple
+comprehensions.
+
+Of course, we could also write things like 
+l = list(i for i in 'abc')
+s = set (i for i in 'abc')
+
+but these are equivalent to writing the standard comprehensions more simply:
+l = [i for i in 'abc']
+s = {i for i in 'abc'}
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="functions"><h1>Nine Important/Useful Functions: split/join, any/all, sum/min/max, zip/enumerate</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The split/join methods
+
+Both split and join are methods in the str class: if s is some string, we call
+them by writing s.split(...) or s.join(....)
+
+The split method takes one str argument as .... and the result it returns is a 
+list of of str. For example 'ab;c;ef;;jk'.split(';') returns the list of st
+
+['ab', 'c', 'ef', '', 'jk']
+
+It uses the argument str ';' to split up the string (prefixing the .split call),
+into slices that come before or after every ';'.
+
+Note that there is an empty string between 'ef' and 'j' because two adjacent
+semi-colons appear between them in the string. If we wanted to filter out such
+empty strings, we can easily do so by embedding the call to split inside a
+comprehension: writing [s for s in 'ab;c;ef;;jk'.split(';') if s != '']
+produces the list ['ab', 'c', 'ef', 'jk'].
+
+Because the prefix and regular arguments are both strings, students sometime
+reverse these two operands: what does ';'.split('ab;c;ef;;jk') produce and why?
+
+The split method is very useful for reading lines of text from a file and then
+parsing (splitting) these lines into their important constituent information.
+You will use split in all 5 parts of Programming Assignment #1.
+
+-----
+
+The join method takes one iterable (producing str) argument as ....; the result
+it returns is a str. For example ';'.join(['ab', 'c', 'ef', '', 'jk']) returns
+the str
+
+'ab;c;ef;;jk'
+
+It merges all the strings in its argument list into one big string, with all the
+strings from argument list concatenated together and separated from each other
+by the ';' string.
+
+So, split and join are opposites. Unfortunately, the splitting/joining string
+';' appears as the argument inside the () in split, but it appears as the prefix
+argument before the call in join. This inconsistency can be confusing.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="allAny"><h1>The all/any functions (and their use with tuple comprehensions)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The "all" function takes one iterable argument (and returns a bool value): it
+returns True if ALL the bool values produced by the iterable are True; it can
+stop examining values and return a False result when the first False is produced
+(ultimately, if no False is produced it returns True).
+
+The "any" function takes one iterable argument (and returns a bool value): it
+returns True if ANY the bool values produced by the iterable are True; it can
+stop examining values and return a True result when the first True is produced
+(ultimately, if no True is produced it returns False).
+
+These functions can be used nicely with tuple comprehensions. For example, if
+we have a list l of numbers, and we want to know whether all these numbers are
+prime, we can call
+
+  all( predicate.is_prime(x) for x in l )
+
+which is the same as calling
+
+  all( (predicate.is_prime(x) for x in l) )
+
+and similar (but more time/space-efficient) than calling
+
+  all( [predicate.is_prime(x) for x in l] )
+
+The list comprehension computes the entire list of boolean values and then
+"all" iterates over this list. When "all" iterates over a tuple comprehension,
+the tuple comprehension computes values one at a time and "all" checks each: if
+one is False, the tuple comprehension returns False immediately and does not
+have to compute any further values in the tuple comprehension. Likewise for
+the "any" function, which produces True the first time it examines a True value.
+
+Here is how we can write these functions, which search for a False and True
+respectively:
+
+def all(iterable):
+    for v in iterable:
+        if v == False
+            return False
+    return True
+
+def any(iterable):
+    for v in iterable:
+        if v == True
+            return True
+    return False
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="morefunc"><h1>The sum/max/min functions (and their use with tuple comprehensions)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The simple versions of the sum function takes one iterable argument. The sum
+function requires that the iterable produce numeric values that can be added.
+It returns the sum of all the values produced by the iterable; if the iterable
+argument produces no values, sum returns 0. Actually, we can supply a second
+argument to the sum function; in this case, that value will be returned when
+the iterable produces no values and if the iterable does produce values, the
+sum will be the actual sum plus this argument. We can think of sum as defined
+by
+
+def sum(values,init_sum=0):
+    result = init_sum
+    for v in values:
+        result += v
+    return result
+
+The simple versions of the max and min functions also each take one iterable
+argument.
+
+The min/max functions require that the iterable produce values that can be
+compared with each other; so calling min([2,1,3]) returns 1; and calling
+min(['b','a','c') returns 'a';  but calling min([2,'a',3]) raises a TypeError
+exception because Python cannot compare an integer to a string. These functions
+return the minimum/maximum value produced by their iterable argument; if the
+iterable produces no values (e.g., min([]), min and max each raise a ValueError
+exception, because there is no minimum/maximum value that it can compute/return.
+
+There are two more interesting properties to learn about the min and max
+functions.
+
+First, we can also call min/max specifying any number of arguments: so calling
+min([1,2,3,4]) -using a tuple which it iterable- produces the same result as
+calling min(1,2,3,4) -using 4 arguments.
+
+We can also specify a second argument in min/max: a key function like the key
+function used in sort/sorted. The min/max functions return the smallest/largest
+value in its argument(s), but if the key function is supplied, it compares two
+values by calling the key function on each.
+
+For example, min('abcd','xyz') returns 'abcd', because 'abcd' < 'xyz'. But if
+we instead wrote min('abcd','xyz',key = lambda x : len(x)) it would return 'xyz'
+because len('xyz') < len('abcd'): that is, it compares the key function applied
+to all values in the iterable to determine which value to return.
+
+Note that min('abcd','wxyz',key = lambda x : len(x)) will return 'abcd' because
+it is the first value that has the smallest result when the key function is
+called: the key function returns 4 for both values. We can think of the min
+function operating on an iterable to be written as follows (although we will
+learn Python features later on that simplifies the actual definition of this
+function)
+
+def min(iterable,key = lambda x : x): 
+    empty   = True
+
+    for v in iterable:
+        if empty:
+            minimum  = v
+            empty    = False            # At least one value in iterable
+        elif key(v) < key(minimum):
+            minimum = v
+
+    if empty
+        raise ValueError('min() arg is an empty sequence')
+    else:
+        return minimum
+
+Calling min(('abc','def','gh','ij'),key = lambda x : len(x)) returns 'gh'. Note
+that the default value for the key function is a lambda that returns the value
+it is passed. 
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="zip"><h1>The zip and enumerate functions</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Zip:
+
+There is a very interesting function called zip that takes an arbitrary number
+of iterable arguments and zips/interleaves them together (like a zipper does
+for the teeth on each side). Let's start by looking at just the two argument
+version of zip.
+
+What zip actually produces is a generator -the ability to get the results of
+zipping- not the result itself. See the discussion above about how tuple
+comprehensions produce generators.
+
+So to "get the result itself" we should use a for loop or constructor (as shown
+in most of the examples below) to iterate over the generator result of calling
+zip. The following code
+
+z = zip( 'abc', (1, 2, 3) )           # String and tuple are iterator arguments
+print('z:', z, 'list of z:', list(z))
+
+prints
+
+z: <zip object at 0x02A4D990> list of z: [('a', 1), ('b', 2), ('c', 3)]
+
+Here, z refers to a zip generator object; the result of using z in the list
+constructor is [('a', 1), ('b', 2), ('c', 3)] which zips/interleaves the values
+from the first iterable and the values from the second:
+[(first from first,first from second),(second from first,second from second),  
+ (third from first,third from second)]
+
+What happens when the iterables are of different lengths? Try it.
+
+z = zip( 'abc', (1, 2) )  # String and tuple for iterables
+print(list(z))		  # prints [('a', 1), ('b', 2)]
+
+So when one iterable runs out of values to produce, the process stops. Here is
+a more complex example with three iterable parameters of all different sizes.
+Can you predict the result it prints: do so, and only then run the code.
+
+z = zip( 'abcde', (1, 2, 3), ['1st', '2nd', '3rd', '4th'] )
+print(list(z))
+
+Of course, this generalizes for any number of arguments, interleaving them all
+(from first to last) until any iterable runs out. So the number of values in
+the result is the minimum of the number of values of the argument iterables.
+
+Note one very useful way to use zip: suppose we want to iterate over values in
+two iterables simultaneously, i1 and i2, operating on the first pair of values
+in each, the second pair of values in each, etc. We can use zip to do this by
+writing:
+
+for v1,v2 in zip(i1,i2):
+    process v1 and v2: the next pair of values in each
+
+So
+
+for v1,v2 in zip ( ('a','b','c'), (1,2,3) ):
+    print(v1,v2j)
+
+prints
+
+a 1
+b 2
+c 3
+
+We can write a function that computes the equivalent of the < (less than)
+operator for strings in Python (see the discussion above) easily by using zip.
+
+def less_than(s1 : str, s2 : str)-> bool:
+    for c1,c2 in zip(s1,s2):   # examine 1st, 2nd, ... characters of each string
+        if c1 != c2:           # if current characters are different
+            return c1 < c2     #   compute result by comparing characters
+
+    # if all character from the shorter are the same (as in 'a' and 'ab')
+    # return a result based on the length of the strings
+    return len(s1)< len(s2)
+
+
+Enumerate:
+
+Finally, this is a convenient time to toss in another important function:
+enumerate. It also also produces a generator as a result, but has just one
+iterable argument, and an optional 2nd argument that is a starting number. It
+produces tuples whose first values are numbers (starting at the value of the
+second parameter; omit a 2nd parameter and unsurprisingly, the starting number
+is 0) and whose second values are the values in the iterable. So, if we write
+
+e = enumerate(['a','b','c','d'], 5)
+print(list(e))
+
+it prints [(5, 'a'), (6, 'b'), (7, 'c'), (8, 'd')]
+
+Given l = ['a','b','c','d','e'] we could write the following code
+
+for i in range(len(l)):
+    print(i+1,l[i])
+
+(which prints 1 a, 2 b, 3 c, 4 d, and 5 e on separate lines) more simply by
+using enumerate:
+
+for i,x in enumerate(l,1):
+     print(i,x)
+
+Another nice example illustrating enumerate is reading a file a line at a time,
+and processing the line number and the line contents.
+
+line_number = 1
+for line in open("file-name"):
+    .... process line_number and line
+    line_number += 1
+
+We can write just
+
+for line_number, line in enumerate(open("file-name"),1):
+    .... process line_number and line
+
+You might ask now, why do these things (tuple comprehension, zip, enumerate)
+produce generators and not just tuples or lists? That is an excellent question.
+It goes right along with the excellent question why does sorted(...) produce a
+list and not an iterable? We will discuss these issues later in the quarter.
+It mostly has to do with space efficiency when iterating over many values.
+		</pre> 
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="kargs"><h1>**kargs for dictionary of not-matched named arguments in function calls</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Recall the use of *args in a function parameter list. We can also write the
+symbol **kargs (we can write ** and any word, but kargs or kwargs are the
+standard ones). If we use it to specify this kind of parameter, it must occur
+as the last parameter. kargs stands for keyword arguments. Basically, if Python
+has any  keywords arguments that do not match keyword parameters (see the large
+discussion of argument/paramteter binding above, which includes *args but
+doesn't include **kargs) they are all put in a dictionary that is stored in the
+last parameter named kargs.
+
+So, imagine we define the following function
+
+def f(a,b,**kargs):
+  print(a,b,kargs)
+
+and call it by
+
+f(c=3,a=1,b=2,d=4)
+
+it prints: 1 2 {'c': 3, 'd': 4}
+
+Using the rules specified before, Python would report a TypeError exception
+(by rule M5(d)), because there are no parameter named a or b. 
+
+By the new rules, Python finds two named arguments (c=3 and d=4) whose names
+did not appear as paramter names in the function header of f (which specifies
+only a and b, and of course the special **kargs), so while Python directly
+binds a to 1 and b to 2 (the parameter names specified in the function header,
+matched to similarly named arguments) it creates a dictionary with all the
+other named arguments: {'c': 3, 'd': 4} and bound kargs to that dict.
+
+The same result would be printed for the call
+
+f(1,2,d=4,c=3)
+
+We will use **kargs to understand a special use of of dict constructors (below).
+We will also use **kargs (and learn something new in the process) when
+discussing how to (1) call methods in decorators and (2) call overridden
+methods using inheritance much later in the quarter.
+
+Note that to write a perfectly general function that is called with any kinds
+of arguments we can write
+
+def g(*args,**kargs):
+  print(args,kargs)
+
+Now, any legal call of g (one with any legal combination of positional and
+named arguments) will populate the *args and **kargs structures appropriately.
+
+Calling
+
+g(1,2,c=3,d=4)     prints (1, 2) {'c': 3, 'd': 4}
+g(a=1,b=2,c=3,d=4) prints () {'c': 3, 'b': 2, 'a': 1, 'd': 4}
+
+
+Generally, when a parameter name is prefixed by * and ** in a function header,
+we omit the prefix when we use the parameter name. But there are times where
+use use the * and ** prefixes.
+
+def h(a,b,c,d):
+    print(a,b,c,d)
+
+def i(*args,**kargs):
+  h(*args,**kargs)
+
+The arguments *args and **kargs in the call of h expand the args tuple to
+be positional arguments and the **kargs dictionary to be named arguments
+
+Calling
+
+i(1,2,c=3,d=4)     prints 1 2 3 4: it calls h(1,2,c=3,d=4)
+i(a=1,b=2,c=3,d=4) prints 1 2 3 4: it calls h(c=3,b=2,a=1,d=4)
+
+1) Writing * and ** when specifying parameters makes those parameters names
+   bind to a tuple/dict respectively.
+
+2) Using the parameter names by themselves in the function is equivalent to 
+    using the tuple/dict respectively.
+
+3) Using * and ** followed by the parameter name as arguments to function
+   calls expands all the values in the tuple/dict respectively to represent
+   all the arguments.
+
+Experiment with *args/**kargs as parameters of functions and args/kargs and
+*args/**kargs as arguments to other function calls.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="lists"><h1>Lists, Tuples, Sets, Dictionaries (frozenset and defaultdict)</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+You need to have pretty good grasp of these important data types, meaning how to
+construct them and the common methods/operations we can call on them. Really
+you should get familiar with reading the online documentation for all these
+data types (see the Python Library Reference link on the homepage for the
+course).
+
+4. 6: Sequence Types includes Lists (mutable) and Tuples (immutable)
+4. 9: Set Types includes set (mutable) and frozenset (immutable)
+4.10: Mapping Types includes dict and defaultdict (both mutable)
+
+Here is a very short/condensed summary of these operations. Experiment with
+them in Eclipse.
+
+-----
+
+4.6: Sequence Types includes Lists (mutable) and Tuples (immutable)
+These sequence operations (operators and functions) are defined in 4.6.1
+   x in s, x not in s, s + t, s * n, s[i], s[i:j], s[i:j:k], len(s), min(s), 
+   max(s), s.index(x[, i[, j]]), s.count(x)
+
+Mutable sequence allow the following operations, defined in 4.6.3
+  s[i] = x , s[i:j] = t, del s[i], s[i:j:k] = t, del s[i:j:k], s.append(x)
+  s.clear(), s.copy(), s.extend(t), s.insert(i, x), s.pop(), s.pop(i),
+  s.remove(x), s.reverse()
+
+  It also discusses list/tuple constructors and sort for list.
+
+  note that the append method is especially important for building up sequences
+  like lists. Also to return and remove a value from a sequence, we call
+    x = s.pop(i)
+  is equivalent to 
+    x = s[i]
+    del s[i]
+  and calling s.pop() uses the value 0 (the first index in the sequence)
+
+-----
+
+4. 9: Set Types includes set (mutable) and frozenset (immutable)
+These set (operators and functions) are defined in 4.6.1.9
+  len(s), x in s, x not in s, isdisjoint(other), issubset(other), set <= other, 
+  set < other, issuperset(other), set >= other, set > other, union(other, ...),
+  intersection(other, ...), difference(other, ...), symmetric_difference(other),
+  copy; also the operators | (for union), & (for intersection), - (for
+  difference), and ^ (for symmetic difference)
+
+Sets, which are mutable, allow the following operations
+  update(other, ...), intersection_update(other, ...),
+  difference_update(other, ...), symmetric_difference_update(other), add(elem),
+  remove(elem), discard(elem), pop(), clear(); also the operators |= (union
+  update), &= (intersection update), -= (difference update), ^= (symmetric
+  difference update)
+
+-----
+
+4.10: Mapping Types includes dict and defaultdict (both mutable)
+These dict (operators and functions) are defined in 4.10
+  d[key] = value , del d[key], key in d, key not in d, iter(d), clear(), copy(),
+  fromkeys(seq[, value]), get(key[, default]), items(), keys(),
+  pop(key[, default]), popitem(), setdefault(key[, default]), update([other]),
+  values() 
+
+Important Notes on dicts:
+  d[k] returns the value associated with a key (raises exception if k not in d)
+
+  d.get(k,default) returns d[k] if k in d; returns default if k not in d
+    it is equivalent to the conditional expression (d[k] if k in d else default)
+
+  d.setdefault(k,default) returns d[k] if k in d; if k not in d it
+    (a) sets d[k] = default
+    (b) returns d[k]
+  writing d.setdefault(k,default) is equivalent to (but more efficient than)
+  writing
+      if k in d:
+          return d[k]
+      else
+          d[k] = default
+          return d[k]
+
+There is a type called defaultdict (see 8.3.4) whose constructor generally
+takes an argument that is a reference to any object that can be called with no
+arguments. Very frequently we use name of a class that when called will
+construct a new value: if the argument is int, it will call int() producing the
+value 0; if the argument is list, it will call list() producing an empty list;
+if the argument is set, it will call set() producing an empty set; etc.
+
+Whenever a key is accessed for the first time (i.e., that key is accessed but
+not already associated with a value in the dictionary) in a defaultdictionary,
+it will associate that key with the value created by calling the reference to
+the object supplied to the constructor.
+
+Here is an example of defaultdict in action. Often it simplifies our use of
+dictionaries.
+
+
+from collections import defaultdict # in same module as namedtuple
+letters = ['a', 'x', 'b', 'x', 'f', 'a', 'x']
+freq_dict = defaultdict(int)   # int not int(); but int() returns 0 when called
+for l in letters:
+    freq_dict[l] += 1	       # in dict, exception raised if l not in d, but
+print(freq_dict)                # defaultdict calls int() putting 0 there first
+
+We could use a standard dict, but we would have to rewrite the code as follows
+(which is a bit longer and less efficient too); defaultdict does the same thing,
+but automatically.
+
+letters = ['a', 'x', 'b', 'x', 'f', 'a', 'x']
+freq_dict = dict()	       # note dict only
+for l in letters:
+    if l not in freq_dict:     # must check l in freq_dict before freq_dict[l]
+        freq_dict[l] = int()   # int() constructor returns 0; could write 0 here
+    freq_dict[l] += 1	       # l is guaranteed in freq_dict, either because
+print(freq_dict)	   	       #  it was there originally, or put there
+
+Another way to do the same thing (but also a bit longer and less efficient)
+uses the setdefault method (listed above)
+
+letters = ['a', 'x', 'b', 'x', 'f', 'a', 'x']
+freq_dict = dict()	       # note dict only
+for l in letters:
+    freq_dict[l] = freq_dict.setdefault(l,0) + 1
+print(freq_dict)	   	       
+
+Here we evaluate the right side of the = first; if l is already in the dict,
+its associated value is returned; if not, l is put in the map with an associated
+value of 0, then this assocated value is returned (and incremented, and stored
+back into freq_dict[l] replacing the 0 just put there).
+
+You should achieve a good understanding of why each of these three scripts work
+and why they alll produce equivalent results.
+
+Often we use defaultdicts with list instead of int: just as int() produces the
+object 0 associated with a new key, list() creates an empty list associated
+with a new key (and later we add things to that list); likewise we can use
+defaultdicts with set to get an empty set with a new key.
+
+So, if we wrote x = defaultdict(list) and then wrote x['bob'].append(1) then
+x['bob'] is associated with [1] (the empty list with 1 appended). If we then
+wrote x['bob'].append(2), then x['bob'] is associated with [1, 2].
+
+Just as with comprehensions, what is important is that we know how things like
+defaultdicts and dicts (with the setdefault method) work, so that we can
+correctly write code in any of these ways. We can decide afterwords which way
+we want the code to appear. As we program more, our preferences might change.
+I have found defaultdicts are mostly what I to use to simplify my code, byut
+every so often I must use a regular dict.
+
+Later in the quarter we will use inheritance to show how to write the
+defaultdict class simply, by extending the dict class.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="ordered"><h1>Printing Dictionaries in Order</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this section we will combine our knowledge about the sorted function,
+comprehensions, and iteratring over dictionaries to examine how we can print
+(or generally process) dictionaries in arbitrary orders.
+
+Generally, all of our code will be of the form
+
+  for index(es) in sorted( iterable, key = lambda x : .... ):
+     print( index(es) )
+
+In these examples, we will use the simple dictionary
+
+   d = {'x': 3, 'b': 1, 'a': 2, 'f': 1}
+
+In each example, we will discuss the relationships among index(es), iterable,
+and the lambda x : .... in the function bound to the key parameter.
+
+1) In the first example, we will print the dictionary keys in increasing
+alphabetical order, and their associated values, by iterating over d.items().
+
+for k,v in sorted( d.items(), key = lambda item : item[0] ):
+   print(k,'->',v)
+
+which prints as
+
+a -> 2
+b -> 1
+f -> 1
+x -> 3
+
+Here, iterable is d.items(), which produces 2-tuples storing each key and its
+associated value, for every item in the dictionary; the item in lambda item is
+also a key/value 2-tuple (specifying here to sort by item[0], the key part in
+the 2-tuple); finally, the list returned by sorted also contains key/value
+2-tuples, which are unpacked into k and v and printed.
+
+We can solve this same problem by iterating over just the keys in d as well.
+
+for k in sorted( d.keys(), key = lambda k : k ):
+   print(k,'->',d[k])
+
+Here, iterable is d.keys() which produces strings storing each key in the
+dictionary; the k in lambda k is also a key/str value (specifying here to
+sort by k, the key itself); finally, the list returned by sorted also contains
+key/str value, which are stored into k and printed along with d[k].
+
+This code is equivalent to the following, since d.keys() is the same a d, and
+lambda x : x is the default for the key parameter.
+
+for k in sorted( d ):
+   print(k,'->',d[k])
+
+2) In the second example, we will print the dictionary keys and their associated
+values, in increasing order of the values, by iterating over d.items().
+
+for k,v in sorted( d.items(), key = lambda item : item[1] ):
+   print(k,'->',v)
+
+which prints as
+
+b -> 1
+f -> 1
+a -> 2
+x -> 3
+
+Here, iterable is d.items(), which produces 2-tuples storing each key and its
+associated value, for every item in the dictionary; the item in lambda item is
+also a key/value 2-tuple (specifying here to sort by item[1], the value part in
+the 2-tuple); finally, the list returned by sorted also contains key/value
+2-tuples, which are unpacked into k and v and printed.
+
+We can solve this same problem by iterating over just the keys in d as well.
+
+for k in sorted( d.keys(), key = lambda k : d[k] ):
+   print(k,'->',d[k])
+
+Here, iterable is d.keys() which produces strings storing each key in the
+dictionary; the k in lambda k is also a key/str value (specifying here to sort
+by d[k], the value associated with the key); finally, the list returned by
+sorted also contains key/str values, which are stored into k and printed along
+with d[k].
+
+This code is equivalent to the following, since d.keys() is the same a d; the
+lambda is still needed here.
+
+for k in sorted( d, key = lambda k : d[k] ):
+   print(k,'->',d[k])
+
+3) In the third example, we will compute a list that contains all the keys in a
+dictionary, sorted by their associated values (in decreasing order of the
+values), by iterating over d.keys() (really just d, to simplify the code)
+
+We compute
+
+ks = sorted(d, key = lambda k : d[k], reverse = True)
+
+ks stores ['x', 'a', 'b', 'f'].
+
+We could also compute this list less elegantly using d.items().; I say less
+elegantly, because we need a comprehension to "throw away" the value part of
+each item returned by sorted.
+
+ks = [k for k,v in sorted(d.items(), key=lambda item : item[1], reverse=True)]
+
+
+4) Finally, in the fourth example, we will compute a list that contains all the
+2-tuples in the items of d, but the tuples are reversed (values before keys) and
+sorted in increasing alphabetical order by keys.
+
+We compute this list of 2-tuple in the following two ways
+
+vks = [ (v,k) for k,v in sorted( d.items(), key = lambda item : item[0]) ]
+vks = sorted( ((v,k) for k,v in d.items()), key = lambda item : item[1])
+
+vks stores [(2, 'a'), (1, 'b'), (1, 'f'), (3, 'x')]
+
+The first computation creates a sorted version of d by keys, and then uses a
+comprehension to reverse the keys/values in the tuples; the second computation
+uses a comprehension to create a list of reversed keys/values, and then uses
+sorted to sort these reversed 2-tuples by the keys in the second part of each
+tuple.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="exceptions"><h1>Exceptions: example from prompt_for_int</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We do two things with exceptions in Python: we raise them (with the raise
+statement) and we handle them (with the try/except statement). Exceptions were
+not in early programming languages, but were introduced big time in the Ada
+language in the early 1980s, and have been parts of most new languages since
+then.
+
+A function raises an exception if it cannot do the job it is being asked to
+do. Rather than fail silently, possibly producing a bogus answer that gets used
+to compute a bogus result, it is better that the computation announces a problem
+occurred and if no way is know to recover from it (see handling exceptions
+below) the computation halts with an error message to the user.
+
+For example, if your program has a list l and you write l[5] but l has nothing
+stored at index 5 (its length is smaller), Python raises the IndexError
+exception. If you haven't planned for this possibility, and told Python how to
+handle the exception and continue the calculation, then the program just
+terminates and Python prints: 
+
+IndexError: list index out of range
+
+Why doesn't it print the index value 5 and the lenth of list l?. I don't know.
+That certainly seems like important and useful information, and Python knows
+those two values. I try to make my exception messages include any information
+useful to the programmer.
+
+There are lots of ways to handle exceptions. Here is a drastically simplified
+example from my prompt class (this isn't the real code, but a simplification
+for looking at a good use of exception handling). But it does a good job of
+introducing the try/except control form which tries to execute a block of code
+and handles any exceptions it raises.
+
+If we write a try/except and specify the name of no exception, it will handle
+any exception. The name Exception is the name of the most generic exception.
+
+We can write a try/except statement with many excepts, each one specifying a 
+specific exception to handle, and what to do when that exception is raised. In
+fact, int('x') raises the ValueError exception, so I use ValueError in the
+except clause below to be specific, and not accidentally handle any other kind
+of exception.
+
+def prompt_for_int(prompt_text):
+    while True:
+        try:
+            response = input(prompt_text+': ')    # response is used in except
+            answer = int(response)
+            return answer
+        except ValueError:
+            print('  You bozo, you entered "',response,'"',sep='')
+	    print('  That is not a legal int')
+
+print(prompt_for_int('Enter a positive number'))
+
+So, this is an "infinite" while loop, but there is a return statement at the
+bottom of the try-block; if it gets executed, it returns from the function,
+thus terminating the loop. The loop body is a try/except; the body of the
+try/except
+
+1) prompts the user to enter a string on the console (this cannot fail)
+
+2) calls int(response) on the user's input (which can raise the ValueError
+   exception, if the user types characters that cannot be interpreted as an
+   integer)
+
+3) if that exception is not raised, the return statement returns an int object
+   representing the integer the user typed as a string
+
+But if the exception is raised, it is handled by the except clause, which
+prints some information. Now the try/except is finished, but it is in an
+infinite loop, so it goes around the loop again, reprompting the user (over and
+over until the user enters a legal int).
+
+Actually, the body of try could be simplified (with the same behavior) to just
+
+  response = input(prompt_text+': ')    # response is used in except
+  return int(answer)
+
+If an exception is raised while the return statement is evaluating the int
+function, it still gets handled in except. We CANNOT write it in one line
+because the name response is used in the except clause (in the first print).
+If this WASN'T the case, we could write just
+
+  return int(input(prompt_text+': '))    # if response not used in except
+
+For example, we might just say 'Illegal input' in the except, but in the example
+above, it actually display the string (not a legal int) that the user typed.
+
+Finally, in Java we throw and catch exceptions (obvious opposites, instead of
+raise and handle) so I might sometimes use the wrong term. That is because I 
+think more generally about programming than "in a language", and translate what
+I'm thinking to the terminology of the language I am using, but sometime I get
+it wrong.
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="namespace"><h1>Name spaces (for objects): __dict__</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Every object has a special variable named __dict__ that stores all its
+namespace bindings in a dictionary. During this quarter we will systematically
+study class names that start and end with two underscores. Writing x.a = 1
+is similar to writing x.__dict__['a'] = 1; both associate a name with a value
+in the object. We will explore the uses of this kind of knowledge in much more
+depth later in the quarter.
+
+Here is a brief illustration of the point above. Note that there is a small
+Python script that illustrates the point. This is often the case.
+
+class C:
+    def __init__(self): pass
+
+o = C()
+o.a = 1
+print(o.a)           # prints 1
+
+o.__dict__['a'] = 2
+print(o.a)           # prints 2
+
+o.__dict__['b'] = 3
+print(o.a,o.b)       # prints 2 3
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="trivial"><h1>Trivial Things</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+An empty dict is created by {} and empty set by set() (we can't use {} for an
+empty set because Python would think it is a dict). Any non-empty dicts can
+be distinguished from a non-empy set because a non-empty dict will always have
+the : character inside {} separating keys from values.
+
+A one value tuple must be written like (1,) with that "funny" comma (we can't
+write just (1) because that is just the value 1, not a tuple storing just 1).
+		</pre>
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	<a name="questions"><h1>Questions</h1>
+		<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1. Describe, in term of binding, what happens if the first statement in a
+module is x = 0, in terms of the module object and its namespace.
+
+2. Assume that we have executed the statement x = 1. Describe, in terms of
+binding, what is the semantics of the statement x += 1.
+
+3. What is printed in print(f(0)) if we define f as follows?
+
+  def f(x):
+      pass
+
+4. Using the kind of pictures dicussed inthe Binding section above, illustrate
+the meaning of a module named m that contains the following statements:
+
+  x = 1
+  y = 2
+  z = y
+
+And a module named script that contains the following statements:
+
+  import m
+  a = m.x
+  m.y = 10
+  from m import y
+  from m import z as b
+  z = y
+  del m.z
+  c = 10
+
+The result will be two large rounded-rectangles (objects for modules m and 
+script) which contain labeled boxes that refer to other rounded-rectangles
+(objects for int values), some of which are shared (referred to by multiple
+names)
+
+5. Predict what the following script will produce and explain why.
+
+print(print(5))
+print=1
+print(print)
+
+6a. Write a simple function named count that returns the number of times a value
+is in a list; write the a simple function named indexes that returns a list of
+indexes in a list that a value returns. Use the appropriate kind of for loop.
+For example, count(5, [5,3,4,5,1,2,5]) returns 3; indexes(5, [5,3,4,5,1,2,5])
+returns [0,3,6].
+
+7. Suppose that we define the functions double, triple, and magnitude (as done
+above). Write the function call, such that call('double',5) returns the result
+double(5); call('triple',5) returns the result triple(5); call('magnitude',5)
+returns the result magnitude(5). Hint: use eval.
+
+8. Write a function named between that is defined with two parameters. It
+returns a reference to a function that has one parameter, which returns whether
+or not its one parameter is between (inclusive) the two arguments supplied when
+between is called. For example
+
+college_age = between(18,22)
+print( college_age(20) )
+
+print True because 18 <= 20 <= 22.
+
+9. Assume s = 'Fortunate'. Explain how Python evalues s.replace('t','c'). Sure,
+the result it produces is 'Forcunace', but exactly how does Python know which
+function to call and how to call that function with these arguments. Hint: Use
+the Fundamenal Equation of Object-Oriented Programming.
+
+9.5 This is tricky: it requires a good understanding of exec, eval, and what
+characters really appear in strings when you type them on the console.
+(1) prompt the user to enter a string that defines a function (using \n where
+new lines would be in the function); (2) use exec to define the function;
+(3) prompt the user to enter a call to the function and print what it evaluates
+to. The interaction might look like:
+
+Enter function definition as string: def f(n):\n    returns 2*n
+Enter function call as string      : f(3)
+6
+
+Hint: when you enter \n in a string, what characters are entered? Use the
+replace function to "fix" them to exec will work.
+
+10. Assume that you have a list of tuples, where each tuple is a name and
+birthday: e.g., ('alex', (9, 4, 1988)) and ('mark', (11, 29, 1990)). The
+birthday 3-tuple, consists of a month, followed by day, followed by year. Write
+a for-loop using sorted and a lambda to print out the tuples in the list in
+order of their bithdays (just months and days) so the 'alex' tuple prints
+before the 'mark' tuple because September 4th comes before November 29th; all
+people who have the same birthday should be printed in alphabetical order.
+Hint write a lambda that uses a key that is a person's month value, followed by
+a day value, followed by a name value.
+
+11. What does the following script print?
+
+print('a','b','c',sep=��x��)
+print('d','e','f',sep='')
+print('g','j','i',sep=':',end=��:��)
+print('j','k','l',sep='--',end='?')
+print('m',end='\n\n')
+print('n')
+
+12. Assume s is a string. What is the value of s[-1:0:-1]? Assume l is a list.
+Write the simplest loop that prints all values in a list except the first and
+last (if the list has2 or fewer values, it should print nothing).
+
+13. Write a single Python statement using a conditional expression that is
+equivalent to the following two statementso
+
+t= 0
+if x < 0:
+    t = -1
+
+14. What can we say about
+  len of set(d.keys())   compared to len of d.keys?
+  len of set(d.values()) compared to len of d.values()?
+  len of set(d.items())  compared to len of d.items()?
+
+15. Assume we import the copy function from the copy module. What is the
+difference between the result produced by list((1,2,3)) and copy((1,2,3))?
+
+15.5 Using the kind of pictures dicussed inthe Binding section above, illustrate
+the meaning of the following and determine what is printed.
+
+  x = [ [0], [1]]
+  y = list(x)
+  x[0][0] = 'a'
+  print(x,y)
+
+16a. Assume we have a list of students (ls) and a list of their gpas (lg).
+Create a dictionary whose first key is the first student in ls and whose
+associated value is the first gpa in the lg; whose second key is the second
+student in ls and whose associated value is the second gpa in the lg; etc.
+So if ls = ['bob','carol','ted','alice'] and lg = [3.0, 3.2, 2,8, 3.6] the
+resulting dict might print as {'carol': 3.2, 'ted': 2, 'alice': 8, 'bob': 3.0}.
+Hint: use the dict constructor and the zip function.
+
+16b. Assume that we have a list of runners in the order they finished the race.
+For example ['bob','carol','ted','alice']. Create a dictionary whose keys are
+the students and whose values are the place in which they finished. For this
+example the resulting dict might print as 
+{'carol': 2, 'ted': 3, 'alice': 4, 'bob': 1}. Hint: use a comprehension and
+enumerate.
+
+16c. Assume that we have a list of values l and a function f, and we want to
+define a function that computes the value x in l whose f(x) is the smallest.
+For example, if l = [-2, -1, 0, 1, 2] and def f(x) : return abs(x+1), then
+calling min_v(l,f) would return -1. Hint: try to write the min_v function in one
+line: a returns statement calling min, on a special comprehension, and indexing.
+
+17. The following script uses many topics that are covered in the lecture.
+
+Write a script that reads a multiline file of words separated by spaces
+(no punctuation) and builds a dictionary whose keys are the words and whose
+values are lists of the line numbers that the words are on (with no duplicate
+line numbers in each list). Print all the words (in sorted order, one per line)
+with the list of their line numbers afterwards. For example, the 3 line file
+
+to be or
+not to be
+that is the question
+
+would print as
+
+be [1, 2]
+is [3]
+not [2]
+or [1]
+question [3]
+that [3]
+the [3]
+to [1, 2]
+
+My solution was 8 lines long (including one import). It used a defaultdict,
+three loops, three function calls (open, enumerate, and sorted), and four
+method calls (rstrip, split, append).</pre> 
+	<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

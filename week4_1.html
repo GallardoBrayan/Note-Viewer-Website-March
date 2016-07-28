@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 4 Iterators -->
+<head>
+	<meta charset="utf-8" />
+	<title>Week Four: One</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Four: Iterator Protocol</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#semantics">Semantics of the For Loop</a></h4></li>
+				<li><h4><a href="#protocol">Iterator Protocol</a></h4></li>
+				<li><h4><a href="#sharing">Sharing Iterators and Mutating Objects</a></h4></li>
+				<li><h4><a href="#problems1">Problems Part One</a></h4></li>
+				<li><h4><a href="#prange">prange Class</a></h4></li>
+				<li><h4><a href="#problems2">Problems Part Two</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Iterators are one of the most useful (and used) features in Python. Besides
+being used explicitly in loops (including for loops in comprehensions),
+constructors often include a parameter that is iterable, whose values are used
+to initialize the state of the objects they are building: e.g., we write
+set(alist) to create a set with all the values from alist (obviously removing
+duplicates in the process). Also, calls to functions/classes like
+sorted/reversed are used in iterators: e.g., for i in sorted(aset): ... takes
+an iterable as an argument and returns a list.
+
+In the next three lectures we will explore iterators in more detail. The first
+focuses on the underlying mechanics of iterators; the second focuses on examples
+of iterators written in/for classes; the third introduces a new kind of
+function, called a  generator (in computer science it is also known as a
+coroutine) that returns a value, but when called again remembers where it "left
+off" to return another value: this feature makes writing all sorts of iterators
+as functions (not classes) much easier.
+
+Throughout these lectures we will also discuss iterator efficiency issues (both
+time and space): because iterators are used so often, their running times can
+dominate a program's running time; they often use little space because they
+produce their values one at a time, rather than storing them all in a data
+structure which is iterated over (although with constructors and comprehensions
+we can easily create such a data structure from a iterator if we need to).
+
+In this lecture we will learn about the __iter__ and __next__ methods (which a
+class must implement to be iterated over), how a for loop for iteration is
+equivalent to a while loop (which needs a try/except block to catch the
+StopIteration exception that is raised by "exhausted" iterators), and how
+sharing and mutation affects iterators: sometimes they can cause problems, and
+we will learn how to mitigate such problems, although often at the cost of
+using more space.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="semantics"><h1>Semantics of the For Loop</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+For a class to be iterable (i.e., used in a for loop) it must implement the
+iterator protocol, which means the __iter__ and __next__ methods. A protocol is
+just a group of methods that work together to accomplish something useful. We
+have already seen the __enter__ and __exit__ methods that work together to
+implement the context manager protocol. Included in the iterator protocol is
+the StopIteration class, which is an exception raised by __next__ to signal
+there are no more values to iterate over (terminating the for loop). The
+builtins module defines the StopIteration class.
+
+Before writing some classes that act as iterators, we will explore the semantics
+of Python's for loop, by showing how to build it from an equivalent -but more
+primitive- while loop. We can think of Python translating the former into the
+latter; the while loop is more primitive than the for loop, so we can see more
+details of how for loop works by analyzing the while loop. In this process we
+will better understand for loops, and also see how to write loops that process
+iterators in a more intricate way than the straightforward (but simple and very
+useful) way that for loops proccess them.
+
+------------
+else Interlude
+
+Before discussing this translation, we should first understand how the else
+keyword is used in for/while loops. Since I'm not sure how familiar you are
+with these statements, I'll start at the beginning (but move quickly).
+
+1) The break statement in Python (just the keyword break as a statement) can be
+put in any for/while loop; semantically, when executed it terminates the loop.
+I often write loops like
+
+  while True:
+     statements
+     if test:
+          break
+     statements
+
+In fact, when the if test: break statement appears first in the the loop, as
+shown below,
+
+  while True:
+     if test:
+         break
+     statements
+
+we can write an equivalent while loop that incorporates the test directly
+
+  while not (test):	# not is high precedence, so I put () around test
+      statements
+
+Some programmers/educators banish using breaks in loops, but I think that edict
+is too extreme. I could give a long lecture on how programmers (and educators
+who teach programming ) feel about break statements. Instead I'll just say the
+following. 
+
+  a) When I teach indefinite looping (in ICS-31), I teach the while True/break
+     form first. It decouples deciding to loop from how the loop terminates.
+     When students need to write a loop, they write an infinite loop first, and
+     later decide where to test the "termination" condition, and what this
+     condition should be; this test can be stated in the "positive" form:
+     terminate when the test is True.
+
+  b) If that test is the first statement in the loop (as shown above; sometimes
+     we need to re-arrange code to get equivalent code with that test first)
+     then I will SOMETIMES convert it into a while loop whose test is a
+     "continuation" condition; the test must be stated in the "negative" form:
+     terminate when the test is False (equivalent to continue when the test is
+     True).
+
+  c) I think it is much easier to think about termination (stop when some
+     specific state occurs) than about continuation (continue in lots of other
+     states). Think  about terminating when a value reaches 0 versus continuing
+     when the value is any positive number.
+
+  d) Students sometimes go crazy and write too many different conditional 
+     breaks inside loops: there is no limit. Programmers need to work hard to
+     reduce the number of breaks to simplify their code, but sometimes the
+     simplest to understand code has one or a few breaks. In fact, we can also
+     have conditional breaks in for loops, because they can terminate that kind
+     of loop too (since for loops, as we'll see below, are translated into
+     while loops): and sample use might be searching over a range of values
+     with a for loop, but terminating when a special value is reached.
+
+  e) Often difficulties with breaks get resolved if we take the loop code we
+     are writing and put it in a function, replacing muiltiple breaks by
+     multiple returns. Of course some programmers/educators don't like to write
+     functions with multiple returns.
+
+Here is a cannonical example of a while loop that is more easily understood
+when written as a while True loop with a conditional break. This is a "sentinel"
+loop, which sums the values read until a sentinel (-1) is read. It is a "middle
+exit" loop, because termination is computed in the middle of the body of the
+loop.
+
+sum = 0
+while True:
+    value = prompt.for_int('Enter test score (-1 to terminate)')
+    if value == -1:
+        break
+    sum += value
+print(Sum =',sum)  # we know here the loop exited, so value == -1 is True
+
+To use a while test loop (and no conditional break), we would need to write
+
+sum = 0
+value = prompt.for_int('Enter test score (-1 to terminate)')
+while value != -1:
+    sum += value
+    value = prompt.for_int('Enter test score (-1 to terminate)')
+print(Sum =',sum)  # we know here the loop exited, so value != -1 is False
+
+What I object to in the code above is the duplicate prompt; in other code there
+might be more even statements duplicated.
+
+2) The actual syntax of a for/while loops are
+
+for index(es) in iterable:	    	 while boolean-expression:
+    block-body 	 			     block-body
+[else:					 [else:
+    block-else]				     block-else]
+
+Semantically, when each loop terminates (it may terminate "normally" or by
+executing a break inside the first block), if the else keyword is present and
+the loop terminated normally, then Python executes block-else. So else means:
+execute block-else if the loop didn't execute a break to terminate. In the
+case of the for loop, it means the iterator stopped; in the case of the while
+loop it means the boolean-expression finally evaluated to False.
+
+As a simple example that illustrates the use of else, we could write the
+following code (notice the lese is indented at the level of the for, not the if)
+
+for i in range(100):
+    if special_property(i):
+        print(i,'is the first with the special property')
+        break
+else:
+     print('No value had the special property')
+
+I don't find myself writing else in loops much, but that might be because I
+am new to a language that allows such a feature. As I continue to use Python,
+I'll come to a more concrete conclusion about the usefulness of this language
+feature.
+------------
+
+OK, now back to the main event: iterators. Python translates for loops like
+
+  for index(es) in iterable:  # indexes for unpacked assignment
+      block-body
+  [else:
+      block-else]
+
+into the following code.
+
+  _hidden = iter(iterable)		# ultimately calls iterable.__iter__()
+  try:
+      while True:
+          index(es) = next(_hidden)	# ultimatelyl calls _hidden.__next__()
+          block-body
+  except StopIteration:
+      pass				# A place-holder in case [] discarded;
+      [block-else]			#    the except block cannot be empty
+
+Note that like Python's len function, its iter and next functions translate
+into method calls of __iter__ and __next__ on their argument: e.g.,
+
+def iter(i):
+    return i.__iter__()
+
+def next(i):
+    return i.__next__()
+
+Study this equivalence carefully. Note that _hidden is a special name used by
+Python to translate the for loop (it is not really "_hidden"; I'm just trying
+to indicate it is a hidden name); it is initialized by calling iter(iterable)
+but we cannot use this name in our code; it can be used only in the Python
+translation of the for loop. Then Python executes a while True loop INSIDE a
+try/except statement. Each iteration of the loop binds the next value(s) to be
+iterated over to index(es) and then executes block-body. This
+rebinding/block-body execution continues until either 
+
+  (1) next raises the StopIteration exception, which is handled by causing the
+      loop to terminate (the except is OUTSIDE the loop, so handling the
+      exception causes Python to exit the loop, terminating it) and executing
+      block-else (and if there is not block-else, just executing pass)
+
+  (2) block-body executes a break statement, which causes the loop to terminate.
+      Because there was no exception in the body of the try, the try/except
+      terminates without having to handle an exception, and therefore does not
+      execute block-else.
+
+As a concrete example, the simple for loop
+
+for i in range(1,6):       # for the values 1-5
+    print(i)
+    #break  # uncomment to see what break does
+else:
+    print('executing else')
+
+is translated into
+
+_hidden = iter(range(1,6))
+try:
+    while True:
+        i = next(_hidden)
+        print(i)
+        #break  # uncomment to see what break does
+except StopIteration:
+    pass
+    print('executing else')
+
+Try executing both scripts in Eclipse, including uncommenting each break
+statement to observe the effect of executing this statement: it terminates the
+loop and doesn't print 'executing else'
+
+Now that we understand the use of the iter/next functions, we can write more
+interesting loops (while loops) that process iterables. For example, suppose
+that we wanted to write a function that returned a list of the absolute values
+of the differences between each adjacent pair of values in an iterable: e.g.,
+for the 5-list [5, 2, 8, 3, 5] it would return the 4-list [3, 6, 5, 2], where
+3 = abs(5-2), 6 = abs(2-8), 5 = abs(8-3), and 2 = abs(3-5): there will always
+be one fewer values in the returned list because in a list of N values their
+are N-1 adjacent pairs to subtract.
+
+The following simple code works for arguments that can be sliced (like lists)
+
+def abs_dif(alist):
+    return [abs(a-b) for a,b in zip(alist,alist[1:])]
+
+But it is not easy to write this function efficiently using a for loop
+operating on an arbitrary iterable (since arbitrary iterables don't support
+slicing). We could turn the iterable into a list but that would waste space.
+
+def abs_dif(iterable):
+    alist = list(iterable)
+    return [abs(a-b) for a,b in zip(alist,alist[1:])]
+
+We can write abs_dif without ever turning the iterable into a list as follows,
+using the kind of code we explored above.
+
+def abs_dif(iterable):
+    answer = []
+    i  = iter(iterable)
+    v2 = next(i)
+    try:
+        while True:
+            v1, v2 = v2, next(i)       # first time, v1 is 1st value, v2 is 2nd
+            answer.append(abs(v1-v2))
+    except StopIteration:
+        pass
+    return answer
+
+print(abs_dif(range(1,10,2)), abs_dif([5, 2, 8, 3, 5]))
+
+Now, I wouldn't call this function simple/beautiful, but it is pretty easy to
+write and understand. I don't think this function can be written with a for
+loop or comprehension (and not waste space), and I'm unsure if there are any
+other Python features that we could use to write it more simply and efficiently.
+But maybe I just haven't yet seen the right Python idiom.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="protocol"><h1>Classes implementing the iterator protocol: how range really works in Python</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this section we will first write a very simple Countdown class and then a
+more complex prange class (pseudo-range) that acts like the real range class
+from Python's builtins module. Then we will generalize it by overloading some
+simple operators for it (as the real range class does). I'm not sure how range
+is really implemented, but this implementation seems straight-forward.
+
+I would like the following iterator behavior for Countdown objects. The loop
+
+for i in Countdown(10):
+    print(str(i)+', ',end='')
+print ('blastoff')
+
+Should print: 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, blastoff
+
+Here is the class implementing these semantics.
+
+class Countdown:
+    def __init__(self,last):
+        self.last = last	# self.last never changes
+    
+    # __iter__ must return an object on which __next__ can be called; it returns
+    # self, which is an object of the Countdown class, which defines __next__
+    # Later we will see a problem with returning self: when multiple Countdown
+    # objects must be iterated over simultaneously.
+
+    def __iter__(self):
+        self.n = self.last	# self.n changes in __next__
+        return self
+    
+    def __next__(self):
+        if self.n < 0:
+            raise StopIteration
+        else:
+            answer = self.n	# or, self.n -= 1
+            self.n -= 1		#     return self.n+1
+            return answer
+
+In this class, when __iter__ is called it (re)sets self.n (the value __next__ 
+will return first) to self.last (which is set in __init__ and never changes for
+a constructed object). The __iter__ method has a requirement that it must
+return an object that defines a __next__ method. Here it returns self, which is
+an object constructed from Countdown, which defines __next__ (right below
+__iter__).
+
+When __next__ is called it checks whether self.n has been decremented past 0,
+and if is has, throws StopIteration; otherwise it returns the current value
+of self.n but before doing so it decrements self.n by 1 (by saving it,
+decrementing it, then returning the saved value).
+
+Note that if we substituted Countdown(-1) in the loop above, its body would be
+executed 0 times and nothing would be printed before "blastoff".
+
+Also, the following code counts-down twice; in each for loop __iter__ is called,
+which initializes self.n to 10 before calling __next__ multiple times.
+
+cd = Countdown(10)
+for i in  cd:
+    print(str(i)+', ',end='')
+print ('blastoff')
+
+for i in  cd:
+    print(str(i)+', ',end='')
+print ('blastoff')
+
+It should print:
+10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, blastoff
+10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, blastoff
+
+------------------------------
+Quick interlude: I originally said Python defines iter like len:
+
+def iter(i):
+    return i.__iter__()
+
+But the truth is closer to the following (not completely true yet, but correct
+until we discuss inheritance). 
+
+def iter(i):
+    x = i.__iter__()
+    if '__next__' not in x.__dict__ and '__next__' not in type(x).__dict__:
+        raise TypeError('iter() returned non-iterator of type '+type_as_str(x))
+    return x
+
+If neither the object returned by i.__iter__() or the class (type) it was
+constructed from define a __next__  method, then Python raises an exception
+immediately: not waiting for a call of __next__ on the iterator to raise a
+NameError exception.
+------------------------------
+
+prange: initialization (and the meaning of its arguments)
+
+Now let's aim higher and write a prange class that operates like the range
+class. Recall there are 3 possible parameters for range: start, stop, and step.
+Start has a default value of 0 and step has a default value of 1, but we cannot
+write the following parameter structure for the __init__ in prange.
+
+    def  __init__(self,start=0,stop,step=1):
+        ....
+
+because prange(5) would be an illegal call: it would bind start to 5 but have
+no value to bind for stop; but in this case start should be 0 and stop should
+be bound to 5. More generallly prange(5) should bind the first/only argument to
+stop; prange(1,5) should bind the first argument to start and the second to
+stop; and prange(1,5,2) should bind the first argument to start and the second
+to stop, and the third to step. How can we write such arguments for such an
+__init__ method?
+
+Here is the start of the prange class, using *args in __init__ to solve this
+parameter problem. The __init__ methods raises exceptions like range: there must
+be 1-3 int arguments and the value of step cannot be 0; the __repr__ method
+returns a string just like range: it always shows start and stop values, but
+shows the step value only if it is not 1.
+
+To run this code, I need to import the type_as_str function from goody.
+
+class prange:
+    def __init__(self,*args):
+        for a in args:
+            if not type(a) is int:
+                raise TypeError('\''+type_as_str(a)+'\' object cannot be interpreted as an integer')
+
+        self.start, self.step = 0,1   # defaults
+        if len(args) == 1:
+            self.stop = args[0]
+        elif len(args) == 2:
+            self.start, self.stop = args[0], args[1]
+        elif len(args) == 3:
+            self.start, self.stop, self.step = args[0], args[1], args[2]
+            if self.step == 0:
+                raise ValueError('3rd argument must not be 0')
+        else:
+            raise TypeError('range expected at most 3 arguments, got '+str(len(args))) 
+
+    def __repr__(self):
+        return 'prange('+str(self.start)+','+str(self.stop)+('' if self.step==1 else ','+str(self.step))+')'
+
+
+------------------------------
+
+prange: implementing the iteration protocol
+
+Now let's add the main functionality: the iterator protocol methods. They are
+similar to but generalize what we wrote in the Countdown class.
+
+    def __iter__(self):
+        self.n = self.start # first value to return
+        return self         # must return object on which __next__ is callable
+    
+    def __next__(self):
+        if self.step > 0 and self.n >= self.stop or\
+           self.step < 0 and self.n <= self.stop:
+            raise StopIteration
+        answer = self.n
+        self.n += self.step
+        return answer
+
+In this class, when __iter__ is called it (re)sets self.n (the value __next__
+will return) to self.start (which never changes). The __iter__ method has a
+requirement that it must return an object that defines a __next__ method. Here
+it returns self, which is an object constructed from prange, which defines
+__next__ (right below __iter__).
+
+When __next__ is called it checks whether self.n has reached or exceeded
+self.stop (different tests, depending on whether self.step is positive or
+negative: self.step cannot be 0) and throws StopIteration; otherwise it returns
+the current value of self.n but before returning it increments self.n by
+self.step (by saving it, incrementing it, returning the saved value). We could
+avoid the temporary name answer by writing the following code, but it seems
+clumsy to me.
+
+        if self.step > 0 and self.n >= self.stop or\
+           self.step < 0 and self.n <= self.stop:
+               raise StopIteration
+        self.n += self.step
+        return self.n - self.step
+
+We discussed similar code in Countdown.
+
+Try running various loops or comprehensions using prange objects to ensure that
+this code perform like Python's built-in ranges.
+
+------------------------------
+
+prange: overloading operators
+
+Now we move prange closer to Python's real range class by writing methods that
+implement __len__, __getitem__, __contains__, and __reversed__. All of these
+methods use some fancy mathematics to compute their results, so I won't discuss
+here how these method work in detail (but I encourage you to examine them and
+calculate examples). Note that __reversed__ just returns a new prange object,
+but with different start/stop values and a step that is the opposite.
+
+To run this code, I need to import math (to use the math's ceiling function:
+returns an integer >= its float/int argument; ceiling(3.9) is 4).
+
+    def __len__(self):
+        if self.step > 0 and self.start >= self.stop or \
+           self.step < 0 and self.start <= self.stop:
+            return 0
+        else:
+            return math.ceil((self.stop-self.start)/self.step)
+              
+    def __getitem__(self,n):
+        if n < 0 or n >= len(self) :  # yes, could be n >= self.__len__()
+            raise IndexError(str(self)+['+str(n)+'] index out of range')
+        return self.start+n*self.step
+    
+    def __contains__(self,n):
+        if self.step > 0:
+            return self.start<=n< self.stop and (n-self.start)%self.step == 0
+        else:
+            return self.stop< n <= self.start and abs(n-self.start)%abs(self.step) == 0
+        
+    def __reversed__(self):
+        if self.step > 0:
+            return prange(self.start+(len(self)-1)*self.step,self.start-1,-self.step)
+        else:
+            return prange(self.start+(len(self)-1)*self.step,self.start+1,-self.step)
+
+
+------------------------------
+
+prange: an alternative implementation (poor use of space and potentially time)
+
+For my final topic in this section, I am going to rewrite an alterntaive
+implementation of this class: one that uses __init__ to generate and store the
+complete list of values that are in a range. I will then discuss the complexity
+of the code and some  time/space tradeoffs.
+
+In this code, the __init__ method computes and remembers start, stop, and step
+(but only for use in __repr__). The code at the end of __init__ is a while loop
+that explicitly iterates through all the values in the range, storing each value
+in a list. (try to reverse the test and replace True by the continuation
+condition for this loop).
+
+Once we have a list with all these values, all the other methods are much
+simpler to implement (they typically just delegate to the list methods to get
+their job done) and require no complicated mathematics to write correctly. The
+__iter__ method just delegates to construct an iterator for the list (defined
+in the list class); The __next__ method is not defined in this class, because
+the object returned by __iter__ is a list iterator, which has its own __next__ 
+method defined in the list class. len, [], in, and reversed all work by
+delegating to the list.
+
+from goody import type_as_str
+import math
+class prange:
+    def __init__(self,*args):
+        for a in args:
+            if not type(a) is int:
+                raise TypeError('\''+type_as_str(a)+'\' object cannot be interpreted as an integer')
+
+        self.start, self.step = 0,1   # defaults
+        if len(args) == 1:
+            self.stop = args[0]
+        elif len(args) == 2:
+            self.start, self.stop = args[0], args[1]
+        elif len(args) == 3:
+            self.start, self.stop, self.step = args[0], args[1], args[2]
+            if self.step == 0:
+                raise ValueError('3rd argument must not be 0')
+        else:
+            raise TypeError('range expected at most 3 arguments, got '+str(len(args))) 
+        
+        self.listof = []
+        self.n = self.start
+        while True:
+            if self.step > 0 and self.n >= self.stop or \
+               self.step < 0 and self.n <= self.stop:
+                break
+            self.listof.append(self.n)
+            self.n += self.step
+
+    def __repr__(self):
+        return 'prange('+str(self.start)+','+str(self.stop)+','+('' if self.step==1 else str(self.step))+')'
+    
+    def __iter__(self):
+        return iter(self.listof)
+    
+    # no need to define __next__: __iter__ returns iter(list) and list defines __next__
+
+    def __len__(self):
+        return len(self.listof)
+              
+    def __getitem__(self,n):
+        return self.listof[n] 
+       
+    def __contains__(self,n):
+        return n in self.listof
+            
+    def __reversed__(self):
+        return reversed(self.listof)
+
+So what are the tradeoffs between these two implementations? The list
+implementation of the prange class is much simpler (except for the loop in
+__init__ to turn a the range into a real list is 8 extra lines: 23 vs 15); it
+requires no complex mathematics (but while such mathematics is hard for us, it
+is trivial for the computer). This class can require a huge amount of memory
+for storing a large range (e.g., prange(1,1000000000), while the original
+pranges stores only 4 instance variables. Also, __init__ takes a lot of time
+to construct such a list (and we might not even iterate over all the values in
+this prange). Finally, the __contains__ method here takes an amount of time
+proportional to the range size (we will study why soon), to search for the
+value in the list; whereas the original implementation computes this value just
+by some quick arithmetic, independent of the size of the range.
+
+As the quarter goes on, we will study efficiency more formally, but I thought
+this was a good first time to bring up the issue, dealing with alternative
+implementations for the prange class (and its iterator). Again, the main point
+here is that the original prange COMPUTED the values in the range, while the
+list version EXPLICITLY stored all the values in a list.
+
+Generally, new Python students often create extra data structures that are not
+needed. For example, they read an entire open file into a list and then iterate
+over that list, when they could just iterate over the open file: if the file is
+huge, it might not fit in memory as a list; but iterating over an open file
+just needs enough space to store one line at a time.
+
+Although I've promoted "write simple code" in this course, we should start
+thinking about some of the time/space issues of using Python. Often using
+Python "efficiently" doesn't make the code more complicated.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="sharing"><h1>Sharing iterators and Mutating objects that are being iterated over</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Examine the following code
+
+l = [0, 1,2,3,4,5,6,7,8,9]
+x = iter(l)
+y = iter(l)
+
+print(next(x))
+print(next(y))
+
+print(next(x))
+print(next(y))
+
+print(next(x))
+print(next(y))
+
+It defines a list l, and constructs two iterator objects for the list: the
+first bound to x, the second bound to y. Each call of next(x) refers to one
+iterator object and each call of next(y) refers to another. Each call advances
+the state of one iterator object. So identical values come out of each
+iterator: the code prints 0, 0, 1, 1, 2, 2 (two 0s, 1s, and 2s)
+
+Now change the code to 
+l = [0,1,2,3,4,5,6,7,8,9]
+x = iter(l)
+y = x
+
+Now x and y are bound to the same iterator object. Each call of next is on the
+same OBJECT (whether next(x) or next(y)), which advances the state of that one
+iterator object. So the print statements above print 0, 1, 2, 3, 4, and 5.
+
+Finally, what do you think the following code will produce? The big question is,
+does Python iterate over the values in l when the iterator is CREATED, or  does
+it iterate over the values of l at the time the iterator is USED (which might
+have been mutated since the iterator was created).
+
+l = [0,1,2,3,4,5,6,7,8,9]
+x = iter(l)
+l.append(10)
+
+try:
+    while True:
+       print(next(x),end=' ')
+except StopIteration:
+    pass
+
+The answer is that it, iterates over the values of l at the time the iterator
+is USED. In this case it prints the integers 0 - 10.
+
+What if we change the loop to
+
+try:
+    while True:
+        v = next(x)
+        print(v,end=' ')
+        if v == 4:
+            l[4:7] = ('a','b','c')
+except StopIteration:
+    pass
+
+It prints: 0 1 2 3 4 b c 8 9, 10. Although 'a' is added to position 4, the value
+in that position of the list has already been iterated over (returned), so when
+__next__ is called again it prints the value in the next position, 'b'. So any
+mutation we make to a list while it is being iterated over can affect the
+results of the iteration.
+
+Now look at the following code; it causes an infinite loop (printing higher and
+higher values) because for every iteration of the loop, a new value is added to
+the list, increasing the number of values to iterate over.
+
+i = 0
+l = [i]
+for x in l:
+    print(x)
+    i += 1
+    l.append(i)
+
+So, the iterator object for a list is keeping track of what index it is on, but
+the list it indexes (from which to get these values) is also growing (its len is
+increasing). We can avoid all these problems by iterating over a COPY of the
+list. There are many ways to create copies of objects (see the copy module, for
+example) but the easiest way to make a copy of a list l is by using the idiom
+list(l) or even l[:]. If we replace for x in l: by for x in l[:]: in the
+example above, only the original list's value (just one 0) is printed. Of
+course doing so make a copy of the list (using more space).
+
+It would be easy to write a variant of a list class whose __iter__ method always
+makes a copy of the list to iterate over, so any changes subsequently made to
+the list will not change the result of the iteration. Of course, a drawback of
+that approach is that it requires extra space to "remember what the list
+contained when the iterator started". When we study lots of iterators in the
+next lecture, we will see examples of these kinds of classes. Of course, besides
+the extra space it takes extra time to make a copy, but sometimes it is
+worth it (to avoid the problems shown above).
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems1"><h1>Problems Part One</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1. Is the following translation of a for loop also equivalent to the translation
+of the for loop shown above? Argue they are equivalent of show an example where
+they differ.
+
+_hidden = iter(iterable)
+while True:
+    try:
+        indexes = next(_hidden)
+        block-body
+    except StopIteration:
+        block-else
+        break
+
+2. Write the class Random_N which is constructed with an integer argument and 
+produces that many random values.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="prange"><h1>prange Class</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+import math
+class prange:
+    
+    def __init__(self,*args):
+        try:
+            self.start, self.step = 0,1
+            if len(args) == 1:
+                self.stop = int(args[0])
+            elif len(args) == 2:
+                self.start, self.stop = int(args[0]), int(args[1])
+            elif len(args) == 3:
+                self.start, self.stop, self.step = int(args[0]), int(args[1]), int(args[2])
+                if self.step == 0:
+                    raise ValueError('3rd argument must not be 0')
+            else:
+                raise TypeError('range expected 1-3 arguments, got '+str(len(args))) 
+        except ValueError:
+            raise TypeError('some argument cannot be interpreted as integer:'+str(args))
+        except TypeError:
+            raise
+
+    def __repr__(self):
+        return 'prange('+str(self.start)+','+str(self.stop)+','+('' if self.step==1 else str(self.step))+')'
+    
+    def __iter__(self):
+        self.n = self.start
+        return self # must return an object on which __next__ can be called
+    
+    def __next__(self):
+        if self.step > 0 and self.n >= self.stop or \
+           self.step < 0 and self.n <= self.stop:
+            raise StopIteration
+        save = self.n
+        self.n += self.step
+        return save
+
+    def __len__(self):
+        if self.step > 0 and self.start >= self.stop or \
+           self.step < 0 and self.start <= self.stop:
+            return 0
+        else:
+            return math.ceil((self.stop-self.start)/self.step)
+              
+    def __getitem__(self,n):
+        if n >= len(self) :  # yes, could be n >= self.__len__()
+            raise IndexError('range('+str(self)+') index('+str(n)+') out of range')
+        return self.start+n*self.step
+    
+    def __contains__(self,n):
+        if self.step > 0:
+            return self.start<= n < self.stop and (n-self.start)%self.step == 0
+        else:
+            return self.stop< n <=self.start and abs(n-self.start)%abs(self.step) == 0
+        
+    def __reversed__(self):
+        if self.step > 0:
+            return prange(self.start+(len(self)-1)*self.step,self.start-1,-self.step)
+        else:
+            return prange(self.start+(len(self)-1)*self.step,self.start+1,-self.step)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems2"><h1>Problems Part Two</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Define a function named first, which takes any iterable and a predicate
+function (takes one argument, returns a bool) as arguments, and uses a for loop
+to returns the first value in the iterable for which the predicate is True; or,
+it raises the ValueError exception if the predicate is True for none of the
+iterator's values.
+
+2) Translate the following iteration to use a while loop and explicit calls to
+__iter__ and __next__.
+
+for c in 'abcdefg':
+    print(c)
+
+3) Define a function named group_n, which takes any iterable and an int as
+arguments, and returns a list of a list of the first n values, a list of the
+second n values, etc. in the iterable; if the iterable raises StopIteration
+before the last group of n values can be collected, ignore those. For example,
+group_n('abcdefghijklmn',3) returns the list of lists:
+[['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i'], ['j', 'k', 'l']]
+
+4) The fibonacci sequence is defined as 1, 1, 2, 3, 5, 8, 13, 21, ... where the
+1st and 2nd finbonacci numbers are 1 and 1, and all subsequent numbers are the
+sum of the prior two. Define a class named fib_range that is initialized by two
+values (the index of the first and last fibonacci number inclusive), and whose
+iterator generates all the fibonacci numbers in the range. For example, the
+comprehension [i for i in fib_range(4,6)] creates the list [3, 5, 8, 13]
+
+5) Define a method named len_remaining which returns an int indicating how many
+more values a prange iterator object will iterate over. Initially len and
+len_remaining would return the same result, but for every time __next__ is
+called,  len_remaining returns a value one less.
+
+6) Re-examine the __reversed__ method in prange. Explain why it is incorrect to
+simplify this method to the following: for what kinds of values does it work
+and for what kind does it fail?
+
+    def __reversed__(self):
+        if self.step > 0:
+            return prange(self.stop-1 ,self.start-1, -self.step)
+        else:
+            return prange(self.stop+1 ,self.start+1, -self.step)
+
+7) Examine the difference between the following code and what is produced.
+
+   	       		  	  c = Countdown(2)	  	  
+for a in Countdown(2):		  for a in c:
+    for b in Countdown(2):	      for b in c:
+        print(a,b)		          print(a,b)
+
+prints:				  prints:
+2 2				  2 1
+2 1				  2 1
+2 0				  2 0
+1 2
+1 1
+0 0
+0 2
+0 1
+0 0
+
+Explain why these results print as they do and find a simple way to modify the
+Countdown class to make these two scripts perform identically. Hint: it relates
+to a problem with sharing objects.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

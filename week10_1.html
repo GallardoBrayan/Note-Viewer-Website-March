@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 10 Introduction to Java -->
+<head>
+	<meta charset="utf-8" />
+	<title>Introduction to Java</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Ten: Introduction to Java</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#compilation">Compilation</a></h4></li>
+				<li><h4><a href="#important">Important Syntactic Differences</a></h4></li>
+				<li><h4><a href="#static">Static and Dynamic</a></h4></li>
+				<li><h4><a href="#built">Built-in vs Class Supplied Data Structures</a></h4></li>
+				<li><h4><a href="#reachable">Reachable Class in Java</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this lecture we will explore a bit of the Java language: I chose Java
+because I know it better than C++ (both, like Python, are still changing and
+evolving). The main point of this lecture is to show a more conventional
+language similar to Python (still in the same general family: object-oriented
+languages that use statements to compute their results) but with some
+differences.
+
+I have tried to discuss the most important and interesting differences between
+these language, broadly broken into four main areas.
+
+  1) Compilation and compile-time vs. run-time issues
+  2) Syntax differences
+  3) Static vs dynamic typing
+  4) Built-in vs Class Supplied Data Structures
+
+Note that you all should have Java installed on your computers (to run Eclipse)
+so you can use Eclipse to write and run Java programs.
+</pre>
+
+<a name="compilation"><h1>Compilation</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+As with Python, Java translates programs into a special instruction set that
+runs on the Java Virtual Machine (JVM). In fact, the JVM is so well-known that
+other languages are translated to run on the JVM. Java programs run 5 times as
+fast as Python programs (and C++ programs run another factor of 5 faster) but
+with a price: there are important Python programming features (e.g., eval and
+exec) that Java does not support (and likewise, C++ doesn't support certain
+features that makes checking/debugging Java programs easier*). So this is an
+example of languages trading-off power and ease of programming for speed of
+execution. 
+
+-----
+*For example, Python checks its lists (and Java its arrays) for indexes that
+are out of bounds, and raises an exception. Typically it reports an illegal
+index error at run-time (Java further reports the illegal index used; Python
+just says the index is illegal without reporting its value). When an illegal
+index is used with a C++ array, typically there is no runtime error: instead
+C++ just uses the information in its memory where the value at the illegal
+index would appear if it were in the array; what is actually there, in the
+computer's memory, is some random values. So the program keeps running,
+although it is likely the bad data will corrupt the computation. By avoiding
+checking indexes, C++ allows correct programs (e.g., ones doing no illegal
+indexing) to run faster. But incorrect programs don't fail when the error
+occurs: instead they keep excuting and maybe fail later, but often instead
+print wrong results (or worse, incorrectly buy/sell a stock, or
+catastrophically decide to launch a nuclear attack, because of an incorrect
+program).
+-----
+
+Python reads and translates imported modules on the fly, while it is runing
+programs. Java breaks running programs into two separate processes: compiling
+programs first (translating them into JVM instructions) and then running these
+instructions on the JVM. Errors are categorized as to when they occur: at
+compile-time or at run-time. The program that does the compilation is called
+the Java Compiler.
+
+Certain Java errors are called syntax or compile-time errors; others are called
+execution or run-time errors. Actually Python has the concept of syntax errors
+(even if there is no separate compile-time/run-time distinction). For example
+in Python, if we misspell a keyword or name, or indent a block incorrectly,
+Python reports the error, but only when we run the program; although the
+Eclipse editor often flags such errors for us before we run our program:
+indicating that if we run it, Python will find an error. Likewise, when Java
+compiles a program, Java checks it for the same kinds of errors (and more; see
+below). But, we cannot run Java software until all its files compile correctly.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="important"><h1>Important Syntactic Differences</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python and Java are similar languages in that both define statements that are
+executed in sequences known as blocks. The syntax of Python requires that each
+statement is on a different line and that blocks are indented. The syntax of
+Java requires that statements are separated by semicolons (so one can easily
+have multiple statements per line or one statement covering multiple blocks)
+and that blocks (of more than one statement) must appear in the {} braces. Java
+promotes a certain format for writing blocks (so that the code is clearly
+indented and actually looks like Python code) but such style rules are not
+required of programmers writing in the language. In fact, style rules for 
+Java and C++ are a bit different.
+
+Python	   	     	 Java
+
+if x < y:		 if (x < y) {
+    min = x		     min = x;
+    max = y		     max = y
+else:	  		 }else{
+    min = y		     min = y;
+    max = x		     max = x
+                         }
+
+Note that the syntax of Java requires () parentheses in more places than Python
+does: like surrounding the test in an if (or while) statement. Also note that
+we can write this Java code as
+
+if (x < y) {min = x; max = y}else{min = y; max = x}
+
+and it has the same meaning to the Java compiler. Even the following code
+(indented nonsensically)
+
+if (x < y)
+{min = x;
+    max = y}
+  else{min
+= y; max
+   = x}
+
+has the same meaning. A program is just a sequence of tokens. We can write the
+Python code on the left as either Java code on the right: the first uses one
+statements in the if/else; the second uses blocks (containing one statement).
+Note the meaning of / in Java: int/int in Java is like int//int in Python.
+
+if x%2 == 0:		if (x%2 == 0)		  if (x%2 == 0) {
+    x = x//2                x = x / 2                 x = x /2
+else:                   else			  }else{
+    x = 3*x + 1             x = 3*x + 1		      x = 3*x + 1
+
+Names in Java are written in "camel" notation. In Python we wrote a_var_name
+and in Java we write aVarName (the capital letters are like humps on a Camel).
+By Java convention, most names start with a lower-case letter, but class names
+start with an upper-case letter.
+
+Here is an minor but interesting difference: Python interprets the expression
+a < b < c as a < b and b < c. Java interprets this expression as a < b < c to
+compare the boolean result of the first < to c, which is likely to cause a
+static-typing compilation error described below. In Java we must write
+a < b < c more explicitly, as a < b && b < c (where && is Java's equivalent to
+Python's and operator).
+
+For commenting // is used in Java is like # is use in Python, as a
+line-oriented comment. Java also has multiline comments
+such as 
+
+/*
+   This is a multi-line
+   comment in Java
+*/
+
+In Python, files contain modules or classes. In Java there is no equivalent to
+modules, so files contain only classes, one class per file. The name of file
+and the name of the class it contains must be the same. So everything that we
+write in Java we write in some class: there is a special method named "main" in
+a class which Java calls to start a program executing (similar to Python, in
+which we write code in a module like if __name__ == '__main__':).
+
+Note that Java divides types into primitive and reference types. Primitive
+types are things like integers (ints) and floating point values (double).
+References store references to objects constructed from classes (just like
+Python). In fact there are classes like Int and Double that are the equivalent
+of the primitive types: they are more cumbersome and slower to use, but we can
+use them in places where class objects must be used (not primitives: there are
+a few rough corners like this). Java operators work primarily on primitive
+types; reference types use methods to perform computations. Java classes cannot
+overload operators the way Python does (but C++ can).
+
+Java allows only single inheritance. Classes can refer to information
+in their super classes by using the keyword super. So if the inc method in the
+Modular_Counter subclass (as they are know in Java, the same as a derived class
+in Python) overrides the inc method in its Counter superclass (the same as a
+base class in Python) the inc method in Modular_Counter can call super.inc() to
+call the inc method in Counter. In Python we would write Counter.inc() instead.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="static"><h1>Static and Dynamic Typing (relating to the types of values)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python is a dynamically typed language. Java (and C++) is a statically typed
+language. In a dynamically typed language, each name refers to an object that
+is of some type, but we cannot always know what type that is. For one example
+we can write x = 1 and later x = [1,2,3] so x first refers to an int and later
+a list of ints.*
+
+-----
+*Note that ints in Java are 32 bit quantities, not arbitrarily sized integers
+as in Python. Java does have a type name BigInt that stores arbitrarily large
+integers, but is a class we must operate on it with methods. So we end up
+writing code like x = BigInteger("2984248239834923"); y = x.multiply(x).add(x)
+(which in Python we would write as just x = 2984248239834923 and  y = x*x+x)
+Recall that operators in Java generally work only on the primitive types. We
+cannot write classes that overload operators in Java as we did in Python (but
+can overload operators in C++)
+-----
+
+For another example, if we define
+
+def randtype():
+    if random.random() < .5:
+        return 1
+    else:
+        return 1.
+
+x = randtype()
+
+Then we don't know what type of object the name x refers to: it might be int or
+it might be float. But we can compute type(x) to find out. So, in a dynamically
+typed language when we define names we don't need to specify their type: we
+assign them a reference to a value. Not knowing the type of value associated
+with a name (and having to compute it at run-time) is another reason Python
+runs more slowly than Java and C++. Whenever Python must do something with the
+value associated with a name, it must first compute its type: think of the
+fundamental equation of object-oriented programming.
+
+In a statically typed language like Java, we must specify the type of each
+name: in Java we talk about declaring (not defining names). We can write either
+int x; or int x = 1; the former declares x to always store an int but currently
+store no value, while the latter declares x to always store an int and
+currently store 1. 
+
+So, we must specify the type of parameters and local variables; we also must
+specify the return type of any method, where the type name void means that it
+returns no value: Python functions returning None is a different but similar
+idea to Java methods having a void return type: note that there are no pure
+"functions" in Java in the Python sense, there are only methods; but static
+methods in Java are most like pure functions in Python, because we can call
+them by specifying the class and method name, much like importing a Python
+module and using the module and its function name. So we might see a method
+defined in the Math class by
+
+static int factorial (int n) {
+    int answer = 1;
+    for (int i = 1; i< n; i++)
+        answer *= i;
+    return answer
+}
+
+and call it by Math.factorial(5).
+
+Here n, answer, and i are all declared to be int, and the method also returns
+an int. Notice the for loop which has a variable declaration/initialization
+(int i = 1), followed by a continuation test (i< n), followed by an increment
+(i++ which means i += 1). Notice how {} contains the block that is the body of
+this method. The for loop has just one statement in its body, so we do not need
+a block.
+
+Once Java knows variable names and their types, and the parameter/return types
+of functions (and of course it knows the types of all its constants) it can
+determine the type of any expression using operators and functions, and it can
+determine any type mismatches at compile time. For example, if we have defined
+
+double  d(int x) ...
+double d2(double x)
+int     i(int x) ...
+int x;
+
+Then the Java compiler knows
+
+ x = d(3) results in type mismatch: the d function takes an int as an argument
+(3 is an int) and produces a double, but the type of x is an int, so there is a
+type mismatch reported by the compiler: it cannot assign a double value to an
+int name.
+
+Likewise, calling i(d(3)) results in a type mistmatch: the d function takes 
+an int as an argument (3 is an int) and produces a double, but the i function
+takes an int as an argument, but d(3) is a double, so there is a type mismatch
+reported by the compiler.
+
+Generally, if we try to assign a value of one type to a name declared to be of
+another type, Java reports a compile-time error. Likewise, if we try to pass
+an argument of one type to a parameter name declare to be of another type, Java
+reports a compile-time error.*
+
+-----
+*Certain implicit type conversions, called promotions, automatically occur to
+"solve" some type mismatches. For example, if we call d2(i(3)) Java will allow
+it:  the i function takes an int as an argument (3 is an int) and produces an
+int, but the d2 function takes a double as an argument, so Java will implicitly
+promote the int to its equivalent double. This promotion works because every
+int can be converted into a double with the same value (note that for doubles
+this is not the case: there is no int value equivalent to 1.5.
+
+There is a way to convert a double into an int by throwing away its decimal
+part. This is called casting, and we can write i((int)(d(3)) for which Java
+does not report a  type mismatch. Likewise we can avoid implicit conversion by
+explicitly converting with casting, as in d2((double)i(3)).
+-----
+
+Note that in Python we can specify a parameter that expects an int values but
+has a default value of None (two different types). For example, if we define
+
+def f(max=None): .... 
+
+we can call f(1) where max = 1 or f() where max = None.
+
+Java does not allow this kind of function, because we cannot have a parameter
+that is sometimes an int and sometimes None. But it makes up by allowing us to
+define two version of f (with two different parameter structures)
+
+... f(int max ) {...}
+... f()         {...}
+
+Now if we call f(1) it executes the first function with max = 1; if we call f()
+it executes the second function.
+
+Note that Python annotations CAN play a SIMILAR roll to static typing but with
+a large time cost at runtime. Generally, annotations are just ignored. We have
+seen that we can write a function decorator and turn on annotation checking.
+This means that every time a Python function is called it checks all the values
+of its parameters (and possibly its return value). This checking takes place at
+run-time, and can take a long time when checking large data structures.
+Contrast this approach with Java's, where it performs all its checking once, at
+compile-time: there is an increased compile-time cost, but no run-time cost.
+
+So overall, it is harder to get a Java program to compile, because the compiler
+is checking for type compatability. But when a Java program compiles correctly,
+when it is run it will never report the kinds of incompatible type errors that
+appear frequently in Python. So if we code a type error, we must fix it in Java
+and Python, but the Java compiler will report the problem (and the statement
+causing it) at compile-time, before running the program. Python will run the
+program and only then report the problem at run-time. So by providing type
+information to the compiler, it can check that we using names in approprate
+ways.
+
+Interfaces specify the parameter/return types of one or more methods in a
+class. Classes can specify that they implement any number of interfaces (so
+long as they define the methods with the required parameter/return types).
+Implementing multiple interfaces is similar to multiple inheritance (it is more
+restrictive but cleaner).
+
+We can use the names of interfaces to specify a type: objects of any class
+implementing that interface are allowed to match it.
+
+If we specify
+
+interface LikeBoolean {
+  boolean bool();
+}
+
+Then if we define a class C and specify it implements LikeBoolean, and we
+declare LikeBoolean c = C(..) we can call c.bool() which returns a boolean
+value representing the object of class C that c refers to. We can pass an
+object of class C as the first argument to the following method (note that in
+Java a ? b : c in Java is like the conditional expression b if a else c 
+in Python).
+
+int choose(LikeBoolean lb, int trueV, int falseV) {
+  return lb.bool() ? trueV : falseV
+}
+
+So choose(c,1,0) would return 1 if c.bool() were true and 0 if c.bool() were
+false (in Java, the boolean values are true/false not True/False).
+
+If class D also implements LikeBoolean, then we can also pass an object of
+class D to choose. So choose(d,1,0) would return 1 if d.bool() were true and
+0 if d.bool() were false.
+
+So by using interfaces, we specify the argument matching the parameter lb can
+be an object constructed from any class, so long as that class implements the
+LikeBoolean interface: meaning the class defines a bool method, which is the
+only method choose calls on its lb parameter.
+
+Finally, the types of names can be prefaced by attributes like public and
+private, determining whether the name can be referred to in code outside the
+class (public) or can be acccessed only in methods inside the class (private).
+Java does this cleanly; we saw ways some ways to gain this control in Python
+by overloading special __...__ methods.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="built"><h1>Built-in vs Class Supplied Data Structures</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Java builds-in the primitive types and references. One other built-in type is
+arrays: which are like lists, but cannot grow. When we allocate an array object
+we must specify its length. We can use less than its length, but if we need to
+use more we must allocate a new/bigger array and then copy all the values from
+the old array to the new one. Arrays in Java are homogenous: they store the
+same type of value in each spot. Although, with interfaces and the use of
+inheritance, values constructed from many different classes can be stored in an
+array. We can declare and construct array objects like int [] i = new int[10]
+or LikeBoolean[] lb = new LikeBoolean[10]. Here, read int[] as int array and
+new int[10] constructs an array of 10 int objects. As described earlier,
+accessing an array out of bounds: using a negative index or an index >= the
+arrays's length (given in Java by writing x.length), is checked and raises an
+exception.
+
+Note that the compiler allows us to call lb[5].bool() because each value in
+the lb array is of type LikeBoolean, and we can call .bool() on any value of
+the LikeBoolean type (based on the interface specifying that method).
+
+Java has an isinstance function that can determine whether a value comes from
+a specific type (or any of its subclasses).
+
+Unlike Python, Java does not build in lists, sets, or dictionaries. But its
+standard library includes interfaces that describe these data types and
+classes (sometimes multiple classes) that implement these interfaces. The
+interfaces are List, Set, and Map (which is like a dictionary, mapping a key
+to a value) and example classes that we can use that implement these interfaces
+interfaces, are ArrayList, HashSet, and HashMap.
+
+Because these data structures are supplied as classes, there is no special
+syntax for using them (e.g., no {} to create maps or [] to access/set maps).
+So instead of code like graph[source] we must write graph.get(source). And
+instead of graph[from] = destinations we must write
+graph.put(from,destintations)
+
+Some people say, it is "only syntax". But it does make codes a bit harder to
+read, understand, and write, especially when the key/value is more complicated.
+
+I don't have enough time to go into how these classes are used, but here is
+Java code that solves the Reachability problem from Programming Assignment #1
+in ICS-33. Note that Map<String,Set<String>> (for defininig the graph) defines
+a type which is a Map from String to a Set containing String. If we were to try
+to put a key or associated value in the map that violated these type
+specification is, the Java compiler would detect and report an error at
+compile-time.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="reachable"><h1>Reachable Class in Java</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+import edu.uci.ics.pattis.introlib.Prompt;
+import edu.uci.ics.pattis.introlib.TypedBufferReader;
+import edu.uci.ics.pattis.ics23.collections.*;
+
+import java.util.StringTokenizer;
+import java.io.EOFException;
+
+
+public class Reachable {
+
+    private static void printGraph(Map<String,Set<String>> edges, String label) {
+        System.out.println("\n"+label);
+        List<String> sources = new ArrayList<String>(edges.keys());
+        Collections.sort(sources);
+        for (String source : sources)
+            System.out.println("  "+source+" -> "+edges.get(source));
+       }
+
+
+    private static Set<String> reachable(Map<String,Set<String>> graphMap, String start) {
+        Set<String>   reachable = new ArraySet<String>();
+        Queue<String> toSearch  = new ArrayQueue<String>();
+
+        toSearch.add(start);
+    
+        while (!toSearch.isEmpty()) {
+            String nextToProcess = toSearch.remove();
+            reachable.add(nextToProcess);
+            Set<String> destinations = graphMap.get(nextToProcess);
+           if (destinations != null)
+              for (String candidate : destinations)
+                  if (!reachable.contains(candidate))
+                      toSearch.add(candidate);
+        }
+    
+        return reachable;
+    }
+
+
+    public static void main(String[] args) {
+        Map<String,Set<String>> graphMap = new ArrayMap<String,Set<String>>();
+        TypedBufferReader       tbr      = new TypedBufferReader("Enter name of file with graph");
+
+        for(;;)
+            try {
+                StringTokenizer st = new StringTokenizer(tbr.readLine(),";");
+                String from = st.nextToken();
+                String to   = st.nextToken();
+                Set<String> destinations = graphMap.get(from);
+                if (destinations == null) {
+                    destinations = new ArraySet<String>();
+                    graphMap.put(from,destinations);
+                }
+                destinations.add(to);
+            } catch (EOFException e) {break;}
+
+        printGraph(graphMap, "Graph: source -> {destination} edges");
+        String start = Prompt.forString("\nEnter node to start from");
+        System.out.println("Node(s) reachable from " + start + " = " + reachable(graphMap,start));
+    }
+}
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

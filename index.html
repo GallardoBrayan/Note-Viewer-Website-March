@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lange="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Enhanced ICS 33 Notes</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="#home">Home</a></h4></li>
+				<li><h4><a href="#weekOne">Week 1</a></h4></li>
+				<li><h4><a href="#weekTwo">Week 2</a></h4></li>
+				<li><h4><a href="#weekThree">Week 3</a></h4></li>
+				<li><h4><a href="#weekFour">Week 4</a></h4></li>
+				<li><h4><a href="#weekFive">Week 5</a></h4></li>
+				<li><h4><a href="#weekSix">Week 6</a></h4></li>
+				<li><h4><a href="#weekSeven">Week 7</a></h4></li>
+				<li><h4><a href="#weekEight">Week 8</a></h4></li>
+				<li><h4><a href="#weekNine">Week 9</a></h4></li>
+				<li><h4><a href="#weekTen">Week 10</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+		<a name="home"><h1>Home</h1>
+		<p>Hello and welcome! I would like to start off by saying that all the LECTURE NOTES ARE PROPERTY OF PROFESSOR RICHARD PATTIS. I'm only the owner of this website. I'm currently a student at UCI and I have already taken ICS 33. I created this website to make it easier for students to read his lecture notes because I know just how frustrating it can be to find what part of his notes you're looking for. The notes are more organized for the readers convenience. You can select the week you would like to visit and then from there you are provided with a preview of the lectures that you can then select what lecture you would like to view. You then select what section of that lecture you would like to read. It's as simple as that. Thank you for visiting and enjoy your stay!</p>
+
+
+
+
+<!-- WEEK ONE --> 
+		<a name="weekOne"><h1>Week 1</h1>
+		<p><h2>Python Review</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">"When reading the following material, I suggest that you have Eclipse open,
+including a project with an empty module; then copy/paste some of the code
+below into it, to see what it does. Explore the code by experimenting with
+(changing) it and predicting what results from the changes. I always have an
+Eclipse folder/module named "experiment" open for this purpose.
+
+This lecture note is long (it is really three lectures), but the information is
+not deep (for ICS-31/ICS-32 graduates). I hope that this is mostly review for
+you, but there are likely to be many things that come up as new (or a few new
+perspectives and connections to the material you already know). Pay close
+attention to the terminology used here, as I will use it (I hope consistently)
+throughout the entire quarter. If you do not know any of these technical terms,
+try looking them up online, or post a message on the "Lecture Material"
+MessageBoard Forum: if you didn't understand a term, probably other students
+didn't as well. Here are 3 quotes relevant to this lecture:
+
+  1) The first step towards wisdom is calling things by their right names.
+
+  2) He/She who is ashamed of asking is ashamed of learning.
+
+  3) The voyage of discovery is not in seeking new landscapes but in having new
+     eyes. - M. Proust"</pre>
+		<div id="readMore"><h4><a href="week1_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+
+<!-- WEEK TWO -->
+		<a name="weekTwo"><h1>Week 2</h1>
+		<p><h2>A Review of File Reading</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Reading information from files is a common and important operation in Python. In
+this lecture we will discuss various options for reading files, and characterize
+them based on simplicity and efficiency (mostly with regards to efficiency in
+the use of space/memory, which is important when reading very large files).
+
+In a nutshell, you should avoid the use of the .read() and .readlines() methods
+and instead iterate over files (using a standard for loop or a for loop in a
+comprehension).
+
+The last section defines the parse_line function (available in the goody module)
+and how to use it, making reading files that contain multi-type records (fields
+of values) easy. One parameter binds to a tuple/list of function objects, each
+specifying how to convert the field in its position (a substring of each line)
+into a value of the appropriate type."</pre>
+		<div id="readMore"><h4><a href="week2_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+<p><h2>Regular Expressions</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+	"Regular Expressions are patterns that we can specify and use to search and
+replace text in strings (and files, which are just a sequence of strings).
+Python (as well as many other languages) includes a module to perform various
+operations on regular expressions. In these lectures we will cover the form of
+regular expressions, what functions/methods can take regular expressions as
+arguments, the how to use the results of matching regular expressions against
+text: match groups.
+
+In the first lecture we will discuss the components of regular expression
+patterns. We will discuss each component individually, and ways to combine them
+into more complicated regular expressions (just as we studied the syntax of a
+few simple control structures in Python, which can be combined into more
+complicated control structures). We will cover many but not all of the patterns
+usable in regular expressions (there are entire books on regular expressions).
+
+In the second lecture we will examine functions and methods that take regular
+expressions as arguments and produce results. Typically they match a regular
+expression pattern against some text string, and return information about 
+whether the match succeeded, and what parts of the pattern matched which parts
+of the text.
+
+Python's module for doing these operations is named re. There is a special
+tester module that accompanies these lectures, which you can download and run
+to experiment with regular expressions and learn how they match text strings.
+
+For more complete information about regular expressions, see Section 6.2 of the
+Python Standard Library."</pre>
+		<div id="readMore"><h4><a href="week2_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+<!-- WEEK THREE -->
+		<a name="weekThree"><h1>Week 3</h1>
+		<p><h2>Class Review</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"This lecture reviews basic material that you should know about defining and
+using classes, although it also presents some new (hopefully easy to understand)
+material that you may have not seen. Primarily this lecture discusses how to
+use the namespaces in class objects and their instance objects to store data as
+well as functions/methods."</pre>
+		<div id="readMore"><h4><a href="week3_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Class Operator Overloading I</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Now that we have reviewed the fundamentals of classes, we are going to cover
+some new material about them: how we can write certain class methods that are
+used by Python in a special way: we don't call these methods directly, but
+Python calls them automatically based on our us of []s, operators, etc. All
+these special methods have their names writen between double underscores (just
+like __init__ which is also one of these special methods).
+
+Most of these methods (but not all) are invoked by Python operators (whose
+arguments are instances of the class that they are defined in) so we call this
+technique "operator overloading": it means overloading (giving more than one
+meaning to) the standard operators, applying to objects constructed from
+programmer-defined classes (which really is an application of "polymorphism",
+which translates to "many forms"). Overloading has a good, not bad, connotation
+here. By studying operator overloading, we will better understand how Python
+executes our programs, and be able to write classes that are more powerful, by
+exploiting our understanding of this mechanism.
+
+Note that this material is also covered in Lutz, "Learning Python", in
+Chapter 29. While learning this material, we illustrate each overloaded
+operator simply with methods defined in a "simple" class, Vector. Later we will
+apply this technique to a bigger examples; but, a typical class has only some
+of its operators overloaded: not all operators are meaningfully overloaded for
+every class."</pre>
+		<div id="readMore"><h4><a href="week3_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Class Operator Overloading II</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we examine how to overload more operators: many fewer than
+in the first lecture, but some that perform more interesting (and subtle)
+operations -some that get to the core of Python's operation, which we have the
+ability to change!"</pre>
+		<div id="readMore"><h4><a href="week3_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+<!-- WEEK FOUR -->
+		<a name="weekFour"><h1>Week 4</h1>
+		<p><h2>Iterator Protocol and Examples of Use</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Iterators are one of the most useful (and used) features in Python. Besides
+being used explicitly in loops (including for loops in comprehensions),
+constructors often include a parameter that is iterable, whose values are used
+to initialize the state of the objects they are building: e.g., we write
+set(alist) to create a set with all the values from alist (obviously removing
+duplicates in the process). Also, calls to functions/classes like
+sorted/reversed are used in iterators: e.g., for i in sorted(aset): ... takes
+an iterable as an argument and returns a list.
+
+In the next three lectures we will explore iterators in more detail. The first
+focuses on the underlying mechanics of iterators; the second focuses on examples
+of iterators written in/for classes; the third introduces a new kind of
+function, called a  generator (in computer science it is also known as a
+coroutine) that returns a value, but when called again remembers where it "left
+off" to return another value: this feature makes writing all sorts of iterators
+as functions (not classes) much easier.
+
+Throughout these lectures we will also discuss iterator efficiency issues (both
+time and space): because iterators are used so often, their running times can
+dominate a program's running time; they often use little space because they
+produce their values one at a time, rather than storing them all in a data
+structure which is iterated over (although with constructors and comprehensions
+we can easily create such a data structure from a iterator if we need to).
+
+In this lecture we will learn about the __iter__ and __next__ methods (which a
+class must implement to be iterated over), how a for loop for iteration is
+equivalent to a while loop (which needs a try/except block to catch the
+StopIteration exception that is raised by "exhausted" iterators), and how
+sharing and mutation affects iterators: sometimes they can cause problems, and
+we will learn how to mitigate such problems, although often at the cost of
+using more space."</pre>
+		<div id="readMore"><h4><a href="week4_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Iterators via Classes</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will first learn how to fix a problem (related to sharing
+objects) with the prange class that we wrote in the last lecture, by using a
+nested class for iteration. Next, we look at a type that stores and manipulates
+data, and also allows iteration over its data. Finally, we will begin to explore
+functions and classes that operate on iterables and produce other iterables
+(e.g., sorted and reversed are two examples built into Python, but there are
+many other interesting and useful ones). We will finish the week with a lecture
+about a special kind of function called a generator, which provides an
+simple and excellent mechanism for writing iterators (and iterators that
+decorate iterators). All this material will become even more important and
+useful when we spend a week talking about inheritance among classes."</pre>
+		<div id="readMore"><h4><a href="week4_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Generators (and yield): Functions that Act Like Iterators</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Python includes a special "kind of" function called a generator (also known
+classically in Computer Science as a coroutine). With generators we can easily
+(almost trivially) write iterators (although it takes a new way of thinking
+about functions). In this lecture we will first study generators by themselves,
+to understand their semantics, and then use them to write a variety of
+iterators easily. I believe that the generator concept is one of the most
+intuitively easy to understand features in Python (and powerful to boot), so I
+think you will enjoy reading this lecture. Not many other languages include
+coroutines in such an easy to use form.
+
+Generators are defined almost exactly like functions; the one difference is that
+inside a generator there are "yield" statements (one or more), not "return"
+statements. A yield statement has the same form as a return statement: each
+keyword is followed by an expression that is evaluated, terminating the
+function/generator and returning that value: but a key difference is that
+generators can be RESTARTED after executing a yield statement -and they restart
+exactly where they left off in the computation. Python remembers this
+information for generators, unlike functions."</pre>
+		<div id="readMore"><h4><a href="week4_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+<!-- WEEK FIVE -->
+		<a name="weekFive"><h1>Week 5</h1>
+		<p><h2>Recursion</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will discuss the concept of recursion and examine recursive
+functions that operate on integers, strings, and lists, learning common idioms
+for each. As with other topics discussed this quarter, I want to ensure that you
+have a deliberate and deep understanding of recursion.
+
+The concept of recursively defined (sometimes called inductively defined) data
+types and recursion is fundamental in many areas of computer science, and this
+concept should be discussed from many angles in many of your ICS classes; you
+should become comfortable with seeing and applying recursion. In addition, some
+programming languages (Lisp is the foremost example) use recursion (and also 
+decision: if) as their primary control structures: any iterative code can be
+written recursively (and recursion is even more powerful than iteration, as we
+glimpsed in the EBNF lecture). Even languages that are not primarily recursive
+all support recursion (and have since the late 1950s), because sometimes using 
+recursion is the best way to write code to solve a problem: best often means
+simplest, but sometimes it can mean most efficient too."</pre>
+		<div id="readMore"><h4><a href="week5_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Functional Programming</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Functional programming is a style of programming that uses the simplicity and
+power of functions to accomplish programming tasks. Some talk about the
+functional programming paradigm. They contrast it with the more standard
+imperative paradigm (which includes both the procedural and object-oriented
+styles). Functional programs fundamentally evaluate expressions to
+compute results; imperative programs fundamentally execute statements to compute
+results (which often mutate data structures and rebind the values of names
+-which pure functional programming prohibits).
+
+In a purely functional solution to a problem, there will be no mutation to data
+structures (instead of mutating one, a new one is built/returned, with the
+required changes: just as we have seen with strings, which are immutable), and
+recursion (not looping) is the primary control structure. Functions are called
+"referentially transparent": given the same inputs, they always produce the same
+result; we can always replace a function call with its ultimately returned
+result. Whether or not a computation occurs doesn't affect later computations
+(it has no side-effects, just a returned result)."</pre>
+		<div id="readMore"><h4><a href="week5_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Decorators</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"We have discussed decorators before. Typically we described them as a class
+that takes an argument that supports some protocol (methods) and returns an
+object that supports the same protocol (methods). When the decorator object
+executes these methods, it performs a bit differently than for the decorated
+object. The decorator object typically stores a reference to the decorated
+object and calls it when necessary."</pre>
+		<div id="readMore"><h4><a href="week5_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+<!-- WEEK SIX -->
+		<a name="weekSix"><h1>Week 6</h1>
+		<p><h2>Linked Lists</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"ICS-46 is concerned with studying the lower-level data structures that are used
+in Python to represent lists/tuples, dicts, sets/frozensets, and other
+not-built-into Python named data-types: stacks, queues, priority-queues, 
+equivalence classes, and graphs. There are two primary components to all these
+data-types: arrays and self-referential data-structures. Linked lists are the
+simplest kind of self-referential data-structures, and trees are more complex
+self-referential data-structures.
+ 
+Languages like Java/C++ don't build-in most of Python's useful data-types, but
+instead provide them in standard libraries, which are a bit more awkward to use
+than these data-types in Python. These data-type libraries are built on arrays
+and self-referential structures. This week is a peek at self-referential
+structures (the last week will be a peek at more of Java, and will address some
+of these same issues in a larger context)."</pre>
+		<div id="readMore"><h4><a href="week6_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Trees I</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we upgrade our discussion of self-referential structures from
+linked lists to trees, by creating TN: a class that includes a value and two
+references to other objects from the TN class (or None). What seems like a
+trivial extension turns out to be profound: like going from a 1-dimensional
+space to a 2-dimensional space. There are entire books written about trees
+(in both computer science and mathematics), but no books written solely about
+linked lists.
+
+Over the next two lectures we will examine a few applications for trees. We will
+discuss binary order trees (search trees) and structure trees (expression trees)
+and discuss various recursive functions that operate on them. Both use the same
+defintion of the TN (tree node) class shown below"</pre>
+		<div id="readMore"><h4><a href="week6_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Trees II</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In the second lecture on trees we will learn how to use lists (sets, if ordering
+among nodes is not important) to store N-ary trees (trees where each node has an
+arbitrary number of children: 0 -for leaves- or more). We will also discuss
+traversal orders for binary trees (from the previous lecture) and general trees
+too.
+
+The most common example of an N-ary tree is a file system. There is a root
+folder which contain files and other folders (which can contain files and other
+folders, etc.)."</pre>
+		<div id="readMore"><h4><a href="week6_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+
+<!-- WEEK SEVEN -->
+		<a name="weekSeven"><h1>Week 7</h1>
+		<p><h2>Inheritance I</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"This is the first of three lectures on inheritance. This lecture discusses the
+general principles involved in defining classes in an inheritance hierarchy and
+using the hierarchy to find attributes of objects. It focuses on the rules
+needed to understand single inheritance, showing an example using counters. The
+second lecture discusses multiple inheritance and generalizes these rules; it
+actually includes code that illustrates how classes reference each other and
+how attributes are found by Python in complicated inheritance hierarchies. The
+third lecture discusses various concrete uses of inheritance and how we can use
+inheritance to simplify real programming.
+
+Just an inheritance (of money) makes the life of descendants easier,
+inheritance (of attributes) makes derived classes easier to write."</pre>
+		<div id="readMore"><h4><a href="week7_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Inheritance II</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"This short lecture extends our discussion of inheritance from single-inheritance
+to multiple-inheritance: we will learn how to visualize multiple-inheritance
+relationships (not as a N-ary tree, but as a more complicated network) and how
+to generalize the rules Python uses for locating attributes. We can use the
+inheritancetool.py module, along with any classes forming an inheritance
+hierarchy, to see how Python locates such attributes. We can use this tool with
+the module defining the Counter/Modular_Counter classes, and with the
+inheritancesample.py module, which defines a more complicated hierarchy
+discussed below."</pre>
+		<div id="readMore"><h4><a href="week7_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Inheritance III</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will look at a few useful examples of inheritance,
+classifying them into two categories: normal and mix-in inheritance. In normal
+inheritance, a complicated class is specialized to perform a bit differently:
+it typically involves a small derived class single-inheriting from a large base
+class. Mix-in inheritance typically involves a large derived class
+multiply-inheriting -to add many small special behaviors to it- from a variety
+of small base classes."</pre>
+		<div id="readMore"><h4><a href="week7_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+
+<!-- WEEK EIGHT -->
+		<a name="weekEight"><h1>Week 8</h1>
+		<p><h2>Analysis of Algorithms (Complexity Classes and Big-O Notation)</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Analysis of Algorithms is a mathematical area of Computer Science in which we
+analyze the resources (mostly time, but sometimes space) used by algorithms to
+solve problems. An algorithm is a precise procedure for solving a problem,
+written in any notation that humans understand (and thus can carry-out the
+algorithm): if we write an algorithm as code in some programming language, then
+a computer can execute it too.
+
+The main tool that we use to analyze algorithms is big-O notation: it means
+"growth on the order of". We use big-O notation to characterize the performance
+of an algorithm by placing it in a complexity class (most often based on its
+WORST-CASE behavior -but sometimes on its AVERAGE-CASE behavior) when solving a
+problem of size N: we will learn how to characterize the size of problem, which
+is most often as simple as N is the number of values in a list/set/dictionary.
+Once we know the complexity class of an algorithm, we have a good handle on
+understanding its actual performance (within certain limits). Thus, in AA we
+don't necessarily compute the exact resources needed, but typically an
+approximate bound on the resources, based on the problem size."</pre>
+		<div id="readMore"><h4><a href="week8_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Complexity of Python Operations</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will learn the complexity classes of various operations on
+Python data types. Then we wil learn how to combine these complexity classes to
+compute the complexity class of all the code in a function, and therefore the
+complexity class of the function. This is called "static" analysis, because we
+do not need to run any code to perform it.
+"</pre>
+		<div id="readMore"><h4><a href="week8_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Empirical Analysis of Algorithms</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In the two previous lectures we learned about complexity classes and how to
+analyze algorithms (mostly Python statements/functions) to find their complexity
+classes. These analyses were done by just looking at code (aka "static analyis")
+and were independent of any technology: i.e., independent of which Python
+interpreters we used and the speed of the computers running our code.
+
+Given the complexity class of a runnable Python function, we can approximate
+its running time by the function T(N) = c*complexity(N), where complexity(N)
+is its complexity class: e.g., N, N Log N, N**2, etc. We can then run this
+function on a reasonably-sized problem (with N not too small, so the discarded
+lower-order terms are small enough to really ignore) and measure the amount of
+time it takes (T). Finally, we can solve for the constant in the time equation:
+c = T/complexity(N) by plugging in T and N. Then, we can use the formula
+T(N) = c*complexity(N), with the computed c, to approximate the amount of time
+this function requires to solve a problem of any size N. Such analysis (by
+running code) is called "dynamic analysis"."</pre>
+		<div id="readMore"><h4><a href="week8_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+
+<!-- WEEK NINE -->
+		<a name="weekNine"><h1>Week 9</h1>
+		<p><h2>Unit Test</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will discuss testing in general, and then discuss how to
+perform unit testing in Python. The standard Python library supplies a module
+named unittest; it defines a class named TestCase from which we can create
+subclasses to perform unit testing. My driver code for testing your programs is
+a quick and dirty way to do unit tests. The actual unittest class is more
+elegant and comprehensive, but is a bit more heavyweight and requires more work
+that the batch self-checks use when testing simple code."</pre>
+		<div id="readMore"><h4><a href="week9_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Emperical Efficiency: Hashing sets and dicts</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In the two previous lectures we learned about complexity classes and how to
+analyze algorithms (mostly Python statements/functions) to find their complexity
+classes. These analyses were done by just looking at code (aka "static analyis")
+and were independent of any technology: i.e., independent of which Python
+interpreters we used and the speed of the computers running our code.
+
+Given the complexity class of a runnable Python function, we can approximate
+its running time by the function T(N) = c*complexity(N), where complexity(N)
+is its complexity class: e.g., N, N Log N, N**2, etc. We can then run this
+function on a reasonably-sized problem (with N not too small, so the discarded
+lower-order terms are small enough to really ignore) and measure the amount of
+time it takes (T). Finally, we can solve for the constant in the time equation:
+c = T/complexity(N) by plugging in T and N. Then, we can use the formula
+T(N) = c*complexity(N), with the computed c, to approximate the amount of time
+this function requires to solve a problem of any size N. Such analysis (by
+running code) is called "dynamic analysis"."</pre>
+		<div id="readMore"><h4><a href="week9_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+		<p><h2>Executing Code in The Python Virtual Machine</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"Levels of abstraction are important in computing. We can look at a computer
+(and the software it runs) at many levels of abstraction: as quantum devices
+implementing logical components, as collections of these components implementing
+digital circuits (described by Boolean formulas), as digital circuits combined
+into an instruction set architecture (which we'll cover in today's lecture)
+as an architecture capable of running "translated" computer programs written in
+a high-level language, as large applications written in high-level programming
+languages, and as distributed/networked applications running on multiple
+machines communicating over a network."</pre>
+		<div id="readMore"><h4><a href="week9_3.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+
+
+
+
+<!-- WEEK TEN -->
+		<a name="weekTen"><h1>Week 10</h1>
+		<p><h2>Introduction to Java</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"In this lecture we will explore a bit of the Java language: I chose Java
+because I know it better than C++ (both, like Python, are still changing and
+evolving). The main point of this lecture is to show a more conventional
+language similar to Python (still in the same general family: object-oriented
+languages that use statements to compute their results) but with some
+differences.
+
+I have tried to discuss the most important and interesting differences between
+these language, broadly broken into four main areas.
+
+  1) Compilation and compile-time vs. run-time issues
+  2) Syntax differences
+  3) Static vs dynamic typing
+  4) Built-in vs Class Supplied Data Structures
+
+Note that you all should have Java installed on your computers (to run Eclipse)
+so you can use Eclipse to write and run Java programs."</pre>
+		<div id="readMore"><h4><a href="week10_1.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+		
+		<p><h2>Quick Review for Final Exam</h2></p>
+		<pre style="font-style: italic;word-wrap: break-word; white-space: pre-wrap;">
+"The final exam is worth 200 points. I have not written the final version of this
+exam yet, but I expect it to be like the midterm in format: about 10 questions
+(some might have multiple parts), each covering about 1 week of material for the
+10 week quarter (although there will be no questions on material covered the last
+week). So, it is cumulative. Over this 120 minute test, that is about 12 minutes
+per question (to read and answer it).
+
+We have covered way too much material for you to re-read everything. I suggest
+primarily reviewing the quizzes and midterm, and then the programming
+assignments: not reading them in depth, but being familiar with them and their
+major themes. Of course you will be analyzing and writing code on the final
+exam, but I expect there also to be a small number of questions to be answered
+in English or with pictures/diagrams.
+
+I will write in more detail a few days before the exam, after I have written it.
+I will provide the same kind of material I provided for the midterm.
+
+Here is my view of the material that we covered."</pre>
+		<div id="readMore"><h4><a href="week10_2.html">Read More...</a></h4></div>
+		<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

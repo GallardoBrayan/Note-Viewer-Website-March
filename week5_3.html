@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 5 Decorators -->
+<head>
+	<meta charset="utf-8" />
+	<title>Decorators</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Five: Decorators</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#special">Special Python Syntax for Decorators</a></h4></li>
+				<li><h4><a href="#track">Track_Calls</a></h4></li>
+				<li><h4><a href="#memoize">Memoize</a></h4></li>
+				<li><h4><a href="#illustrate">Illustrate_Recursive</a></h4></li>
+				<li><h4><a href="#func">functools.partial</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We have discussed decorators before. Typically we described them as a class
+that takes an argument that supports some protocol (methods) and returns an
+object that supports the same protocol (methods). When the decorator object
+executes these methods, it performs a bit differently than for the decorated
+object. The decorator object typically stores a reference to the decorated
+object and calls it when necessary.
+
+The examples in this lecture, and the Check_Annotations class in Programming
+Assignment #4, use classes to decorate functions by using the __call__ protocol
+to decorate/augment how functions are called. Although, some examples don't
+need classes (and just use functions) to do the decoration.
+
+Finally, it is appropriate to put this material right after our discussion
+of recursion and functional programming. Decorating function calls is most
+interesting when the functions are called many times. And, one call to a
+recursive function results in it calling itself many times.
+
+We will use the recursive factorial and fib (Fibonacci) functions in our
+examples below. Both require an argument >= 0.
+
+    def factorial(n):
+        if n == 0:
+            return 1
+        else:
+            return n*factorial(n-1)
+
+    def fib(n):
+        if    n == 0: return 1
+        elif  n == 1: return 1
+        else:         return fib(n-1) + fib(n-2)
+</pre>
+
+<a name="special"><h1>Special Python Syntax for Decorators</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+If Decorator is the name of a decorator (a class or a function) that takes one
+argument, we can use it to decorate a function object, by writing either
+
+  def f(params-annotation) -> result-annotation:
+      ...
+  f = Decorator(f)
+
+or
+
+  @Decorator
+  def f(params-annotation) -> result-annotation:
+
+which has the same meaning. We can also use multiple decorators on functions.
+The meaning of
+
+@Decorator1
+@Decorator2
+def f(...)
+    ...
+
+is equivalent to writing
+
+f = Decorator1(Decorator2(f))
+
+so Decorator1 decorates the result of Decorator2 decorating f; the decorators
+are applied in the reverse of the order they appear (with the closest one to
+the decorated object applying first).
+
+There is a decorator name staticmethod which we have used to decorate methods
+defined in classes: those methods that don't have a self parameter. Currently
+Eclipse marks these as syntax errors (methods with no self parameter) but still
+runs the code correctly. By using the staticmethod decorator, the syntax error
+disappears.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="track"><h1>Track_Calls</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Here are three decorators for functions (three are classes; some can be written
+easily as functions too).
+
+(1) Track_Calls remembers the function it is decorating and initializes the
+calls counter to 0; the decorator object overloads the __call__ method so that
+all calls to the decorator object increment its calls counter and then actually
+calls the decorated function (which if recursive, increments the calls counter
+for every recursive call). Once the function's value is computed and returned,
+the calls counter instance name can be accessed (via called) and reset (via
+reset) for tracking further calls.
+
+class Track_Calls:
+    def __init__(self,f):
+        self.f = f
+        self.calls = 0
+    
+    def __call__(self,*args,**kargs):  # bundle arbitrary arguments
+        self.calls += 1
+        return self.f(*args,**kargs)   # unbundle arbitrary arguments
+
+    def called(self):
+        return self.calls
+    
+    def reset_calls(self):
+        self.calls = 0
+
+So, if we wrote
+
+@Track_Calls
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+         return n*factorial(n-1)
+
+then factorial would refer to a Track_Calls object, whose self.f refers to the
+actual function object factorial defined and whose self.calls is 0.
+
+If we called factorial(3), Python executes the factorial.__call__(3) method on
+the factorial object, which would increment factorial.calls and then call
+factorial.f(3) - the original factorial function object: its body would
+recursively call factorial(2), which Python executes as factorial.__call__(2).
+
+This process continues, ultimately factorial.__call__(3) returns 6 with
+factorial.calls = 4. We have seen before that factorial(n) calls itself for
+n, n-1, n-2, ... 0 for a total of n+1 times.
+
+Examine the picture accompanying this lecture, showing the Fibonacci function
+(whose body does two recursive calls) and all the recursive calls it generates
+when called with a variety of numbers. Ignore the colors for now.For example
+calling fib(2) does a total of 3 calls to fib (counting itself), fib(3) does a
+total of 5 calls, fib(4) does a total of 9 calls, fib(5) does a total of 15
+calls, fib(6) does a total of 25 calls. We can use Track_Calls to verify these
+numbers (and compute fib for bigger numbers). For example fib(10) = 89 does a
+total of 177 calls fib(20) = 10,946 and does a total of 21,891 calls.
+
+Run the program accompanying this lecture to see the value (and number of
+function calls) needed to evaluate fib(0) through fib(30). Notice that the last
+few calculations take a noticable amount of time: computing fib(30) requires
+2,692,537 function calls!
+
+We can write this decorator as the following function instead
+
+def track_calls(f):
+    def call(*args,**kargs):
+        call.calls += 1
+        return f(*args,**kargs)
+
+    call.calls = 0         # define calls attribute on call function-object
+    return call
+
+Here we define an inner-function call, which is returned by track_calls. Before
+returning this function object, a calls instance name is defined for that object
+and initialzed to 0; inside the call function that instance name is incremented
+before the original function (f) is called and the value it computes returned.
+
+I will continue to show equivalent class/function definitions for the decorators
+described below, but at the end I will briefly explain the reason for using
+classes instead of functions: the ability to overload the __getattr__ function
+for using multiple decorators at the same time.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="memoize"><h1>Memoize</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+(2) Memoize remembers the function it is decorating and initializes a dict to
+{}. It will use this dict to cache (keep track of and be able to access quickly)
+the arguments to calls and the value ultimately returned by the function. The
+decorator object overloads the __call__ method so that all calls to the
+decorator object first check to see if the arguments are already cached in the
+dict, and if so their associated value is returned immediately, without
+executing the code in the decorated function; if not the decorated function is
+called, its answer is cached in the dict with the function's arguments, and the
+answer is returned. 
+
+For simplicity here, I'm assuming all arguments are positional (so no **kargs).
+Also,since the arguments are used as keys in a dictionary, they must be
+immutable/hashable.
+
+In this way, a function never has to compute the same value twice. Memoization
+is useful for multiply recursive calls, as in the fibonacci function.
+
+class Memoize:
+    def __init__(self,f):
+        self.f = f
+        self.cache = {}
+
+    def __call__(self,*args):
+        if args in self.cache:
+            return self.cache[args]
+        else:
+            answer = self.f(*args)
+            self.cache[args] = answer
+	    return answer
+
+    def reset_cache(self):
+        self.cache = {}
+
+Examine the picture accompanying this lecture, showing the Fibonacci function.
+When decorated by Memoize, the only calls that actually compute a result are
+those in green. As each green function calls finishes, it caches its result in
+the dictionary. Afterward, calling fib with that argument again will obtain the
+result from the cache immediately (all the calls in white). With memoization,
+calling fib(n) does a total of n+1 function calls.
+
+Run the program accompanying this lecture to see the value (and number of
+function calls) needed to evaluate fib(0) through fib(30). This time, uncomment
+@Memoize and the fib.reset_cache() call in the loop. Notice that all the
+calculations are done instantaneously: with memoization, computing fib(30)
+requires only 31 function calls (with cached values computed immediately
+billions of times).
+
+We can also write memoize as a function, to return a wrapper function (it can
+be named anything) that does the same operations as the class above. Note that
+cache, a name local to memoize, is used in wrapper but not accessible outside
+wrapper (unlike what we did with call.calls above)
+
+def memoize(f):
+    cache = {}
+    def wrapper(*args):
+        if args in cache: 
+            return cache[args]
+        else:
+            answer = f(*args)
+            cache[args] = answer
+            return answer
+    return wrapper
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="illustrate"><h1>Illustrate_Recursive</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+(3) Illustrate_Recursive remembers the function it is decorating and
+initializes a tracing variable to False. The decorator object overloads the
+__call__ method so that all calls to the decorator object just return the
+result of calling the decorated function (if tracing is off). Calling
+.illustrate(...) on the decorator calls the illustrate method, which sets up
+for tracing, and then uses __call__ to trace all entrances and exists to the
+decorated function printing indented/outdented information for each function
+call/return.
+
+class Illustrate_Recursive:
+    def __init__(self,f):
+        self.f = f
+        self.trace = False
+        
+    def illustrate(self,*args,**kargs):
+        self.indent = 0
+        self.trace = True
+        answer = self.__call__(*args,**kargs)
+        self.trace = False
+        return answer
+    
+    def __call__(self,*args,**kargs):
+        if self.trace:
+            if self.indent == 0:
+                print('Starting recursive illustration'+30*'-')
+            print (self.indent*"."+"calling", self.f.__name__+str(args)+str(kargs))
+            self.indent += 2
+        answer = self.f(*args,**kargs)
+        if self.trace:
+            self.indent -= 2
+            print (self.indent*"."+self.f.__name__+str(args)+str(kargs)+" returns", answer)
+            if self.indent == 0:
+                print('Ending recursive illustration'+30*'-')
+        return answer
+
+Run the program accompanying this lecture to example of this trace (and others
+by changing the program. Here is what the program prints for a call to factorial
+and fibonacci.
+
+@Illustrate_Recursive
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n*factorial(n-1)
+
+Starting recursive illustration------------------------------
+calling factorial(5,){}
+..calling factorial(4,){}
+....calling factorial(3,){}
+......calling factorial(2,){}
+........calling factorial(1,){}
+..........calling factorial(0,){}
+..........factorial(0,){} returns 1
+........factorial(1,){} returns 1
+......factorial(2,){} returns 2
+....factorial(3,){} returns 6
+..factorial(4,){} returns 24
+factorial(5,){} returns 120
+Ending recursive illustration------------------------------
+
+Factorial is a linear recursive function (one recursive call in its body) so
+the structure of its recursion is simple.
+
+
+@Illustrate_Recursive
+def fib(n):
+    if    n == 0: return 1
+    elif  n == 1: return 1
+    else:         return fib(n-1) + fib(n-2)
+
+print(fib.illustrate(5))
+
+Starting recursive illustration------------------------------
+calling fib(5,){}
+..calling fib(4,){}
+....calling fib(3,){}
+......calling fib(2,){}
+........calling fib(1,){}
+........fib(1,){} returns 1
+........calling fib(0,){}
+........fib(0,){} returns 1
+......fib(2,){} returns 2
+......calling fib(1,){}
+......fib(1,){} returns 1
+....fib(3,){} returns 3
+....calling fib(2,){}
+......calling fib(1,){}
+......fib(1,){} returns 1
+......calling fib(0,){}
+......fib(0,){} returns 1
+....fib(2,){} returns 2
+..fib(4,){} returns 5
+..calling fib(3,){}
+....calling fib(2,){}
+......calling fib(1,){}
+......fib(1,){} returns 1
+......calling fib(0,){}
+......fib(0,){} returns 1
+....fib(2,){} returns 2
+....calling fib(1,){}
+....fib(1,){} returns 1
+..fib(3,){} returns 3
+fib(5,){} returns 8
+Ending recursive illustration------------------------------
+
+The fib function is NOT a linear recursive function: its body contains two
+recursive calls. So the structure of its recursion is more complicated. This is
+why thefib function is a good one to test both Track_Calls and Memoize. Even
+for fairly small arguments (under 30), it produces a tremendous number of calls
+and can be sped-up tremendously by memoizing it.
+
+----------
+
+Delegation of attribute lookup
+
+When using (multiple) decorators, we need a way to translate attribute accesses
+on the decorator into attribute accesses on the decorated. There is no simple
+mechanism to do this with functions, but it easy to do with classes: by
+overloading the __getattr__ method as follows (which should be done to all three
+classes above).
+
+    def __getattr__(self,attr):        # if attr not here, try self.f
+        return getattr(self.f,attr)
+
+So, if we use the following two decorators
+
+    @Track_Calls
+    @Illustrate_Recursive
+    def fib(....):
+        ...
+
+fib is a Track_Calls object, whose .f attribute is an Illustrate_Recursive 
+object whose .f attribute is the actual fib function. If we then wrote
+fib.illustrate(5) Python would try to find the illustrate attribute of the
+Track_Calls object; there is no such attribute there, so it fails and then
+calls the __getattr__ of the Track_Calls class, which "translates" the failed
+attribute access into getting the same attribute from the .f object (from the
+decorated class object, an object of the Illustrate_Recursive class, which does
+define such an attribute, as a method which can be called).
+
+Generally this is called delegation: where an "outer" object that does not have
+some attribute delegates the attribute reference to an inner object. Decorators
+often use exactly this form of delegation, so the decorator object can process
+its attributes and all the attributes of the decorated object.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="func"><h1>functools.partial</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Now we will study an interesting combination of using decorators and the
+functools.partial function (discussed in the previous lecture). Let's look at
+the following simple decorator, which takes a function and its name as
+arguments; every time the function is called the decorator prints the
+function's name and the result it computes.
+
+class Trace:
+    def __init__(self,f,f_name):
+        self.f = f
+        self.f_name = f_name
+        
+    def __call__(self,*args,**kargs):
+        result = self.f(*args,**kargs)
+        print(self.f_name+'called: '+str(result))
+        return result
+
+Now suppose we want to decorate a function f defined simple as
+
+def f(x):
+    return 2*x
+
+If we write
+
+@Trace
+def f(x):
+    return 2*x
+
+Python raises a TypeError exception, because the __init__ for Trace requires
+two arguments, not one. We can avoid the @ form of decorators and write
+
+def f(x):
+    return 2*x
+f = Trace(f,'f')
+
+to solve the problem, but without using the @Decorator form. Can we do something
+to use this form. The problem is that we have have two arguments to __init__ but
+@Decorator requires just one, so we can use functools.partial to pre-supply the
+second argument.
+
+We can write
+
+f_Trace = functools.partial(Trace,f_name='f')
+@f_Trace
+def f(x):
+    return 2*x
+
+But even that is a bit clunky, because we are defining the name f_Trace but
+using it only once (we are not likely to trace other functions named f). We
+don't need this name; instead we can write
+
+@functools.partial(Trace,f_name='f')
+def f(x):
+    return 2*x
+
+directly using the result returned from partial as the decorator. This allows
+us to use the standard @Decorator form (with possibly more than one decorator).
+
+Now calling f(1) would return the result 2 and cause Python to print
+
+  f called: 2
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Define a class that decorates function calls so that it keeps count of how
+many times the function was called with each combination of arguments. Write
+a report function that returns a list of 2-tuples, each containing the argument
+and the number of times the function was called with that argument, sorted from
+the most freqeuently to least frequently called argument).  Hint: this is
+similar to what Track_Calls and Memoize does.
+
+2) Define a Memoize class whose constructor also has a max_to_remember argument,
+which limits the size of the dict to that number of entries (if the argument is
+None, memoize all calls in the ditc). It should remember only the most recent
+max_to_remember arguments. Hint: do this by keeping a list (really representing
+a queue with oldest and youngest values) and a dict in synch as follows:
+  (a) if the args are IN the dict, just return the result.
+  (b) if the args are NOT IN the dict, and the list HAS ROOM, add the args to
+         the list (at the end: youngest) and to the dict (with their computed
+         value)
+  (c) if the args are NOT IN the dict, and the list has NO MORE ROOM, pops the
+         value out of index 0 (oldest) in the list and delete that as a key from
+         the dict, then add the args to the list (at the end) and to the dict
+         (with their computed value) 
+Finally, write a function that returns a 4-tuple containing the number of hits
+(times the function was callled on memoized arguments), misses (times the
+function was callled on arguments that weren't memoized), the current size of
+the list/dict, and the maximum size.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

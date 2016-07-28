@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 6 Linked Lists -->
+<head>
+	<meta charset="utf-8" />
+	<title>Linked Lists</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Six: Linked Lists</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#ln">Class LN</a></h4></li>
+				<li><h4><a href="#functions">Functions that query/access Linked Lists</a></h4></li>
+				<li><h4><a href="#functions1">Functions that command/mutate linked lists</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+ICS-46 is concerned with studying the lower-level data structures that are used
+in Python to represent lists/tuples, dicts, sets/frozensets, and other
+not-built-into Python named data-types: stacks, queues, priority-queues, 
+equivalence classes, and graphs. There are two primary components to all these
+data-types: arrays and self-referential data-structures. Linked lists are the
+simplest kind of self-referential data-structures, and trees are more complex
+self-referential data-structures.
+ 
+Languages like Java/C++ don't build-in most of Python's useful data-types, but
+instead provide them in standard libraries, which are a bit more awkward to use
+than these data-types in Python. These data-type libraries are built on arrays
+and self-referential structures. This week is a peek at self-referential
+structures (the last week will be a peek at more of Java, and will address some
+of these same issues in a larger context).
+</pre>
+
+<a name="ln"><h1>Class LN</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Here is the trivial class that serves as the basis for all our linked list code
+(and the tree class isn't much different). LN stand for List Node: a linked
+list is a sequence of list nodes one explicitly referring to the next (via a
+next references).
+
+class LN:
+    def __init__(self : LN, value : object, next : LN = None):
+        self.value = value
+        self.next  = next
+
+Basically the class allows us to create objects with two instance names: value
+refers to some object (of any class) but next should either refer to an object
+constructed from the LN class or refer to th special value None (its default
+value above). In this way we describe LN as a self-referential class: each of
+its objects refers to another one of its objects (although None will serve to
+stop this recursive definition from being infinite: it will be the base case in
+our recursive functions that process linked lists): None represents a linked
+list with no/0 nodes. Generally, a linked list is a sequential list of values.
+
+Actually, because when defining LN we cannot use LN for an annotation, the above
+class at best can be written
+
+class LN:
+    def __init__(self, value : object, next = None):
+        self.value = value
+        self.next  = next
+
+So a linked list is like a standard Python list (implemented by arrays, which
+you'll learn tons about in ICS-45J/ICS-45C and ICS-46, but are hidden in
+Python). Here, and much more in these other courses, we will learn many details
+concerning the objects that implement linked lists and how we can implement,
+using linked lists, the kinds of operations we perform on standard Python lists.
+In ICS-46 we will focus the the performance tradesoff (speed/space) for array
+vs. linked structures for representing lists.
+
+We already know a lot about names refering to objects that have namespaces,
+but objects refering to objects (of the same class) that refer to objects (of
+the same class) that refer to objects (of the same class) ... will be something
+new to learn about and explore.
+
+We will start with pictures, because pictures are essential to understanding
+and manipulating these data structures. In lecture, I will show some detailed
+diagrams of linked lists built with LN objects; then I will remove much
+redundant information to show more concise and easy to draw pictures. Please
+copy these down, as they are not in the notes.
+
+     Show detailed pictures here in lecture
+
+Here is an abbreviated picture: name x refers to an LN object whose value is 5
+and whose next is a reference to another LN object whose value 3 and whose next
+is a reference to another LN object whose value 8 and whose next is .....
+The value None is represented symbolically by the symbol /.
+
+  x
++---+    +---+---+    +---+---+    +---+---+    +---+---+    +---+---+
+| --+--->| 5 | --+--->| 3 | --+--->| 8 | --+--->| 2 | --+--->| 4 | / |
++---+    +---+---+    +---+---+    +---+---+    +---+---+    +---+---+
+
+Note that the tails of the arrows (references) are put INSIDE a box
+representing a place where a name's value is stored. The heads of the arrows
+refer to an entire LN object, not any particular instance name/value in it.
+
+In the following, whenever we see a .name it means "follow the arrrow to the
+object it refers to (all arrows refer to objects) and access the name attribute.
+Read the following carefully; everything later we do with linked lists is built
+on understanding the meaning of .name (something you've been doing with class
+objects for a while, even if just doing something like alist.append(...). So
+  (1) x stores a reference to the first LN object
+  (2) x.value stores a reference to the int object 5
+  (3) x.next stores a reference to the second LN object
+  (4) x.next.value stores a reference to the int object 3 in this second LN
+        object
+  (5) x.next.next stores a reference to the third LN object
+  (4) x.next.next.value stores a reference to the int object 8 in this third
+         LN object
+
+Don't memorize this; understand what .name means and carefully be able to
+analyze each of these expressions, and any others using .next and .value.
+
+Typically we will look at classes for a list/tree data structure as representing
+just data and no methods. So, we will examine functions defined outside of LN,
+not methods defined inside the LN class (although most of these functions can be
+easily written as methods). We will discuss both iterative and recursive
+versions of most functions.
+
+See the download that contains all these functions and a simple driver that you
+can use to test them.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="functions"><h1>Functions that query/access Linked Lists</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+One of the main operations we perform on linked lists (as we do with lists)
+is to iterate over them, processing all their values. The following function
+computes the sum of all the values in a linked list ll.
+
+def sum_ll(ll):
+    sum = 0
+    sum ll != None:
+        sum += ll.value
+        ll = ll.next
+    return sum
+
+Lots of code that traverses (iterates over) linked lists looks similar. In class
+we will go over (hand simulate) how this code processes the linked list above,
+with the call sum_ll(x) and see exactly how it is that we visit each node in
+the linked list and stop processing it at the end.
+
+There is no special iterator for LN objects (unless we create one, as we will
+below); LN is just like any other Python class.
+
+We can also define linked lists recursively and use such a definition to help
+us write functions that recursively process linked lists. 
+
+  (1) None is the smallest linked list: it contains no nodes
+  (2) A list node whose next refers to a linked list is also linked list
+
+So None is a linked list (of 0 values); a list node whose next is None is a
+linked list (of 1 value); a list node whose next is a list node whose next is
+None is a linked list (of 2 values); etc.
+
+So, we can recursively process a linked list by processing its first LN and then
+recursively processing the (one smaller) linked list they refer to; recursion
+ends at None (which is the base case: the smallest linked list). We can
+recursively compute the sum of linked list by
+
+def sum_ll_r(ll):
+    if ll == None:
+        return 0
+    else:
+        return ll.value + sum_ll_r(ll.next)
+
+Back to the three rules we studied to prove a recursive functions correct:
+
+(1) It recognizes and computes the correct result for the smallest (no LN)
+      linked list: it returns 0 which is the sum of no nodes.
+
+(2) Each recursive call is on a smaller linked list, which is closer to the
+      base case: The recursive call is on ll.next, which is a linked list with
+      one fewer nodes.
+
+(3) Assuming sum_ll_r(ll.next) computes the sum of all values after the node
+      representing the start of the linked list to be processed, this function
+      returns the sum of all the nodes in this linked list: if we add the value
+      of this first node to the sum of the values in all the following nodes in
+      the linked list, then we have computed the sum of all the nodes in the
+      linked list.
+
+An even simpler traversal of linked lists computes their length. Here are the 
+iterative and recursive methods.
+
+def len_ll(ll):
+    count = 0
+    while ll != None:
+        count += 1
+        ll = ll.next
+    return count
+
+def len_ll_r(ll):
+    if ll == None:
+        return 0
+    else:
+        return 1 + len_ll_r(ll.next)
+ 
+These are simpler than the sum_ll function: rather than adding the value of
+each list node, these add 1 to a count for each list node, ultimately computing
+the number of list nodes in the entire linked list: its length.
+
+Next lets look at computing a string representation for a list. There is no
+standard for how linked lists are represented as strings. We could convert them
+to look like a normal list: [...] but instead we will use the following form
+'5->3->8->2->4->None'. Here are the iterative and recursive functions to produce
+such strings.
+
+In the iterative method, for each node in the list we append its value followed
+by '->' into a string, and append just the value 'None' at the end, before
+returning.
+
+def str_ll(ll):
+    answer = ''
+    while ll != None:
+        answer += str(ll.value)+'->'
+        ll = ll.next
+    return answer + 'None'
+
+In the recursive version, we return 'None' as the base-case, appending
+the value and '->' in front of the result returned on each recursive call.
+
+def str_ll_r(ll):
+    if ll == None:
+        return 'None'
+    else:
+        return str(ll.value)+'->'+str_ll_r(ll.next)
+
+In all these examples, the iterative and recursive code have been approximately
+the same complexity. Let's now look at two other functions: one that converts a
+standard Python list into a linked list, and one that copies a linked list,
+observing that the recursive versions are a bit simpler to write and understand.
+BUT, you should hand simulate the iterative methods to understand how/why they
+work too.
+
+First: two functions to convert a standard Python list into a linked list.
+
+In list_to_ll we must treat an empty list specially, returning None: otherwise
+(for a non-empty list) we can access the first value: l[0]. We make two names
+refer to its LN (which has next=None): front and rear. We will not change front
+and eventually return its value (returning a reference to the front of all the
+list nodes in our list). We add each new value at the end of the list of nodes
+by extending the node rear refers to: changing its next from None to an actual
+list node (whose next is None), and then re-adjusting rear to refer to this new
+end-of-the-list node, extending it as many times as necessary.
+
+def list_to_ll(l):
+    if l == []:
+        return None
+    front = rear = LN(l[0])
+    for v in l[1:]:
+        rear.next = LN(v)
+        rear = rear.next
+    return front
+
+The recursive version of this function is simpler, and looks pretty much like
+all the recursive functions that we have seen for linked lists. One interesting
+feature of note: the constructor for LN has the recursive call as its second 
+argument.
+
+def list_to_ll_r(l):
+    if l == []:
+        return None
+    else:
+        return LN(l[0], list_to_ll_r(l[1:]))
+
+Here is the proof this function is correct
+
+(1) It recognizes and computes the correct result for the smallest (empty) list:
+    it returns None, which is an empty linked list.
+
+(2) Each recursive call is on a smaller list, which is closer to the base case:
+      The recursive call is on l[1:], the standard one-smaller list.
+
+(3) Assuming list_to_ll(l[1:]) returns a linked list with all the values in the
+      l[1:], this function returns a linked list of all the values in the
+      parameter list: it returns a reference to a new list node with the first
+      value in the list (l[0]) and whose .next refers to a linked list with
+      all the values in l[1:].
+
+To find a value in a linked list (returning a reference to the node that
+contains that value, we write an iterative method and two recursive variants.
+Each returns None if the value is not found in the linked list.
+
+Iteratively, we use ll to traverse the list, looking for avalue: we either find
+it or "run off the end of the list" and return None
+
+def find_ll(ll, avalue):
+    while ll != None:
+        if ll.value == avalue:
+            return ll
+        ll = ll.next
+    return None
+
+We can also write this more simply as follows, combining the two conditions
+for returning a value; when the loop terminates, the test
+
+  ll != None and ll.value != avalue
+
+is False, so either ll == None or ll.value == avalue; in both cases returning
+ll is correct. Note that the short-circuit evaluation of the and operator (and
+the order of the conjuncts) is critical: we should not follow the reference in
+ll (with ll.value) until we are sure that ll does not refer to the None object;
+if it does ll.value would raise an exception.
+
+def find_ll(ll, avalue):
+    while ll != None and ll.value != avalue:   # short-circuit and is critical
+        ll = ll.next
+    return ll
+
+For the recursive functions, the first uses the simplest base case/non-base case
+form. If the linked list isn't empty
+
+def find_ll_r(ll, avalue):
+    if ll == None:
+        return None
+    else:
+        if ll.value == avalue:
+            return ll
+        else:
+            return find_ll_r(ll.next,avalue)
+
+We could replace this entire body by one complicated conditional expression:
+
+return (None if ll==None else ll if ll.value==avalue else find_ll_r(ll.next,avalues)
+
+But this version is very hard to read, and not in the standard recursive form
+that we have been using.
+
+As a slight variant (and similar to what we did in the while loop version) we
+can test both ll == None or ll.value == avalue and in both cases return ll
+(returning either None of a reference to a list node). Note that if ll == None
+is True, short-circuit evaluation of "or" means that the expression
+ll.value == avalue will not need to be evaluated: good thing, too, because
+accessing ll.value when ll is None would raise an exception.
+
+def find_ll_r2(ll, avalue):
+    if ll == None or ll.value == avalue: # short-circuit or is critical
+        return ll
+    else:
+        return find_ll_r(ll.next,avalue)
+
+Note that this function is tail recursive and could autoamtically be written
+iteratively (as the code above)
+
+We have already examined code that returned the linked list equivalent of a
+standard Python list. Here is similar code that copies a linked list:
+constructs new nodes with the same values, arranged in the same order, in a
+linked list. In the iterative version we again use front/rear to remember the
+front of the list and extend the rear for each values we traverse in ll.
+
+def copy_ll(ll): 
+    if ll == None:
+        return None
+    front = rear = LN(ll.value)
+    while ll.next != None:
+        ll = ll.next
+        rear.next = LN(ll.value)
+        rear = rear.next
+    return front
+
+As we expect, the recursive version is more elegant, and similar to the other
+recursive code that processes linked lists. It is similar to the code we wrote
+to translate a Python list into a liked list.
+ 
+def copy_ll_r(ll):
+    if ll == None:
+        return None
+    else:
+        return LN(ll.value,copy_ll_r(ll.next))
+
+Finally, languages like Java/C++ don't easily support generators. But because
+Python, does we can easily write a generator that produces all the values in a
+linked list.
+
+def iterator(ll):
+    while ll != None:
+        yield ll.value
+        ll = ll.next
+
+With this code we could print every value in a linked list by writing
+
+  for v in iterator(ll):
+      print(v)
+
+In fact, we could put a variant of this code in the __iter__ method in the LN
+class as follows:
+
+  def __iter__(self):
+    current = self
+    while current != None:
+        yield current.value
+        current = current.next
+
+With this method, we could write just
+
+  for v in ll:
+      print(v)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="functions1"><h1>Functions that command/mutate linked lists</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+All the functions above queried/accessed/created but did not mutate linked
+lists: no changes were made to .value or .next of an LN object.
+
+If x refers to the first LN in a linked list, we can add a new value at the
+front of the linked list by the simple code:
+
+  x = LN(newvalue,x)
+
+Now x refers to a new list node, whose value is newvalue, and whose next refers
+to the LN that x used to refer to: all the nodes in the original linked list.
+Draw a picture with x = None originally or x refering to the linked list above.
+
+We can write the following iterative/recursive functions to append a value at
+the end of the linked list. In both cases the list is mutated: the last list
+node has its next changed to refer to a new list node containing the new value
+(and whose .next is None). But, to handle the case where x is initially empty
+(stores None), the iterative/recursive functions must return a reference to the
+front of the list (maybe x itself, or if x stored None, a reference to a
+one-node linked list storing newvalue). We call these functions like
+
+  x = append_ll(x,newvalue)
+
+and
+
+  x = append_ll_r(x,newvalue)
+
+As with list_to_ll and copy, the iterative version needs to remember the front
+while using ll to traverse down the list, to find the last list node to extend.
+
+def append_ll(ll,value):
+    if ll == None:
+        return LN(value)
+    front = ll
+    while ll.next != None:  # while ll does not refer to the last node...
+        ll = ll.next        # terminates when ll.next == None
+    ll.next = LN(value)     # (know at end: ll.next == None) append value at end
+    return front            # return reference to original front of ll
+
+The recurisive method is again simpler to write.
+
+def append_ll_r(ll,value):
+    if ll == None:
+        return LN(value)
+    else:
+        ll.next = append_ll_r(ll.next,value)
+        return ll
+
+Here is the proof this function is correct
+
+(1) It recognizes and computes the correct result for the smallest (empty)
+      linked list: it returns a reference to a linked list with one node
+     (storing value)
+
+(2) Each recursive call is on a smaller linked list, which is closer to the
+      base case of None: the recursive call is on ll.next.
+
+(3) Assuming append_ll_r(ll.next,value) returns a reference to a linked list
+      that is one longer than ll.next containing all its list nodes followed by
+      value in the last list node, this function returns a linked list that is
+      one longer than ll containing all its list nodes followed by value in the
+      last list node (by storing in ll.next a reference to the extended linked
+      list and returning the original reference to ll).
+
+Here are two simple functions (not iterative or recursive) to mutate a list by
+adding/removing a value after one referred to by their argument. Both functions
+return None implicitly.
+
+def add_after_ll(ll,value):
+    # raises an exception if ll is None
+    ll.next = LN(value,ll.next)
+
+def remove_after_ll(ll):
+    # raises exception of ll (no list) or ll.next (no value to remove) is None
+    ll.next = ll.next.next
+
+Note that to remove the first value in a linked list, we write
+
+  x = x.next
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Define a recursive function that converts a linked list of values into a
+standard Python list?
+
+2) To really understand how low-level linked list code works, use the list
+shown above execute the call.
+
+x = magic(x)
+
+It actually mutates the list in a complicated way and returns a reference to
+one of its nodes. Hand simulate the results (calling the function to see the
+result produced before trying to hand simulate it has zero educational value.
+I don't care whether you know the answer; I care whether you can hand simulate
+this code and code like it that you might write.
+
+def magic(ll): 
+    answer = None
+    while ll != None:
+        t_m      = ll
+        ll       = ll.next
+        t_m.next = answer
+        answer   = t_m 
+    return answer
+
+3) Define a function named select with two arguments: a linked list (ll) and a
+non-negative integer (n); it returns the value of the nth value in the list
+or raises an exception if there are too few values in the list. Write this
+function iteratively and recursively.
+
+4) Define a function named append, with two linked list arguments; it returns
+a reference to the first node in a new linked list (lots of new LN objects)
+with all the values in the first followed by all the values in the second. This
+method does not mutate the arguments lists. Write this function iteratively and
+recursively.
+
+5) Define a function named append, with two linked list arguments; it returns
+a reference to the first node in a linked list (no new LN objects) that contains
+all the values in the first followed by all the values in the second.  This
+method mutates the arguments lists. Write this function iteratively and
+recursively.
+
+6) Define a function named interleave, with two linked list arguments; it
+returns a reference to the first node in a new linked list (lots of new LN
+objects) with all the values in the first interleaved with all the values in
+the second. This method does not mutate the arguments lists. Write this function
+recursively
+
+7) Define a function named interleave, with two linked list arguments; it
+returns a reference to the first node in a linked list (no new LN objects) that
+contains all the values in the first interleaved with all the values in the
+second.  This method mutates the arguments lists. Write this function
+recursively
+
+8) Define a function named reverse, with one linked list argument; it returns
+a reference to the first node in a new linked (lots of new LN objects) with all
+the values in their reverse order. Write this function iteratively and
+recursively.
+
+9) Define a function named reverse, with one linked list argument; it returns
+a reference to the first node in a linked (no new LN objects) with all the
+values in their reverse order. This method mutates the arguments lists. Write
+this iteratively and recursively
+
+10) For the recursive functions written in 8 and 9, rewrite them to use a helper
+method with an extra value that accumulates the reversed linked list. Such
+functions will be tail recursive; translate their code to iterative functions.
+
+11) Define a function named is_ordered, with one linked list argument; it
+returns whether or not the list values are in non-decreasing order (each one
+must be <= its successor).
+
+12) Define a function named insert_ordered, with two argumets: one an ordered
+linked list (see problem 11) and one value; it returns a reference to a linked
+list with all the original values and the new one added so the linked list is
+still ordered.
+
+13) Define the __iter__ method in LN such that we can iterate over the values
+in a linked list. Hint: either return  a nested classe implementing __next__
+or return a generator (simpler) to do the job.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

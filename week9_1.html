@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 9 Unit Test -->
+<head>
+	<meta charset="utf-8" />
+	<title>Unit Test</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h2 id="title">Week Nine: Testing Software</h2></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#testing">Testing</a></h4></li>
+				<li><h4><a href="#unit">The unittest class</a></h4></li>
+				<li><h4><a href="#enhanced">Enhanced Sorting Example</a></h4></li>
+				<li><h4><a href="#large">Larger example for priority queue</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this lecture we will discuss testing in general, and then discuss how to
+perform unit testing in Python. The standard Python library supplies a module
+named unittest; it defines a class named TestCase from which we can create
+subclasses to perform unit testing. My driver code for testing your programs is
+a quick and dirty way to do unit tests. The actual unittest class is more
+elegant and comprehensive, but is a bit more heavyweight and requires more work
+that the batch self-checks use when testing simple code.
+</pre>
+
+<a name="testing"><h1>Testing</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Testing is the process of running software looking for errors (meaning actively
+trying to make the program fail by testing it in many -even unexpected- ways):
+failure of the program to produce correct output from some correct input. Once
+testing shows the presence of a bug, debugging begins (the process of fixing the
+errors found during testing). 
+
+Professional software testers acquire great skill and intuition at thinking-up
+"good" inputs on which to test programs. They are valued members of a product
+team. For example, Microsoft employs about one tester for each programmer.
+Sometimes these testers work in teams separate from the programmers; at other
+times a tester will pair up with a programmer. When the programmer finishes
+some part of the code, the tester begins testing it while the programmer
+proceeds to the next part of the code. If the tester finds any bugs, the
+programmer must fix them before continuing. As you can imagine, programmers
+often dislike testers because the latter are always pointing out mistakes made
+by the progammers!
+
+But, it is better to have the mistake pointed out by your coworker than by your
+boss (or a customer). No programmer wants to believe that his/her code contains
+errors; but they all do contain errors. Some would argue that the programmer,
+intimate with the code he/she has written, is the best person to test it. But,
+having a programmer test his/her own code might be bad from a psychological
+point of view: he/she might not test the code as rigorously, because he/she
+doesn't really want to find any errors. Having a separate tester addresses this
+problem.
+
+But even this approach can cause problems: if a programmer knows an independent
+tester will be examining his/her code after it is written, the programmer may
+write code carelessly, knowing it is someone else's job to spot problems. Thus,
+there is a real tangle of incentives when writing and testing code. How
+Microsoft produces software (an overview accessible to students in this course)
+is discussed in Cusumano and Shelby: "Microsoft Secrets: How the World's Most
+Powerful Software Company Creates Technology, Shapes Markets, and Manages
+People", Free Press, 1995.
+
+In Agile programming methods (which includes Extreme Programming, which
+includes Pair Programming) programming is test-driven. BEFORE doing any coding,
+a programmer or tester develops an extensive suite of tests that the code must
+pass. Only then is the code written: and the programmer's progress is judged by
+the number of tests in the suite that the code passes. Whenever the code is
+modified, it must repass all these tests. We will study unit testing below,
+which works for functions and class units.
+
+There are two general categories of testing. In black-box testing, testers
+write test-cases based only on the specifications for what the code is supposed
+to accomplish; they are not allowed to look at the code itself. In white-box
+testing (maybe it would be better to call it clear-box testing), testers write
+test-cases based both on knowledge of the specifications and the code itself:
+certain kinds of tests might suggest themselves if the tester examines the
+code. Of course, black-box tests can be developed before or while the code is
+written, but white-box tests can be developed only after the code is written.
+
+Industry testers often write/use long scripts when they regression test
+programs. Each time a program is changed, the tester executes the same script to
+ensure that no bugs were introduced (the code must still work as it always has).
+Then the script is extended for the new features being tested. Much of the work
+in regression testing can be automated: often the result of such tools is
+either a message confirming that all tests were passed, or a list of outputs
+(and their inputs) that differed between the original program and the one now
+being tested.
+
+Finally, integration tests determine whether software components, written and
+tested separately (in unit tests), work together correctly in a program. It is
+much easier to test/debug each component by itself, than in a system comprising
+many components. In such systems, even simple bugs can manifest themselves in
+hard to understand situations. Many features added to programming languages at
+the end of the 1990s were designed to simplify software integration.
+
+A famous quote by the Computer Scientist Edsgar Dijkstra about testing.
+
+  Testing shows the presence, not the absence of bugs.
+
+By this he means, testing can show the presence of bugs (if the tests fail),
+but not the absence of bugs: even if all the tests succeed, there can still be
+bugs in the code, just not bugs caught by the tests. If I know exactly what
+testing inputs that you will use, I can write code that works exactly for those
+inputs (and no others) so the code will pass all the tests.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="unit"><h1>The unittest class</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+To test software, we must write both the tests and the software. Typically a
+programmer should understand the problem first, and then write the tests based
+on this understanding of the problem, and then write the code. Of course, the
+programmer can also write the code first, but it is better if the programmer
+can continually check the code he/she is writing against the suite of tests
+he/she has written: he/she then knows how much progress is being made towards
+passing all the tests.
+
+For a first simple example we will discuss testing a sort function. The function
+won't care what it is sorting, so we will test it on list of integers. There
+are two specifications that sorting functions must pass:
+
+1) Permutation: the sorted list has the same values as the original list
+2) Ordered    : the values in the list appear in non-decreasing order
+
+Why are both these specifications necessary? A function that put 0s in all
+positions in a list is ordered but not a permuation (so isn't sorting the list).
+A function that shuffles the values in the list (swaps them randomly) is a
+permutation but only rarely would it be ordered (so isn't sorting the list).
+
+While this is a bit of overkill, here is a complete class that tests the
+standard list.sort function. This is module sorting1.py in the download for
+this lecture
+
+import unittest
+
+class Sorting(unittest.TestCase):
+
+    def setUp(self):
+        self.alist  = [4, 3, 1, 2, 0]
+        self.sorted = [0, 1, 2, 3, 4]
+        list.sort(self.alist)
+    
+    def test_order(self):
+        self.assertTrue(self._is_ordered(), 'List is not in order')
+    
+    def test_permutation(self):
+        self.assertCountEqual(self.alist,self.sorted,
+                              'List is not a permutation of the original')
+    
+    def _is_ordered(self):
+        for i in range(len(self.alist)-1):
+            if self.alist[i] > self.alist[i+1]:
+                return False
+        return True
+
+Here is an overview of what is happening in this module: First, we import the
+unittest module. Then we define the Sorting class, which is a subclass of
+unittest.TestCase (a class in unittest). Sorting inherits many methods, some of
+which we will discuss in more detail below.
+
+The standard form of a typically unittest is a setUp method (we can omit this
+method, but if it appears it must appear with exactly this name: it overrides a
+setUp method that is defined in TestCase that does nothing) followed by a 
+series of methods whose names start with test (test_order, test_permutation).
+There are other special methods we can override, but don't need to for this
+simple example. This class also defines a helper function: _is_ordered.
+
+To run the test that is this class, we will right click this file (in the text
+editor) and select the "Run as" and then the "Python unit-test" option (instead
+of "Python Run" which we have always chosen before).
+
+What Python does in this case is call unittest.main() automatically. This
+function finds every method in the class whose names start with test and calls
+those methods, but first, before calling each method, it calls setUp. The
+Performance class operated similarly: it ran setup code untimed, and then it
+timed the real code (the specified number of times).
+ 
+So for this class it calls setUp and then runs test_ordered and then runs setUp
+again and calls test_permutation. It calls the methods (and reports their
+results) in alphabetical order (it constructs a list of function to run and
+then runs them in sorted order).
+
+The setUp method creates two instance names: self.alist which is a specific
+5-list that is not ordered and self.sorted which is that same list sorted. Then
+setUp calls list.sort.
+
+So, Python calls setUp and then the test_order method, which calls assertTrue
+(a method inherited by Sorting, defined in unittest.TestCase) evaluating whether
+the helper method self._is_ordred returns True: if so this test passes; if not
+the test fails. We will see how failed tests are handled soon. Then Python
+calls setUp again, and then the test_permutation method, which calls
+assertCountEqual (a method inherited by Sorting, defined in unittest.TestCase)
+evaluating whether its first argument has the same values, appearing the same
+number of times (what a permutation means) as its scond argument. At this point
+the results of the test appear in the PU: PyUnit tab near the Console tab
+(typically at the bottom or Eclipse.
+
+The console also shows some less complete testing information.
+
+Because the list.sort method is correct, both of these assertions are True.
+There are two different ways a test can fail
+
+  1) The code raises an unexpected exception when it shouldn't (see the red x)
+  2) The code fails an assertion (see the blue x)
+
+Note that if any test raises an unexpected exception, Python marks the test as
+failing and moves on to the next test (it doesn't terminate testing; the batch
+self-checks operate similarly).
+
+Look at the picture in the unittest.pdf accompanying this lecture. The heading
+Sorting1 shows the result of running the test described above. Here is a key
+to this picture.
+
+All the information is displayed in a Pu PyTest tab. To the right of this
+tab are the following icons
+
+Show       : toggle it to show all tests/only failed tests
+Rerun      : rerun the entire test
+Error rerun: rerun only the failed tests (more focus, less time)
+Stop run   : stop running the current test
+Ignore
+History    : examine recent test runs (restores appearance at end of that test)
+
+The next line indicates that it has finished all tests: 2 tests out of 2; for
+long tests, it will show the testing progress: 1/n, 2/n, ... n/n. Next it shows
+unexpected exceptions (red x) 0 and failed assertions (blue x) 0. The green
+line is a progress bar, showing all testing is done: it is green because all
+tests succeeded (it turns red if any failed).
+
+The next line shows the total testing time (so fast here it records 0.00). For
+long tests, this line will show which test it is currently performing; when
+testing is finished it shows the total time.
+
+  Interesting sidenote. You can use this little timer to perform performance
+  tests on the the sort function. You can also import cProile and profile the
+  testing.
+
+Finally, there is a list of all the tests (sortable by any column): each line
+is numbered, says whether that line's test was OK or failed, names the test
+run, and indicates its file. Using advanced functions in unittest, it is
+possible to run tests in other files. Not a topic we will cover. Eclipse uses
+the space to the right of this information to describe failed tests (see below).
+
+So that is unittest in a nutshell. If you replace line 8 by self.alist = [1, 0]
+and rerun the test, both the test_order and test_permutation method will fail
+(see it as the Sorting1 Failed picture in the .pdf). Or you can just comment-out
+this line and only the test_ordered method will fail.
+
+  So be careful. If you specify the wrong answer in an assertion, the assertion
+  fails not because the code is incorrect, but because your test is inccorrect.
+
+Notice the 2 to the right of the blue x (failed tests) and the red progress
+bar. In the list I have highlighted the second failed test (test_permutation)
+on the right it shows the line whose assertion failed (including the error
+message). It also tries to show the REASON for the failure (based on the
+assertCountEquals) by showing all the values where the counts differed (not for
+0 and 1, but for 2, 3, and 4).
+
+Here is a table of the most useful assertions and what they test. A last string
+argument can be added to each, which will be printed if there is a failure).
+Note that for assertTrue/assertFalse the REASON will just say what the boolean
+was; but for assertEquals, if the values aren't equal, the REASON will show the
+both of the unequal values: generally a failed asser will try to show all
+relevant information/values in the error message. These are the main tools you
+have to check for correctness.
+
+Assertion                   |   Test
+----------------------------+----------------------------------
+assertTrue(x)	  	    | bool(x) is True   
+assertFalse(x)		    | bool(x) is False   
+assertEqual(a, b)	    | a == b   
+assertNotEqual(a, b)	    | a != b   
+assertCountEqual(a, b)	    | a and b have the same elements and the same
+                            |  number of each, regardless of their order 
+assertIs(a, b)		    | a is b
+assertIsNot(a, b)	    | a is not b
+assertIsNone(x)		    | x is None
+assertIsNotNone(x)	    | x is not None
+assertIn(a, b)		    | a in b
+assertNotIn(a, b)	    | a not in b
+assertIsInstance(a, b)	    | isinstance(a, b)
+assertNotIsInstance(a, b    | not isinstance(a, b)
+assertMultiLineEqual(a, b)  | strings
+assertSequenceEqual(a, b)   | sequences, and are equal
+assertListEqual(a, b)       | lists, and are equal
+assertTupleEqual(a, b)      | tuples, and and equal
+assertSetEqual(a, b)        | sets/frozensets, and are equal
+assertDictEqual(a, b)       | dicts, and are equal
+
+There is one assertion that deals with requiring an exception be raised. Calling
+
+  assertRaises(exception,f,*args,**kargs)
+
+calls f(*args,**kargs) and fails if it doesn't raise the required exception.
+For example, if f('a',b) should raise the AssertionError exception, we would
+check it by assertRaise(AssertionError,f,'a',b).
+
+Also related is
+
+  assertRaisesRegex(exception,re,f,*args,**kargs)
+
+which does the same thing, but also checks the exception message against the
+regular expression re, and also failes if there is no match. In addition, the
+following assertions just work on regular expressions.
+
+assertRegex   (s, re) 	    |	regex.search(s)
+assertNotRegex(s, re)	    |	not regex.search(s)
+
+Finally, these assertions deal with relation quantities
+
+Assertion                   |   Test
+----------------------------+----------------------------------
+assertAlmostEqual(a, b)	    | round(a-b, 7) == 0   (the same to the 7th decimal)
+assertNotAlmostEqual(a, b)  | round(a-b, 7) != 0   
+assertGreater(a, b)	    | a > b
+assertGreaterEqual(a, b)    | a >= b
+assertLess(a, b)      	    | a < b
+assertLessEqual(a, b)       | a <= b
+
+OK, that is a big laundry list, but here it is in one place.
+
+Before going on to a bigger example, any print functions executed in a test
+method appear to the right of the test when that method is selected in the 
+PyUnit tab (with eithr the heading ==ERRORS== or ==CAPTURED OUTPUT== (if there
+are no errors). It is very userful to put such debugging-print statements in
+failing tests, to help us further understand the nature of the failure.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="enhanced"><h1>Enhanced Sorting Example (sorting2.py)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In the enhanced version, I wrote three other "sorting" methods that fail in
+"interesting" ways.
+
+Notice the global name sorter, which is used in the class, and is bound to
+the sorting function we want to test. The test_large_scale method test 100
+random lists, each of size_to_sort. The test_order/test_permutation now include
+print statements: look at the resulting output compartmentalized for each test
+(whether it passes or not).
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="large"><h1>Larger example for priority queue</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The courselib includes a class named PriorityQueue. You can read the
+documenation for this class. To summarize here, we can put values in a
+priority queue when it is constructed or by using the add function. The remove
+method removes the highest/largest value, so values come out from highest to
+lowest. The supporting methods are clear (which removes all values), peek (which
+returns the current highest value but doesn't remove it), is_empty (which is a
+boolean: True if there are no values in the priority queue, False if there is
+at least one), and size (the number of values in the priority queue).
+
+The pq module is a test for each of these methods in the priority queue. The
+logic is a bit complex (remember bigger values come out first), but this gives
+a more reasonable idea about how classes are tested (compared to just one
+function for sorting).
+
+The unnittest module had many more interesting and advanced functions: there
+are many more sophisticated things we can do when testing classes. This lecture
+is just an introduction to the topic, which is documented thoroughly in Section
+26.3 of the Python online library documentation.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

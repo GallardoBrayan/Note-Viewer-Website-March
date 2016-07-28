@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 6 Trees -->
+<head>
+	<meta charset="utf-8" />
+	<title>Trees I</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Six: Trees I</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#binarysearch">Binary Search Trees</a></h4></li>
+				<li><h4><a href="#expression">Expression Trees</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this lecture we upgrade our discussion of self-referential structures from
+linked lists to trees, by creating TN: a class that includes a value and two
+references to other objects from the TN class (or None). What seems like a
+trivial extension turns out to be profound: like going from a 1-dimensional
+space to a 2-dimensional space. There are entire books written about trees
+(in both computer science and mathematics), but no books written solely about
+linked lists.
+
+Over the next two lectures we will examine a few applications for trees. We will
+discuss binary order trees (search trees) and structure trees (expression trees)
+and discuss various recursive functions that operate on them. Both use the same
+defintion of the TN (tree node) class shown below
+
+class TN: # A binary tree: each TN has two children
+    def __init__(self : TN ,value, left : TN = None, right : TN = None):
+        self.value = value
+	self.left  = left
+	self.right = right
+
+We will discuss many operations on trees below, written as functions. We can
+also define methods that implement these operations as methods in the TN class.
+
+Actually, because when defining TN we cannot use TN for an annotation, the above
+class at best can be written
+
+class TN: 
+    def __init__(self ,value, left = None, right = None):
+        self.value = value
+	self.left  = left
+</pre>
+
+<a name="binarysearch"><h1>Binary Search Trees</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+A binary tree has a structure and order property. Its structure property
+dictates that every parent node has 0, 1, or 2 children nodes (called left and
+right; each is another binary tree or None). We draw binary trees with their
+root on the top, their left and right children below, and their leaves at the
+bottom (a leaf is a node with 0 children: self.left and self.right are None; an
+internal node has at least one non_None child). A binary search tree also has
+an order property that dictates that all values in the left subtree of any node
+are less than that node, and all values in the right subtree of any node is
+greater than that node. Typically binary search trees have unique values (and
+we will assume so in this lecture).
+
+Structurally, binary trees are much more interesting than linked lists:
+structurally (ignoring values) there is only one linked list of length 4:
+
+     x
+   +---+    +---+---+    +---+---+    +---+---+    +---+---+
+   | --+--->| ? | --+--->| ? | --+--->| ? | --+--->| ? | / |
+   +---+    +---+---+    +---+---+    +---+---+    +---+---+
+
+But there are 14 different binary trees with four nodes. Here is a listing of
+all 14. They are arranged in two groups, such that in each group a tree and its
+mirror image are above/below each other.
+
+       ?                ?                ?
+      / \              / \              / 
+     ?   ?            ?   ?            ?
+    /                  \              / \  
+   ?                    ?            ?   ?
+
+
+      ?                 ?                ?
+     / \               / \                \
+    ?   ?             ?   ?                ?
+         \               /                / \ 
+          ?             ?                ?   ?
+
+
+
+
+      ?                 ?                ?                 ?
+     /                 /                /                 /
+    ?                 ?                ?                 ?
+   /                 /                  \                 \
+  ?                 ?                    ?                 ?
+ /                   \                  /                   \
+?                     ?                ?                     ?
+
+
+      ?                 ?               ?                   ?
+       \                 \               \                   \
+        ?                 ?               ?                   ?
+         \                 \             /                   / 
+          ?                 ?           ?                   ?
+           \               /             \                 /
+            ?             ?               ?               ?
+
+
+Note that the shape of a binary search trees is not uniquely determined by the
+values it contains. For example, a tree with the values 1, 2, 3, and 4 can be
+represented by
+
+      3              2                 4
+    /   \          /   \              /
+   1    4    or   1     3      or    1     or ... any of the 14 structures above
+     \                   \            \
+       2                  4            3
+                                      /
+                                     2
+
+Note that for every node in the binary search trees above (not just the root),
+the parent is > all values in its left subtree and < all values in its right
+subtree.
+
+Later, when we study the add function, we will learn that the shape of a binary
+search tree is determined by the order in which the values in a binary tree are
+added.
+
+There is just one standard metric for linked lists: length. For trees there are
+two standard metrics: size and height. Size counts the number of nodes in a
+tree (therefore it is similar to length for linked lists). It is easily to
+compute size recursively, using a function similar to a recursive computation
+of the length of a list (but with two recursive call -one for each subtree-
+instead of one -for the nodes following in the list).
+
+def size(atree):
+    if atree == None:
+        return 0
+    else:
+        return 1 + size(atree.left) + size(atree.right)
+
+There is no simple way to compute size with a loop: for every node in the tree
+we must visit both its left and right subtrees, so every time that we go left
+we must also save the right for future reference so we can go there too; we can
+write this function iteratively by using an extra list of nodes, but the code
+is not simple to write nor easy to understand.
+
+def size_i(atree)
+    nodes = []
+    size = 0
+    nodes.append(atree)
+    while len(nodes) > 0:
+        next = nodes.pop(0)
+        if next != None:
+            size += 1
+            nodes.append(next.left)
+            nodes.append(next.right)
+    return size
+
+The second metric for trees is height. The standard definition of the height of
+a node is a bit strange: it is the number of steps needed to get from the node
+to the deepest leaf in either of the node's subtrees. So the height of a leaf
+(the base case) is 0 and the height of a tree is the height of its root. We can
+directly translate this definition into the following code. Again there are (at
+most) two recursive calls, in the case of a node with two non-None children.
+
+def height(atree)
+   if atree.left == None and atree.right == None:   # leaf check as base case
+       return 0
+   elif atree.left == None:			    # only a left subtree
+       return 1 + height(atree.right);
+   elif atree.right == None:			    # only a right subtree
+       return 1 + height(atree.left);
+   else					            # both a left/right subtree
+       return 1 + max(height(atree.left),height(atree.right));
+
+This function deals with all the necessary cases: a leaf node, an internal node
+with only a left (or only a right) subtree, and an internal node with both left
+and right subtrees. This function does not work on empty trees, which have no
+directly defined height from the previous definition.
+
+But, this code is much more complicated than the code for computing size. The
+complexity results from using a leaf node as the base case. Let us simplify
+this code by using an empty tree as a base case, and "arbitrarily" defining the
+height of an empty tree to be -1. This might seem like a very strange approach,
+but it seems reasonable too: an empty tree should have a height that is one
+less than a leaf node (whose height is 0). By using this definition (and no
+others), we can simplify the height function dramatically (as well as defining
+it for all possible trees, even empty ones).
+
+def height(atree):
+    if atree == None:
+        return -1
+    else:
+        return 1 + max(height(atree.left),height(atree.right))
+
+Mathematicians generalize definitions such as this one all the time. For any
+value a, a**0 is defined as 1. There are many ways to justify this definition
+(some quite complicated, using limits and calculus); the simplest way is to
+note the algebraic law a**x * a**y = a **(x+y). By this law (a quite useful one
+to have) a**0 * a**x = a**(0+x) = a**x; which means that a**0 must be equal to
+1 for this identity to hold.
+
+If we couldn't guess that -1 was the correct answer, we could deduce it. If
+we started by writing 
+
+def height(atree):
+    if atree == None:
+        return empty-height
+    else:
+        return 1+ max(height(atree.left),height(atree.right))
+
+and looked at height called on a leaf node (which we know must compute a height
+of 0), we would have
+
+   0 = 1 + max(height(None),height(None))  # height(None) because it is a leaf
+  -1 = max(empty-height,empty-height)      # height(None) returns empty-height
+  -1 = empty-height			   # max(x,x) = x for all x
+
+The second line comes from subtracting 1 from each side and substituting
+empty-height for each call to height(None); the third line comes from
+simplifying that max(x,x) = x (the maximum of a value and itself is that value).
+So, we have deduced (from the recursive call) what the base case (None) should
+return.
+
+Next we will look at functions that convert between trees and lists, showing
+that there is a standard way to represent a tree as a nested list of values. We
+represent every TN as a 3-list containing the value, left, and right subtrees
+(each subtree is itself a 3-list). So, we represent the tree
+
+         5
+        / \
+       3   8
+   
+by the list [5 [3 None None] [8 None None]]. Note that each list present always
+has exactly 3 values (of which zero, one, or two are None): so each is a 3-list.
+
+There are simple recursive functions to translate from a tree producing a list
+and from a list producing a tree. Again, each uses two recursive calls
+
+def list_to_tree(alist):
+    if alist == None:
+        return None
+    else:
+        return TN(alist[0],list_to_tree(alist[1]),list_to_tree(alist[2])) 
+
+Each recursive call on a non-empty list builds a TN with a value (alist[0]),
+and then produces subtrees from the next two values in the 3-list; eventually
+None will be reached as base cases.
+
+We can also easily translate from a tree (TN) to a list.
+
+def tree_to_list(atree):
+    if atree == None:
+        return None
+    else:
+        return [atree.value,tree_to_list(atree.left),tree_to_list(atree.right)]
+
+Each recursive call on a non-empty tree builds a 3-list of the value, followed
+by the list equivalent of the left and right subtrees; eventually None will be
+reached as base cases.
+
+The following function prints a tree rotated 90 degree counter-clockwise. So
+the tree we would show as
+
+             30
+          /      \
+       15          50
+    /     \      /    \
+  10       25  35      70 
+         /
+       20
+
+prints as follows. Notice where the root (30) appears, and where the roots of
+its left (15) and right (50) subtrees appear, and the left/right roots of those
+subtrees, etc.
+
+....70
+..50
+....35
+30
+....25
+......20
+..15
+....10
+
+This function declares print_tree_1, as a local helper function that does all
+the recursive work (using the indent_char/indent_delta parameters), and then
+calls print_tree_1 with an initial identation of 0. The helper function
+either does nothing (for printing an empty tree), or prints all values in
+its right subtree (first, with more indentation), its own value, and then all
+values in its left subtree (with more indentation).
+
+def print_tree(atree,indent_char =' ',indent_delta=2):
+    def print_tree_1(indent,atree):
+        if atree == None:
+            return None
+        else:
+            print_tree_1(indent+indent_delta, atree.right)
+            print(indent*indent_char+str(atree.value))
+            print_tree_1(indent+indent_delta, atree.left)
+    print_tree_1(0,atree) 
+
+At this point we have dealt with the structure of trees, but not their values.
+In a binary search trees, we can use the value property to search for, add a
+value, and remove a value efficiently: think of a tree representing a set of
+values (each value in a set is unique; that mirrors our intent of having unique
+values in binary trees).
+
+We can use the following iterative function to search for a value; unlike the
+other functions written above, this one goes only one way (left or right) for
+each tree node. We know that if the value we are searching for is less than a
+node's value, by the order property of a binary search tree it must be in the
+left subtree; if the value we are searching for is greater than a node's value,
+it must be in the right subtree.
+
+def search_i(atree,value):
+    while atree != None and atree.value != value:
+        atree = atree.left if value < atree.value else atree.right
+    return atree  # either None or the TN storing value
+    
+We can also write this function recursively.
+
+def search(atree,value):
+    if atree == None:
+        return None
+    if value == atree.value:
+        return atree
+    elif value < atree.value:
+        return search(atree.left,value)
+    else: # value > atree.value
+        return search(atree.right,value)
+    
+and we can shorten this function to the following
+
+def search(atree,value):
+    if atree == None or atree.value == value
+        return atree
+    else:
+        return search(atree.left if value < atree.value else atree.right ,value)
+
+In the function above, the "base" case is an empty tree or the node storing the
+value; the same recursive call is executed for subtrees, with the first
+"smaller" tree (having fewer nodes) being either atree.left or atree.right.
+
+Because this is a tail-recursive function, we expect to be able to write it
+iteratively (as we did above).
+
+Now, here is a similar (to the top) function to add a value to a tree. We call
+it like: atree = add(atree,value) -similarly to how we added a value to a list.
+
+def add(atree,value):
+    if atree == None:
+        return TN(value)
+    if value < atree.value:
+        atree.left = add(atree.left,value)
+        return atree
+    elif value > atree.value:
+        atree.right = add(atree.right,value)
+        return atree
+    else:
+        return atree  # already in tree; do not change the tree
+
+In all cases, this function returns a tree to which a TN with value has been
+added as a subtree. Note that if the node is None, it returns a reference to a
+TN with value; if node is not empty, it returns that node, but either its left
+of right subtree (as appropriate) now refers to a tree into which value has
+been added.
+
+Note that the structure of a tree is not determined solely by the values it
+contains. As we saw above, there are many legal binary search trees with the
+same values. The structure is determined by the order those values are added to
+the tree. Adding values in increasing order, decreasing order, at random, will
+all produce different shaped trees.
+
+I will defer showing the remove function, but I will describe it here and you
+should use this description to practice deleting values from trees (shown
+pictorally). Use the following simple tree for a first example
+
+             30
+          /      \
+       15          50
+    /     \      /    \
+  10       25  35      70 
+         /
+       20
+
+
+Here are the rules:
+
+1) To remove a value in a leaf, make its parent refer to None
+
+2) To remove a value in a node with one child, make its parent refer to its
+    child (this works whether the node is a left/right child of its parent, 
+    and whether its child is a left/right child)
+
+3) To remove a value in a node with 2 children:
+      (a) Find the biggest node less than it (or smallest node greater than it)
+            that node must have 0 or 1 children (can you explain why?)
+      (b) Remove that node by rule 1 or 2
+      (c) Take its value and put it as the value of the node being removed
+          So the node being removed isn't really removed (another one is):
+            but, its value is replaced by another value, so the value is removed
+
+The first two rules are very simple. Here is an example of applying the third.
+If we remove the value at the root, 30, we would (a) find the node 25,
+(b) remove the value here by making 15's right refer to 20, (c) move the value
+25 to the node that contains 30. Note the order property is preserved: all
+values to the left of the node that used to store 30 are less than what it now
+stores, 25 (25 was the biggest of the nodes < 30); all values to the right of
+the node that used to store 30 are greater than what it now stores, 25 (25 is
+< 30, so nodes > 30 are > 25).
+
+             25
+          /      \
+       15          50
+    /     \      /    \
+  10       20  35      70 
+
+
+The binarysearchtree module contains simple recursive functions for copying a
+tree and determining whether two trees are equal (not only store the same
+values, but store trees that have these values and the same shape). Examine
+those functions (or better yet, try to write them yourself first).
+
+Finally, the generator_in_order function generates all the values (from lowest
+to highest) in the tree. In the next lecture we will study traversal orders 
+more generally, discussing pre-order, post-order, and breadth-first order).
+
+We can use binary search trees easily to create a dictionaries whose values are
+always iterated over in a sorted order. The penalty for this constraint is that
+the keys must all be comparable and the amount of time to search, add, and
+remove are a bit higher than for dict (but still much less than using lists to
+store such associations). ICS-46 covers runtime performance of lists, trees, and
+hash tables (which is how Python actually stores sets and dictionaries).
+
+It is easy to imagine how a binary search tree can store key-value pairs. We can
+search a well-balanced tree (one that for each node has about as many values in
+the left subtree as the right subtree) much faster than a linked list (even an
+ordered one).
+
+The amount of time it takes to search any binary search tree is bounded by its
+height: the number of comparisons in needs to go downard in the tree until it
+reaches the value it is searching for (or goes beyond a leaf, meaning that the
+value is not in the tree).
+
+The height of an N-node tree must be at least Log2 N (log base 2 of the number
+of nodes in the tree). The typical height, when values are added randomly, is
+2-3 times that. In a linked list (or pathological binary search tree) the
+number of comparisons is N-1.
+
+Try the following experiment, which prints the height of a tree with 1,000
+values, added in a random order.
+
+  values = [i for i in range(1000)]
+  random.shuffle(values)
+  print(height(add_all(None,values)))
+
+The Log2 1000 is about 10, so the typical height of such a tree is about 20-30,
+which means it takes 20 comparisons to find a value: much better than the
+average of about 500 if the values are in an unordered list or linked-list.
+Also, see the random_height function in the binarysearchtree.py module.
+
+We will learn a bit more about this performance in ICS-33, but will learn much
+more about it in ICS-46, and look at tree processing in more depth :) there.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="expression"><h1>Expression Trees</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We can also use binary trees to represent expressions. In these trees, leaf
+nodes represent values (either literals or names bound to values), and the
+internal nodes represent binary operators or unary operators or unary functions
+(whose operands will be in the right subtree). For example, the expression
+(-b + sqrt(b**2 - 4*a*c))/(2*a) would be represented by the expression tree.
+
+                       '/'
+            /                    \
+           +                      *
+      /         \                /  \
+     -          sqrt            2    a
+      \           \
+       b           -
+                /      \
+               **       *
+              /  \     / \ 
+             b    2   *   c
+                     / \
+                    4   a
+
+Here I wrote '/' for the divide operator, since / means a left subtree.
+
+Note that the structure of the tree determines how the subexpressions are
+computed. There is no need for operator precedence rules or parentheses: the
+structure of the tree embodies these rules.
+
+There is an algorithm that people can follow to construct such a tree: find the
+last operator or function call the computer would evaluate and put that at the
+root of the tree; now do the same for its one/two subtrees that are
+subexpressions, and keep repeating finding the root of these until there are no
+more operators or functions (names and literals stand for themselves). 
+
+In the expression above, the division between the numerator and denominator is
+evaluated last: on the left side the addition is evaluated last; on the right
+side there is only the multiplications, so that is done last. Continue this
+process. If we call print_tree on this tree, it would print
+
+....a
+..*
+....2
+/
+..........c
+........*
+............a
+..........*
+............4
+......-
+..........2
+........**
+..........b
+....sqrt
+..+
+......b
+....-
+
+Once we have such a tree, we can peform many operations on it. The first and
+most important is evaluating the tree. We can do this recursively (evaluating
+subexpressions) by
+  (1) evaluating leaves as themselves
+  (2) evaluating either unary operators on their evaluated operand or unary
+        functions on their evaluated argument
+  (3) evaluating binary operators on their evaluated arguments
+
+The code for this method follows this outline
+
+def evaluate(etree):
+    #name/literal
+    if etree.left == None and etree.right == None:
+        return eval(str(etree.value))
+
+    #unary operator/function cal
+    elif etree.left == None:
+        if etree.value in {'+','-'}:
+            #unary operator
+            return eval(etree.value + str(evaluate(etree.right)))
+        else:
+            #function call: assume legal name
+            return eval(etree.value+'('+str(evaluate(etree.right))+')')
+    else:
+        #binary operator: assume etree.value in {'+','-','*','/','//','**'}
+
+        return eval(str(evaluate(etree.left)) + etree.value + str(evaluate(etree.right)))
+
+If we set a=1, b=2, c=1, the calcuated value is -1.
+
+We can translate this tree into infix (but overparenthesized) and postfix form:
+in the postfix form, each operator is proceeded by its two operands: a + 1
+(infix form) translates to 1 a +. Using postfix notation (also called Polish
+notation because it was invented by Polish logicians right before World War II),
+we can write expressions unambiguously without any parentheses or knowledge of
+operator precedence! Here are the functions to perform these translations, and
+their results.
+
+def infix(etree):
+    if etree.left == None and etree.right == None:
+        return '('+str(etree.value)+')'
+    elif etree.left == None:
+        return '('+etree.value+str(infix(etree.right))+')'
+    else:
+        return '('+str(infix(etree.left))+etree.value+str(infix(etree.right))+')'
+
+which produces: (((-(b))+(sqrt(((b)**(2))-(((4)*(a))*(c)))))/((2)*(a)))
+which is correctly but over parenthesized
+
+def postfix(etree):
+    if etree.left == None and etree.right == None:
+        return str(etree.value)
+    elif etree.left == None:
+        return str(postfix(etree.right)) + ' ' + etree.value
+    else:
+        return str(postfix(etree.left)) + ' ' + str(postfix(etree.right)) + ' ' + etree.value
+
+which produces: b - b 2 ** 4 a * c * - sqrt + 2 a * /
+
+If you have never seen Polish notation this is difficult to read, but if you
+have studied this notation, it is easy. To understand which operators apply to
+which data, start on the left and circle each operand: when you get to an
+operator circle it and the number of operands it takes (which all come before
+it). Look at smalller examples: 1+2*3 is 123*+ while (1+2)*3 is 12+3*. The
+operands in polish notation appear in the same order as regular notation, but
+the operators appear in different spots based on operator precedence and
+parentheses.
+
+Finally, I have defined a parse_infix function that takes a string argument
+and produces a tree representing the string. It is limited in the following
+ways: all tokens must be separated by spaces; it assumes all operators are
+binary, and that all operators are left-associative (which ** is not). So, it
+does a bit of what Python does when it processes expressions written in Python,
+but doesn't do everything correctly.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Draw all 14 binary search trees with the values 1, 2, 3, and 4.
+
+2) Define a function named mirror, which takes one binary tree argument and 
+returns a binary tree that is its mirror image: for any node, its left and
+right subtrees are switched (not just switched for the root, but switched for
+every node in the tree).
+
+3) Define a function named sum, which takes one binary tree argument and
+returns the sum of all the node values.
+
+4) Define a function named is_bst, which takes one binary tree argument and
+returns whether or not the tree is a binary search tree (satisfies the order
+property of binary search trees). It should return False for the following
+tree (which violates the order property):      
+
+                5
+             /     
+            3
+              \
+                8         
+
+Hint: I used two helper functions: all_less and all_greater.
+
+5) Define a function named all_satisfy, which takes two arguments: a binary
+tree argument and an predicate; it returns whether or not the predicate
+satisifies (returns True for) all values in the binary tree.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

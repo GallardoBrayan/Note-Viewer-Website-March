@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 3 Class Review -->
+<head>
+	<meta charset="utf-8" />
+	<title>Class Review</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Three: Class Review</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#defining">Defining Classes</a></h4></li>
+				<li><h4><a href="#manipulating">Manipulating an Object's Namespace</a></h4></li>
+				<li><h4><a href="#definition">Definition and Use</a></h4></li>
+				<li><h4><a href="#strange">Strange Python</a></h4></li>
+				<li><h4><a href="#redefinition">Redefinition of Function Names</a></h4></li>
+				<li><h4><a href="#accessor">Accessor/Mutator Methods and Instance Variables</a></h4></li>
+				<li><h4><a href="#places">Defining classes in Unconventional Places</a></h4></li>
+				<li><h4><a href="#static">Defining/Using Static Methods in Classes</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+This lecture reviews basic material that you should know about defining and
+using classes, although it also presents some new (hopefully easy to understand)
+material that you may have not seen. Primarily this lecture discusses how to
+use the namespaces in class objects and their instance objects to store data as
+well as functions/methods.
+</pre>
+
+<a name="defining"><h1>Defining Class</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+When we define a class in a Python, we are binding the class name to an object
+representing the entire class. We call the class object to create a new object
+that is an instance of the class: Python constructs an empty instance object
+and then calls the ___init__ method defined in the class, (passing the new/empty
+instance object to the self parameter) to initialize the state of the instance
+object. Recall that all names in Python refer/are-bound to objects; so defining
+
+   class C:
+       ...
+
+creates the name C and binds it to an object representing the class C.
+
+What names are attributes defined in a class object's namespace? I'm not
+talking about the instance objects that will be constructed from the class C,
+but the names in the namespace of the class object itself. Mostly, a class
+defines names that are bound to its methods (__init__, etc.), but later in this
+lecture we will discuss names representing class variables as well as class
+methods.
+
+When we want to construct an object that is an instance of a class, we refer to
+a class object (typically by a name bound to it) followed by () and possibly
+arguments in these parentheses. Python does three things when constructing new
+instance objects:
+
+(1) It calls a special function that creates an object that is a new instance of
+    the class. Note that this object automatically has an dictionary associated
+     with it, with the name __dict__, but that dictionary starts empty.
+
+(2) It calls the __init__ method for the class, passing the object created in
+    (1) to the first/self parameter of __init__ , and following this with all
+    the other argument values in the parentheses used in the call to construct
+    the state of this instance. Typically it assigns values to self/instance
+    variables, storing the name/binding in __dict__ for the self object.
+
+(3) A reference to the object that was created in (1) and initialized in (2) is
+    returned as the result of constructing the object: most likely this
+    reference will be bound to a name: e.g., c = C(...) which means c refers to
+    a newly constructed/initialized object of class C.
+
+So if we call c = C(1,2) Python calls C.__init__(reference to new object,1,2)
+and binds c to refer to the newly constructed object somehow initialized by
+1 and 2.
+
+Note that we can define other names that can bind to/share the same class
+object. For example:
+
+class C:
+    def __init__(self):
+        print('instance of C object initialized')
+        self.m = 'starting' # initialize an instance/attribute name
+
+D = C	# C and D share the same class object
+x = C() # Use C to construct an instance of a class C object
+y = D() # Use D to construct an instance of a class C object
+
+print(C,D,x,y)
+print(type(x), type(y), type(C), type(type(x)))
+
+Running this script produces the following: the first two lines from calling
+__init__ twice, the next two from calling the two print statements above
+
+  instance of C object initialized
+  instance of C object initialized
+  <class '__main__.C'> <class '__main__.C'> <__main__.C object at 0x027B0E10> <__main__.C object at 0x02889C50>
+  <class '__main__.C'> <class '__main__.C'> <class 'type'> <class 'type'>
+
+Finally, if we print(x.m) or print(y.m) it prints 'starting'
+
+We can use the type function to determine the type of any object. The objects x
+and y refer to are instances of the class C, defined in the main script. C (and
+all classes that we define) are instances of a special class called 'type'). So
+x is an instance of C, and C is an instance of 'type'.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="manipulating"><h1>Manipulating an object's namespace (and __init__):</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+All objects have namespaces, which are dictionaries in which names defined in
+that object are bound-to/associated-with values. Typically we write something
+like:
+
+  self.name = value
+
+in the __init__ or any other method, to defined a name in the dictionary of the
+object self refers to, and bind that name (or update an exsting binding) to
+refer to value.
+
+Now we illustrate a cruder way to add names to the namespace of an object.
+This way is not recommended now, but it furthers our understanding of objects
+and their namespaces in Python, and we will find concrete uses for this
+understanding later. Given class C defined above, we can write
+
+c = C()
+print(c.__dict__)
+c.x = 1
+c.y = 'two'
+c.__dict__['z'] = 3
+print(c.__dict__)
+print(c.m, c.x, c.y, c.z)
+
+Running this script produces
+
+  instance of C object initialized
+  {'m': 'starting'}
+  {'x': 1, 'y': 'two', 'm': 'starting', 'z': 3}
+  starting 1 two 3
+
+So, we have used two different forms for adding three names to the
+namespace/dictionary for the object that c refers to (which initially stores
+the name m, initialized by self.m = 'starting'). Adding names updates the
+object's __dict__.  Writing object.name = value is equivalent to writing
+object.__dict__['name'] = value.
+
+The object c has a __dict__ attribute that stores its namespace bindings.
+Each identifier for which we define an attribute for the object appears as a
+string keyword in __dict__.
+
+Generally we don't initialize the namespace of an object this way; instead we
+use the automatically-called __init__ method and its self parameter to do the
+initialization. But really, the same thing is happening in __init__ below as
+was shown above.
+
+class C:
+    def __init__(self,init_x,init_y):
+        print('instance of C object initialized')
+        self.x = init_x		# value depends on the argument matching init_x
+        self.y = init_y		# value depends on the argument matching init_y
+        self.z = 3		# always the same object: 3
+
+c = C(1,'two')
+print(c.__dict__)
+
+Running this script produces the same results.
+
+  instance of C object initialized
+  {'z': 3, 'y': 'two', 'x': 1}
+
+The purpose of the __init__ method is to create all the attribute names needed
+by the object's methods and initializes them appropriately. Typically, once
+__init__ is called, no new names are added to the object's namespace (although
+Python allows additions, as illustrated in the prior section (c.x = 1) and some
+useful examples are illustrated later in this lecture as well). Every object
+constructed is likely to need exactly the same names: all the names used
+in the methods defined in the class; methods that process instance objects
+of the class. The __init__ method, which is automatically called by Python
+when an object is constructed, is a convenient place to localize the creation
+and initialization of all these attribute names.
+
+So, for every assignment statement
+
+  self.name = value
+
+Python puts an entry into the object's namespace (self.__dict_) with the key
+'name' (keys are strings) associated with value. We can do this in the __init__
+method or after the object is constructed: both ways are shown above. When
+self.name appears in an expression (e.g., a = self.name), Python substitutes the
+expression self.__dict__['name'] for the right hand side of the =, to retrieve
+the value of that name from the self object's namespace/dictionary.
+
+If we try to access a non-existent attribute name (c.mumble in the class C
+above, which is translated into c.__dict__['mumble']), Python raises an
+exception. print(c.mumble) prints the exception as
+
+  AttributeError: 'C' object has no attribute 'mumble'
+
+Note that some names defined in __init__ (z above) always receive the same
+initialization, so we don't need a parameter to initialize them. But often
+names need to be initialized to different values when different objects are
+constructed, so typically we add just enough parameters to the __init__  method
+to allow us to specify how those names with different values should be
+initialized.
+
+----------
+Interlude: assert in initialization
+
+Sometimes __init__ will ensure that a parameter is matched to an argument that
+stores a legal and reasonable value for it; if not, Python will raise an
+exception to indicate that the object being constructed cannot be properly
+initialized. Sometimes it raises an exception explicitly, using an if statement
+that tests for an illegal value. Sometimes it uses an assert statement for this
+purpose. Remember that the form of assert is:
+
+  assert boolean-test, string
+
+which is equivalent to the slightly more verbose
+
+  if not boolean-test:
+      raise AssertionError(string)
+
+I suggest that the string argument to AssertionError should always contain 4
+parts:
+
+  (1) The name of the class (if the problem occurs in the method of a class) or
+      the name of the module (if the problem occurs in a function in a module)
+
+  (2) The name of the method/function that detects the problem (here __init__)
+
+  (3) A short description of the problem...
+
+  (4) ...including the values of the argument(s) that is causing the problem
+
+For example, if class C included an  __init__ method that required x's argument
+to be a positive integer, we could write __init__ as follows. We typically check
+all the arguments FIRST in this method, before binding any self/instance names.
+
+  def __init__(self,x):
+      assert type(x) is int and x > 0, 'C.__init__: x('+str(x)+') must be an int and positive'
+      ...
+
+or
+
+  def __init__(self,x):
+      assert type(x) is int and x > 0, 'C.__init__: x({v}) must be an int and positive'.format(v=x)
+      ...
+
+If so, calling C(-1) would result in the error message
+
+   C.__init__: x(-1) must be an int and positive
+
+and calling C('abc') would result in the error message
+
+   C.__init__: x(abc) must be an int and positive
+
+
+Such a message provides useful information to whoever is writing/debugging the
+program. In a well-written program, someone just using the program (possible
+not a programer) should not have to read/interpret such a message.
+
+Question: if we wrote the assert as just x > 0, what exception would be raised
+by calling C('abc') and why? Why is the given assertion "better", even though it
+is less efficient to check?
+
+We could be even more descriptive and write
+  def __init__(self,x):
+      assert type(x) is int, 'C.__init__: x('{v}') must be an int'.format(v=x)
+      assert x > 0, 'C.__init__: x({v}) must be positive'.format(v=x)
+
+Note that int refers to the int class (not an instance of an int class: e.g.,
+not 1), so writing "type(x) is int" is checking whether the type of the object
+x refers to is the same as the object int refers to: meaning x is bound to an
+object constructed from the int class.
+----------
+
+Once an object is constructed and initialized, typically we use it by calling
+methods (or possibly passing it to another function/method that calls its
+methods). We call an object's method using the syntax object.method(arguments);
+recall the Fundamental Equation of Object-Oriented Programming.
+
+    o.m(...) is translated into type(o).m(o,...)
+
+This means, the method m in the class specifying the type of object o is called,
+and the object o used to call the method is passed to the method as the first
+argument (matching the self parameter). For example, 'a;b;c'.split(';') is
+translated into type('a;b;c').split('a;b;c',';') which is equivalent to
+str.split('a;b;c',';'). It calls the split method defined in the str class with
+the arguments 'a;b;c' (matching the self parameter) and ';' (matching the
+second parameter).
+
+Before finishing the discussion of objects and their dictionaries, recall that
+C refers to a class object. As an object, it also has a __dict__ that stores its
+namespace. Here is some code that shows what names are defined in the C object.
+
+for (k,v) in C.__dict__.items():
+    print(k,'->',v)
+
+And here is what it prints.
+
+__weakref__ -> <attribute '__weakref__' of 'C' objects>
+__dict__ -> <attribute '__dict__' of 'C' objects>
+__doc__ -> None
+__init__ -> <function C.__init__ at 0x03197618>
+__qualname__ -> C
+__module__ -> __main__
+
+Note that __init__ is the only function that we defined, and it is there (on
+the 4th line). Because I ran this code as a script (the main module), its
+__module__ variable is bound to '__main__', which you should know something
+about, because you should have written (and understand) code like
+
+  if __module__ == '__main__':
+      ...
+
+If this module were imported, the __module__ key would be associated with the
+file/module name it was written in, when imported.  Only the module
+corresponding to the script that started execution has its __module__ key bound
+to '__main__'. We can test this name to run the script only when its module is
+run, not when it is imported by another module. The if accomplishes this
+behavior.
+
+If I had defined C with a docstring it would appear as an attribute of __doc__.
+Don't worry about __weakref__, the internal __dict__ or __qualname__.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="definition"><h1>Different kinds of names: definition and use</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Let's discuss four different kinds of names in relation to classes. We will
+call all these names variables.
+
+  (1) local variables: defined and used inside functions/methods to help with
+      the computation; parameter variables are considered local variables too.
+
+  (2) instance variables of an object: typically defined inside __init__ and
+      used inside class methods (we saw other ways to define them above too).
+      These are referred to as self.name.
+
+  (3) class variables: typically defined in classes (at same level as methods,
+      not inside methods) and typically used in methods; we use a class
+      variable for information COMMON to all objects of a class (rather than
+      putting the same local variable in each object constructed from the
+      class). Methods are actually class variables, bound to function objects.
+
+      All class variables are defined in the class object and they are found by
+      the Fundamental Equation of Object-Oriented Programming through instances
+      of that class. That is, if class C defines an attribute a (method or
+      class variable) and x refers to an object constructed from class C, then
+      x.a will find attribut a in class C, but only if it is not stored
+      directly in x (in x's __dict__). For class variables, that is typically
+      what we want.
+
+  (4) global variables: typically defined in modules (outside of functions and
+      classes) and used inside functions and/or class methods; we typically
+      avoid using them (don't use global variables), and when we do use them,
+      we do so in a cautious and limited manner.
+
+You should know how to use all these kinds of variables (and their semantics).
+Use local variables and instance variables as needed (most function/methods
+have the former, and most classes define the later in __init__ and use them in
+methods). Class variables are sometimes useful to solve certain kinds of
+problems where common information is stored among all the instances, by storing
+them just once in their common class object. Global variables are fine to use in
+scripts, but are often frowned upon when declared in modules that are imported
+(although they too have their uses there, but in more advanced settings).
+
+The following script uses each kind of variable, appropriately named. Ensure
+that you understand how each use of these variables works. The use of the
+command named 'global' (see the two lines with #comments) is explained in more
+detail below.
+
+global_var = 0
+
+class C:
+
+    class_var = 0
+
+    def __init__(self,init_instance_var):
+        self.instance_var = init_instance_var
+
+    def bump(self,name):
+        print(name,'bumped')
+        #global_var = 100    # comment out this line or the next
+        global global_var    # comment out this line or the previous 
+        global_var += 1 
+        C.class_var += 1     # self.class_var get translated to C.class_var
+        self.instance_var += 1
+
+    def report(self,var_name):
+        print('instance referred to by', var_name,
+              ': global_var =', global_var,
+              '/class_var =', self.class_var,     # can write as self._class_var
+              '/instance_var=', self.instance_var)
+
+x=C(10)
+x.report('x')
+x.bump('x')
+x.report('x')
+print()
+
+prints
+  instance referred to by x : global_var = 0 /class_var = 0 /instance_var= 10
+  x bumped
+  instance referred to by x : global_var = 1 /class_var = 1 /instance_var= 11
+
+print('y = x')
+y = x
+y.bump('y')
+x.report('x')
+y.report('y')
+print()
+
+prints
+  y = x
+  y bumped
+  instance referred to by x : global_var = 2 /class_var = 2 /instance_var= 12
+  instance referred to by y : global_var = 2 /class_var = 2 /instance_var= 12
+
+print('y = C(20)')
+y=C(20)
+y.bump('y')
+y.report('y')
+print()
+
+prints
+  y = C(20)
+  y bumped
+  instance referred to by y : global_var = 3 /class_var = 3 /instance_var= 21
+
+C.report(x,'x')       # same as x.report('x') by the Fundamental Equation of OOP
+type(x).report(x,'x') # ditto: the meaning of the Fundamental Equation of OOP
+print()
+
+prints
+  instance referred to by x : global_var = 3 /class_var = 3 /instance_var= 12
+  instance referred to by x : global_var = 3 /class_var = 3 /instance_var= 12
+
+
+print(C.class_var, x.class_var)  # discussed below
+print(x.instance_var)
+
+prints
+  3 3
+  12
+
+So, the global variable is changing every time, as is the class variable,
+because there is just one of each. But each object thta is an instance of C
+has its own instance variable, which changes only when bump is called on that
+instance.
+
+If we instead commented as follows
+  
+        global_var = 100     # comment out this line or the next
+        #global global_var   # comment out this line or the previous 
+
+running the script would have the following result: By removing the statement
+global global_var, then the statement global_var = 100 actually defines a local
+variable in the bump method -despite its name- so its increment does not affect
+the true global_var, which stays at zero.
+
+Recall, if a variable defined in a function/method has not been declared global,
+it is created as a local variable inside the function/procedure.
+
+Note that one can REFER to the value of a global_var inside methods of class C
+WITHOUT a global declaration (see the report method), but if a method wants to
+CHANGE global_var it must declare it global (then all reference and changes are
+to the real global variable). With no global global_var, the assignment
+global_var = 100 creates a new name local to the bump method and always binds
+it to 100.
+
+  instance referred to by x : global_var = 0 /class_var = 0 /instance_var= 10
+  x bumped
+  instance referred to by x : global_var = 0 /class_var = 1 /instance_var= 11
+
+  y = x
+  y bumped
+  instance referred to by x : global_var = 0 /class_var = 2 /instance_var= 12
+  instance referred to by y : global_var = 0 /class_var = 2 /instance_var= 12
+
+  y = C(20)
+  y bumped
+  instance referred to by y : global_var = 0 /class_var = 3 /instance_var= 21
+  instance referred to by x : global_var = 0 /class_var = 3 /instance_var= 12
+
+  1 1
+  11
+
+Finally, it is clear what C.class_var and x.instance_var refer to, but what
+about x.class_var? As shown above this prints 1 just as C.class_var does. This
+meaning is a result of the Fundamental Equation of Object Oriented Programming
+(but applied to variable attributes, not method attributes).
+  
+-----
+Technically, when specifying o.attr, any access to an attribute name in object o
+(whether a variable or method) Python first tries to find attr in the object o;
+if it is not defined in o's namespace/__dict__ Python uses the FEOOP to try to
+find it by checking type(o).attr, which attempts to find attr in type(o)'s
+namespace/__dict__. So when trying to find x.class_var if fails to find
+class_var in o's namespace/__dict__, so it tries type(o).class_var or
+C.class_var and finds the class_var attribute in C's namespace/__dict__.
+
+When we study inheritance, we will learn more about how Python searches for
+all attributes by generalizing this rule: if it is not in an instance, then it
+tries in the class that instance was constructed from, and if not in that
+class, it tries in its super classes, and if not in its superclass....
+
+But for now remember: to find an attribute, look first in the namespace of the
+object; if it isn't there, then look in the namespace of the class thta the
+object was constructed from.
+-----
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="strange"><h1>Strange Python (but now understandable)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  1) Defining/using a method for a class, AFTER the class has been declared:
+
+  2) Defining a method for an instance (but not the whole class) after the
+       instance has been constructed:
+
+We will now discuss one more interesting thing a dynamic language like Python
+can do (but languages like Java and C++ cannot). We can change the meaning of
+a class as a program is running. Let's go back to a very simple class C, that
+stores one instance variable, but has no methods that change it. The report
+method prints the value of this instance variable.
+
+class C:
+    def __init__(self,init_instance_var):
+        self.instance_var = init_instance_var
+
+    def report(self,var_name):
+        print('instance referred to by', var_name,
+              '/instance_var=', self.instance_var)
+
+Now look at the following code. It defines x to refer to an object constructed
+from the class C, which defines only a report method (and then it calls that
+method to report). Next it defines the bump function with a  first parameter
+named self: its body increments the instance_var in self's namespace
+dictionary. We call bump with x and it updates x's instance_var (as seen by the
+report).
+
+Then we do something strange. We add the bump function into the namespace of
+C's class object with the name cbump (that is just the same as writing
+C.__dict__['cbump'] = bump, creating the cbump method). We could have used just
+bump, but instead used a slightly different name. Then, we call x.cbump('x')
+which by the Fundamental Equation of OOP is the same as calling C.cbump(x,'x')
+and because we just made the cbump attribute of the object representing class C
+refer to the bump function, its meaning is to call the same function object
+that bump refers to.
+
+x=C(10)
+x.report('x') # By FEOOP, exactly the same as calling C.report(x,'x')
+print()
+
+prints
+  instance referred to by x /instance_var= 10
+
+
+def bump(self,name):
+    print(name,'bumped')
+    self.instance_var += 1
+
+bump(x,'x')
+x.report('x')
+print()
+
+prints
+  x bumped
+  instance referred to by x /instance_var= 11
+
+C.cbump = bump; # put bump in the namespace of C, with the name cbump
+x.cbump('x')    # By FEOOP, exactly the same as calling C.cbump(x,'x')
+x.report('x')
+print()
+
+prints
+  x bumped
+  instance referred to by x /instance_var= 12
+
+y=C(20)
+y.cbump('y')
+y.report('y')
+
+prints
+  y bumped
+  instance referred to by y /instance_var= 21
+
+So, even after the class C has been defined, we can still add a method to it 
+namespace and then can call it using any object that has already been (or will
+be) constructed from the class C. That is, we can change the meaning of a class
+C, and all the objects constructed from the class will respond to the change
+through the FEOOP.
+
+Recall that the del command gets rid of an association in a dict. If we wrote
+del C.cbump, then if we tried to call that method by x.cbump('x') the result
+would be that Python raises 
+
+  AttributeError: 'C' object has no attribute 'cbump'
+
+So we can both ADD and REMOVE names from a class object's namespace!
+
+Note that we could have defined/written bump as follows (note use of p not self
+as the first parameter of bump)
+
+def  bump(p,name):
+    print(name,'bumped')
+    p.instance_var += 1
+
+and nothing changes, so long as every occurrence of self is changed to p inside
+the bump function (as is done). We could likewise write
+
+def report(p,var):
+    ...
+
+inside the C class itself. The parameter name self is just the standard name 
+used in Python code; but there is nothing magical about this name, and we can
+substitute whatever name we want for the first parameter. This parameter will
+be matched with the object used to call the method. Although any name is
+allowed, I strongly recommend always following Python's convention and using
+the name self. Eclipse always supplies the name self automatically as the first
+parameter to any methods we define.
+
+------------------------------
+
+Defining a method for an instance (but not the whole class) after the
+  instance has been constructed:
+
+In fact, Python also allows us to add a reference to the bump method to a single
+instance of an object constructed from class C, not the class itself. Therefore
+unlike the example above, bump is callable only on that one object it was
+added to, not on all the other instances of that class. We can also use this
+technique to add a method to an object that is different than the one defined
+in the object's class.
+
+Start with the class C as defined above, defining just __init__ and report.
+Then
+
+def bump(self,name):
+    print(name,'bumped')
+    self.instance_var += 1
+
+x = C(0)
+y = C(100)
+
+x.bump = bump;
+
+x.bump(x,'x')
+x.bump(x,'x')
+x.report('x')
+
+y.bump(y,'y')     # fails because there is no bump attribute in the object y
+y.report('y')     #    refers to, either directly in y or in y's class C
+
+Note that calling x.bump(..) finds the bump method in x's namespace, without
+needing to translate it using the Fundamental Equation of Object-Oriented
+Programming. Without the translation, we explicitly need to pass the x argument
+which becomes bump's self parameter.
+
+Generally when looking up the attribute x.attr (whether attr is a variable or
+method name), Python first looks in the namespace of the object x refers to,
+and if it doesn't find attr, it next looks in the namespace of the object
+type(x) refers to.
+
+When run, this script produces:
+
+x bumped
+x bumped
+instance referred to by  x /instance_var= 2
+Traceback (most recent call last):
+  File "C:\Users\pattis\Desktop\python32\test\script.py", line 21, in <module>
+    y.bump(y,'y')     # fails because there is no bump attribute in the object y
+AttributeError: 'C' object has no attribute 'bump'
+
+The error message mentions C because after failing to find the bump attribute
+in the object y refers to, it looks in the object C refers to; when it fails
+there too, the raised exception reports the error.
+
+So, we can add methods to
+
+  (a) classes: methods that all the instances of that class can refer to, via
+      FEEOP
+
+  (b) an instance of the class, such that only that instance can call the method
+      (and their self parameter must also be passed as an explicit argument),
+      since FEOOP is not used.
+
+------------------------------
+
+Combining both worlds using delegation
+
+Suppose that we wanted to be able to call methods attached to objects, but do
+so using the standard object.method(...) syntax, as we did in the first part of
+this section. In the second part of this section, we had to duplicate the
+object, e.g., calling x.bump(x,'x') instead of just x.bump('x'). We will see
+how to return to this simpler behavior using the concept of delegation in
+Python.
+
+We start by defining C as follows, adding the bump function below
+
+class C:
+    def __init__(self,init_instance_var):
+        self.instance_var = init_instance_var
+
+    def report(self,var):
+        print('instance referred to by', var,
+              '/instance_var=', self.instance_var)
+
+    def bump(self,name):
+        try:
+            self.object_bump(self,name)
+        except AttributeError:
+            print('could not bump',name) # or just pass to handle the exception;
+                                         # or omit try/except altogther
+
+In this definition of C, there is a bump method defined in the class C, for all
+instances constructed from this class to execute, findable by FEEOP.
+
+When bump is called here, it tries to call a method named object_bump on the
+instance it was supplied, passing the object itself to object_bump (doing
+explicitly what FEOOP does implicitly/automatically). If that instance defines
+an object_bump function, it is executed; if not, Python raises an attribute
+exception, which at present prints a message, but if replaced by pass would
+just silently fail. Of course, we could also remove the entire try/except so an
+attribute failure would raise an exception and stop execution.
+
+Note that in the call x.bump(...) Python uses the Fundamental Equation of OOP
+to translate this call into C.bump(x,'x'), which calls the equivalent of
+x.object_bump(x,'x').
+
+In the world of programming, this is called delegation (which we will see more
+of): the bump method delegates to the object_bump method (if present) to get
+its work done.
+
+Here is a script, using this class. It attaches different object_bump methods
+to the instance x refers to, and the instance y refers to, but not to the
+instance z refers to (nor to the class C). It calls this object_bump method not
+directly, but through delegation by calling bump in the C class.
+
+x = C(10)
+y = C(20)
+z = C(30)
+
+def bump1(self,name):
+    print('bump1',name)
+    self.instance_var += 1
+
+def bump2(self,name):
+    print('bump2',name)
+    self.instance_var += 2
+    
+x.object_bump = bump1
+y.object_bump = bump2
+# No binding of z.object_bump
+
+x.report('x')
+x.bump('x')
+x.report('x')
+print()
+
+prints
+  instance referred to by x /instance_var= 10
+  bump1 x
+  instance referred to by x /instance_var= 11
+
+y.report('y')
+y.bump('y')
+y.report('y')
+print()
+
+prints
+  instance referred to by y /instance_var= 20
+  bump2 y
+  instance referred to by y /instance_var= 22
+
+z.report('z')
+z.bump('z')
+z.report('z')
+
+prints
+  instance referred to by z /instance_var= 30
+  could not bump z
+  instance referred to by z /instance_var= 30
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="redefinition"><h1>Redefinition of Function Names</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Note that we can redefine a function or class. For example, we can write
+
+def f(): return 0
+def f(): return 1
+print(f())
+
+Calling f() would return 1. Eclipse gets upset about this, and marks the
+second definition as an error (duplicate signature), but there is nothing
+technically wrong with this code (although the first definition is useless,
+and there may be a mistake in the spelling of one of these functions). Python
+will run the script. We can also write the following script, which Eclipse
+won't complain about, and runs the same.
+
+def f(): return 0
+def g(): return 1
+f = g
+print(f())
+
+Calling f() returns 1. Again, def just makes a name refer to a function object;
+if, as in the case of the two definitions of the f name above, the name already
+refers to an object, the binding of f is just changed to refer to the function
+object g refers to.
+
+Conceptually, it is no different than writing x = 1 and then x = 2 (changing
+what x refers to from the int object 1 to the int object 2).
+
+We can do the same thing for classes, as we saw with the names C and D in the
+first example in these notes.
+
+In summary, def f or class C just define a name and binds it to a function/class
+object. We can call the function or the class's constructor. We can rebind that
+name later to any other object. We can even write
+
+def f(): return 0
+f = 0
+
+Now f is bound to an int instance object, not a function object.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="accessor"><h1>Accessor/Mutator Methods (or query/command methods) and Instance Variables...single/double underscore prefix</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+If calling o.method(...) returns information about an o's state but does not
+change o's state, it is called an accessor (or query). If o.method(...) changes
+o's state and returns None (all functions/methods must return some value), it
+is called a mutator (or command). Some method calls do both: they change o's
+state but also return a non-None value.
+
+A design question arises. Suppose that we know that an object o of a class C
+has an instance variable name iv: should we directly refer to o.iv? Should we
+use its value by writing o.iv or change it by writing o.iv = ....? The high
+road says, no: a class should hide the actual instance variables from the
+clients/users of the class; they should provide methods to manipulate the
+objects under control of the class. What instance variables we need to
+implement a class might change over time, but the methods that define the
+behavior of objects created from that class should stay the same and always
+work correctly with whatever instance variables we are using.
+
+Python is a bit at odds with this philosophy. Some languages (Java/C++) have a
+mechanism whereby instance variables can be tagged PRIVATE, so that they are
+accessible only from methods defined in the class itself; these languages do
+not allow new instance variables nor methods to be added dynamically to objects
+as Python does (as we showed above).
+
+Python's philosophy is a bit more open to accessing instance variables outside
+of the class methods. But there is danger in doing so, and beginners often use
+this convenience and end up taking longer to get their code to work correctly,
+and also make it harder to understand and change the code, because they are
+accessing information that is not guaranteed to be there in future changes to
+the code.
+
+In fact, Python does have a weaker form of tagging PRIVATE names, which we can
+use for names that should not be referred to outside the methods in the
+object's class. Below we explain the meaning of instance variable names that
+begin with one or two underscores (but don't have two trailing underscores, so
+are unlike __init__).
+
+-----
+Single Underscore: 
+
+When a programmer uses a single underscore in a name in a class (for data or a
+method), he/she is indicating  that the name should NOT BE ACCESSED outside of
+the methods in the class. But, there is nothing in the Python interpreter that
+stops anyone from accessing that name. We can use this convention for private
+data and helper methods.
+
+class C:
+    def __init__(self):
+        self._mv = 1
+
+    def _f(self):
+        return self._mv == 1
+    
+x =  C()
+print(x._mv, x._f())
+
+When run, this script produces: 1 True
+
+Still, if a class is written with names prefixed by a single underscore, it
+indicates that objects constructed from that class should not access those
+names outside of the methods defined inside the class.
+
+-----
+Double Underscore:
+
+If a Python name in a class begins with two underscores, it can be referred to
+by that name in the class, but not easily outside the class: but it can still be
+referred to outside the class, but with a "mangled" name that includes the name
+of the class. If a class C defines a name __mv then the name outside the class
+can be referred to as _C__mv. This is called a "mangled" name.
+
+So, if we changed the code in the class C above by writing _mv as __mv and _f as
+__f, and tried to execute
+
+x =  C()
+print(x.__mv, x.__f())
+
+Python would complain by raising an AttributeError exception for the first
+value in the print statement
+
+  AttributeError: 'C' object has no attribute '__mv'
+
+It x.__mv was remove, Python would complain about x.__f(), indicating the
+object has no attribute '__f'.  
+
+But given class C defines __mv, and __f we could execute the following code
+
+x =  C()
+print(x._C__mv, x._C__f())
+
+by writing the mangled names. When we run this script it again produces: 1 True
+
+In fact, if we printed the dictionary for x, it would show '_C__mv' as a key,
+which is the true name of these functions outside of the module.
+
+print(x.__dict__) would print: {'_C__mv': 1}
+
+So, Python does contain two conventions for hiding names: the first (one
+underscore) is purely suggestive; the second (two underscores) actually makes
+it harder to refer to such names outside of a class.
+
+But neither truly prohibits accessing the information by referring to the name.
+
+When we discuss operator overloading (later this week) and inheritance (later
+in the quarter) we will learn more about controlling access to names defined
+in objects and classes.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="places"><h1>Defining classes in unconventional places</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We normally define classes in modules, and often a module does nothing but
+define just one class (although some define multiple, related classes). Other
+modules define lots of functions. All such modules are called library modules
+(not scripts) because they typically don't run code themselves, but we import
+them to gain access to the names (of classes and functions) that they define.
+(If they do run code, it is inside the code if __module__ == '__main__': and
+often the code there allows us to test the class or module).
+
+We can declare a class in a function and call the function to return an object
+constructed from the class (and even use the returned object if we know 
+its defined instance variables or methods).
+
+def f(x):
+    class C:
+        def __init__(self,x):  self.val = x
+        def double  (self)  :  return 2*self.val  
+    return C(x)
+
+y = f(1)
+print(y, y.val, y.double())
+
+When run, this script prints the following.
+
+<__main__.f.<locals>.C object at 0x02829170> 1 2
+
+The first value indicates (reading the first word after the left angle-bracket,
+from back to front) that class C is defined local to function f, which
+is in the script we ran (named by Python to be __main__).
+
+We can also declare a class in a class, and call some method in the class to
+return an object constructed from the inner class (and even use the object if
+we know its defined instance variables or methods).
+
+class C:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+    class Cinner:
+        def __init__(self,x):  self.val = x
+        def double  (self)  :  return 2*self.val  
+    def identity(self)   : return (self.x, self.y)
+    def x_construct(self): return C.Cinner(self.x)
+    def y_construct(self): return C.Cinner(self.y)
+
+z = C(1,2)
+a = z.x_construct()
+b = z.y_construct()
+print( z, a, b,sep='\n')
+print(z.identity(), a.double(), b.double())
+
+When run this script prints:
+  <__main__.C object at 0x02A36310>
+  <__main__.C.Cinner object at 0x02A36290>
+  <__main__.C.Cinner object at 0x02A36E70>
+  (1, 2) 2 4
+
+z.x_construct() returns a reference to an instance of class C.Cinner, that was
+initialized by the x parameter in the __init__ method. When we call a.double(),
+the double method defined in Cinner() returns twice the value it was
+initialized with.
+
+In fact, instead of the x_construct and y_construct functions, we could define
+a more general construct function that takes either 'x' or 'y as arguments and
+constructs an object for self.x or self.y. The first way to do this uses the
+parameter (matching 'x' or 'y') as a key to access __dict__
+
+    def construct(self,which): return C.Cinner(self.__dict__[which])
+
+The second way to do this uses the eval function, whose argument is either
+'self.x' or 'self.y' depdending on the value of which.
+
+    def construct(self,which): return C.Cinner(eval('self.'+which))
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="static"><h1>Defining/Using Static Methods in Classes</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+A method defined in a class is considered "static" if it does not have a self
+parameter. Sometimes it is useful to write methods in a class that have this
+property. 
+
+For example, suppose that we wanted to declare a Point2d class for storing the
+x,y coordinates for Points in 2-d space. The __init__ method would take two such
+arguments. But suppose that we also wanted to create Point2d objects by
+specifying polar coordinates (i.e, using a distance and angle in radians). We
+could write such a class (with this static method) as follows.
+
+import math
+
+Class Point2d:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def from_polar(dist,angle):
+        return Point2d( dist*math.cos(angle), dist*math.sin(angle) )
+
+    ...more code
+
+This method is preceded by @staticmethod (a decorator: we will discuss
+decorators later). It is meant to be called from outside the class, to create
+Point2d objects from polar coordinates. We can write calls like
+
+  a = Point2d(0., 1.)
+  b = Point2d.from_polar(1.0, math.pi/4)
+
+Notice that we call Point2d.from_polar outside of the class by using the class
+name Point2d and the static method name from_polar defined in that class. It
+has no self parameter.
+
+Likewise, suppose that we wanted to write a helper function for computing the
+distance between two Point2d objects as a static method in this class. We could
+write it as
+
+    @staticmethod
+    def _distance(x1,y1,x2,y2):
+        return math.sqrt( (x1-x2)**2 + (y1-y2)**2 )
+
+    def dist(self,another):
+        return Point2d._distance(self.x, self.y, another.x, another.y)
+
+Here this helper function is meant to be called only by the dist method in
+this class, so we write its name with a leading underscore. Note that again we
+call it using Point2d. Because of FEOOP, we could also call this helper as
+self._distance(self.x, self.y, another.x, another.y) because type(self) is
+Point2d. Because it is static, the call does not put self as the first argument.
+
+Finally, we could also write this helper function as a global function defined
+outside Point2d, in the module that Point2d is defined in. But it is better to
+minimize any kinds of global names; so, it is better to define this name inside
+the class. In this way it won't conflict with any other name the importing
+module has defined.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) What does the following script print?
+
+class C:
+    def __init__(self):
+        print('C object created')
+D = C
+def C():
+  print('C function called')
+
+x = C()
+y = D()
+
+
+2) What does the following script print? Draw a picture of the object x refers
+to using the graphical form for representing objects we learned during Week #1.
+
+class C:
+    def __init__(self,a):
+        self.a = a
+
+x = C(1)
+C.__init__(x,2)
+print(x.a)
+
+
+3) Write a class C whose __init__ method has a self parameter, followed by low
+and high. __init__ should store these values in self's dictionary using the
+same names, but do so only if low is strictly less than high (otherwise it
+should raise the AssertionError exception with an appropriate string.
+
+
+4) Explain why each of the following code fragments does what it does: two
+execute (with different results) and one raises an exception.
+
+g = 0			g = 0			g = 0
+def f():		def f():		def f():
+  print(g)		  print(g)		  print(g)		
+  			  global g		  g += 1
+  			  g += 1 		  
+
+f()			f()  			f()
+g += 1			g += 1			g += 1
+f()			f()  			f()
+
+
+5) Write a class C that uses a class variable to keep track of how many objects
+are created from C (remember that each object creation calls __init__)
+
+That is, for a class C
+
+a = C(...)
+b = C(...)
+print(C.instance_count) prints 2
+c = C(...)
+print(C.instance_count) prints 3
+
+
+6) What would the following script print; explain why. Also, explain why the
+call self.object_bump(name) in bump is not self.object_bump(self,name) as it
+was in the notes.
+
+class C:
+    def __init__(self,init_instance_var):
+        self.instance_var = init_instance_var
+
+    def report(self,var):
+        print('instance referred to by', var,
+              '/instance_var=', self.instance_var)
+
+    def bump(self,name):
+        try:
+            self.object_bump(name)
+        except AttributeError:
+            print('could not bump',name) # or just pass to handle the exception
+
+x = C(10)
+y = C(20)
+
+def bump(self,name):
+    print('bumped',name)
+    self.instance_var += 1
+    
+C.object_bump = bump    
+
+x.report('x')
+x.bump('x')
+x.report('x')
+
+y.report('y')
+y.bump('y')
+y.report('y')
+
+
+7) The function print is bound to a function object. What is printed by the
+following script (and why)?
+
+print = 1
+print(print)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

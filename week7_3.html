@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 7 Inheritance III -->
+<head>
+	<meta charset="utf-8" />
+	<title>Inheritance III</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Seven: Inheritance III</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#example">Normal Inheritance Examples</a></h4></li>
+				<li><h4><a href="#example1">Mix-in Inheritance Examples</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this lecture we will look at a few useful examples of inheritance,
+classifying them into two categories: normal and mix-in inheritance. In normal
+inheritance, a complicated class is specialized to perform a bit differently:
+it typically involves a small derived class single-inheriting from a large base
+class. Mix-in inheritance typically involves a large derived class
+multiply-inheriting -to add many small special behaviors to it- from a variety
+of small base classes.
+</pre>
+
+<a name="example"><h1>Normal Inheritance Examples</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+pdefaultdict derived from the base-class dict:
+
+The dict class implements a standard Python dictionary. It is a large class that
+defines many methods. In this example we will use it as a base class, deriving
+from it (using single-inheritance) the defaultdict class. Actually defaultdict
+is already defined in the collections module, so here we will define the
+pdefaultdict (pseudo-defaultdict) class in the pcollection (pseudo-collections)
+module.
+
+A defaultdict is a slight variant of a dict, so it is a good candidate to
+define via inheritance. All operators/methods working on dicts make sense
+working on defaultdicts; most work correctly purely by inheritance, but we must
+change the parmeters of the __init__ method, and override the meanings of the
+__repr__  and __missing__ methods.
+
+A defaultdict has only three behavioral differences from a dict:
+
+(1) Its __init__ method can/should be initialized with a special reference to a
+class/function that called (without parameters) to store/return values for any
+missing key.
+
+(2) Its __repr__ method returns a string with 'defaultdict' followed, in
+parentheses, by the special reference to a class/function passed to __init__
+followed by the key:value items in the dictionary.
+
+(3) When a key that is missing from the defaultdict is referred to, the key is
+automatically added to the defaultdict, associated with the value returned by
+calling (with no arguments) the special reference to a class/function passed to
+__init__. Note that the method __missing__ is already called in such
+circumstances (in dict, callig __missing__ raises a KeyError exception), so we
+will override this method in the derived/defaultdict class to perform these
+actions.
+
+Here is a complete definition of pdefaultdict derived from dict.
+
+class pdefaultdict(dict):
+    def __init__(self,default_factory=None,initial_dict=[],**kargs):
+        dict.__init__(self,initial_dict,**kargs)  # use to initialize base-class
+        self._default_factory = default_factory   # use in overridden methods
+        
+    def __repr__(self):
+        return 'pdefaultdict('+str(self._default_factory)+','+dict.__repr__(self)+')'
+
+    # When accessing d[key] the inherited method __getitem__ is
+    #   called; if it finds key is not in the dictionary, it calls
+    #   self.__missing__(key), returns the result of executing this
+    #   method, which uses default_factory, if present, to create a
+    #   value assocaited with d[key] and return that value
+    def __missing__(self,key):
+        if self._default_factory == None:
+            raise KeyError(str(key))
+        result    = self._default_factory()  # Call it, with no arguments
+        self[key] = result
+        return result
+
+x = pdefaultdict(list)
+x['a'].append('x')
+print(x)
+
+prints
+
+pdefaultdict(<class 'list'>,{'a': ['x']})
+
+
+Notes:
+
+  (1) The standard dict.__init__ method has default-value parameters (a) an
+  iterable of items to pre-load the dictionary and (b) any number of item
+  parameters of the form key=value (collected in **kargs and added to the
+  dictionary after the pre-loaded items).
+
+  The pdefaultdict.__init__ method also has an extra default_factory
+  parameter: it uses its second two parameters to call dict.__init__ and then
+  also stores default_factory as an attribute the newly constructed pdefauldict
+  object, where it is used in the overridden methods __repr__ and __missing___.
+
+  (2) The pdefaultdict.__repr__ method returns the appropriate string, including
+  the name 'pdefaultdict', the special reference to a class/function to call
+  for missing keys, and the current contents of the dictionary . Of special
+  interest is that fact that there is an  explicit call to dict.__repr__(self)
+  in this method, which overrides __repr__.
+
+  (3) The pdefaultdict.__missing__ method supplies the difference in meaning
+   between dicts and defaultdicts, by overriding the dict.__missing__ method
+  (which always raises KeyError): here, so long as self.default_factory is not
+   None (typically meaning it has been supplied as an argument to __init__), it
+   is called to produce an initial value to associate with the missing key.
+
+  (4) Any other operator/method applied to a defaultdict object executes the
+  corresponding method inherited from dict.
+
+----------
+
+Lists indexes starting at 1:
+
+The list class implements a standard Python dictionary. It is a large class that
+defines many methods. In this example we will use it as a base class, deriving
+the class list1, which represents a list that we index starting at 1. Notice
+that it inherits from list (so all the list functions like .append and .sort
+work for list1) and overrides __getitem__ to
+call list's __getitem__ with a value one smaller. There are a few weird cases
+where list1 doesn't quite perform as expected, but for most it does.
+
+from goody import irange
+
+class list1(list):
+    # Handle positive and negative indexes correctly
+    def __getitem__(self,index):
+        return list.__getitem__(self, index-1 if index > 0 else index)
+
+    def __setitem__(self,index,value):
+        list.__setitem__(self, index-1 if index > 0 else index, value)
+
+    def __delitem__(self,index):
+        list.__delitem__(self, index-1 if index > 0 else index)
+    
+    ... other methods too
+
+x = list1([1,2,3,4, 5])
+for i in irange(1,len(x)):
+    print(i,x[i]) 
+    x.append('x')
+print(x)
+x.reverse()
+print(x)
+print(2 in x) 
+
+this prints
+
+1 1
+2 2
+3 3
+4 4
+5 5
+[1, 2, 3, 4, 5, 'x', 'x', 'x', 'x', 'x']
+['x', 'x', 'x', 'x', 'x', 5, 4, 3, 2, 1]
+True 
+
+----------
+
+OptionMenuValue derived from the base-class OptionMenu (in tkinter)
+
+The OptionMenu class is defined in the tkinter module. Constructing an
+OptionMenu widget in a Frame presents the user with a labeled menu, allowing
+the user to see, select, and reselect a desired option, and discover what the
+string value of the current selected option is.
+
+The constructor for OptionMenu has an aribitrary number of arguments (see 3).
+(1) A parent Frame in which the widget is displayed
+(2) A StringVar into which the text of the selection is put.
+    When initially displayed, an OptionMenu will show this StingVar's value.
+    Clicking it exposes all the other options, which can be selected, replacing
+    the value in the StringVar.
+(3) Any number of strings which comprise the options for this menu.
+
+Here is a trivial demo tkinter application that illustrates how an OptionMenu is
+use, which also uses tkinter's StringVar, Entry, and Button widgets. It displays
+an OptionMenu (in column 1) and a Button and Entry (top and bottom in column 2).
+The user can select an option from the OptionMenu. The 'Show Chosen Option'
+button places the selection into the Entry.
+
+Run this program a few times, repeatedly selecting options and pressing the
+'Show Chosen Option' button. Whenever this button is pushed, Python executes the
+option_to_entry function (that is the command associated with the button,
+wrapped in a parameterless lambda), which erases the information currently in
+the Entry e and then puts the text from the StringVar o_var into this Entry.
+Note that if no option is chosen yet, the original text in o_var is put in the
+Entry.
+
+When pressing the button calls the lambda, its body calls option_to_entry with
+the global names o(for the option) and e (for the entry). Using a lambda like
+this one is common for commands in tkinter.
+
+-----
+commands for widgets (and the partial evaluation alternative)
+
+The command parameter in this button (and other widgets) must refer to a
+parameterless function object. Here we use a parameterless lambda that calls the
+option_to_entry with the appropriatre argument. Another way to accomplish this
+goal is by using partial evaluation, to reduce the number of arguments in the
+option_to_entry to 0. After importing partial from functools and defining
+option_to_entry, we could add one line and rewrite b = button(...) code.
+
+bs_command = partial(option_to_entry,o_var,e)
+b = Button(main,text='Show Chosen Option',command = bs_command)
+-----
+
+from tkinter import *
+
+root = Tk()
+root.title('Widget Tester')
+main = Frame(root)
+main.pack(side=TOP,anchor=W)
+
+o_var = StringVar()
+o_var.set('Choose Option')
+om = OptionMenu(main, o_var, 'option1','option2','option3')
+om.grid(row=1,column=1)
+om.config(width = 10)
+
+e = Entry(main) 
+e.grid(row=2,column=2)
+
+def option_to_entry(option,entry):
+    entry.delete(0,END)
+    entry.insert(0,option.get())    
+b = Button(main,text='Show Chosen Option',command=lambda : option_to_entry(o_var,e))
+b.grid(row=1,column=2)
+
+root.mainloop()
+
+This is 18 non-blank lines of code.
+
+Notice that to control the OptionMenu we are required to bind two names: one
+for the OptionMenu itself (om) and one to store the value of the chosen option
+(o_var). We will now derive a simple variant of OptionMenu, named
+OptionMenuValue, which keeps track of its own selection's value. In addition,
+we will implement it so that it returns 'None' (rather than the initial value
+of o_var, which is the title for the OptionMenu) if the user has made no
+selection yet. Finally, a reset method allows us to reset what appears on the
+option menu to the string displayed there initially.
+
+As with pdefaultdict/dict or lis1/list, an OptionMenuValue is a slight variant
+of an OptionMenu, so it is a good candidate to define via inheritance. All
+operators/ methods working on OptionMenu make sense working on OptionMenuValue:
+most (e.g. grid and config, called in the code) work purely by inheritance, but
+we must change the parameters of the __init__ method and add get/reset methods
+in the OptionMenuValue class. Note that there are hundreds of methods that we
+can call on most GUI widgets like MenuOption (fore placement, size, etc.)
+
+Observe how the OptionMenuValue class stores and uses its own StringVar, how get
+works, and how the option_to_entry function now manipulates the object
+constructed from the OptionMenuValue class directly.
+
+from tkinter import *
+
+# OptionMenuValue: with title and option_tuple
+# get is a pull function to get the option selected
+class OptionMenuValue(OptionMenu):
+    def __init__(self,parent,title,*option_tuple,**configs):
+        self.result = StringVar()
+        self.result.set(title)
+        self.original_title = title
+        OptionMenu.__init__(self,parent,self.result,*option_tuple,**configs)
+
+    def reset(self):
+        self.result.set(self.original_title)
+        
+    def get(self):
+        value = self.result.get()
+        return value if value != self.original_title else 'None'
+
+
+root = Tk()
+root.title('Widget Tester')
+main = Frame(root)
+main.pack(side=TOP,anchor=W)
+
+om = OptionMenuValue(main, 'Choose Option', 'option1','option2','option3')
+om.grid(row=1,column=1)
+om.config(width = 10)
+
+e = Entry(main) 
+e.grid(row=2,column=2)
+
+def option_to_entry(option,entry):
+    entry.delete(0,END)
+    entry.insert(0,option.get())    
+b= Button(main,text='Show Chosen Option',command=lambda : option_to_entry(om,e))
+b.grid(row=1,column=2)
+
+b = Button(main,text='Reset Option',command=om.reset)
+b.grid(row=1,column=3)
+
+root.mainloop()
+
+Not counting the class definition, this is 18 lines of code, but two are
+required to add the new 'Reset Option' button, so the equivalent code has
+shrunk from 18 to 16 lines. This reduction isn't tremendous, but most of the
+code included does bookkeeping operations. Mostly what we have accomplished is
+establishing one object that keepts track of the StringVar functionality inside
+the OptionMenuValue object. If we had 10 OptionMenu objects in our program, we
+would need 10 StringVar objects too: now we can use just 10 OptionMenuValue
+objects (and not have to remember with OptionMenu object goes with which
+StringVar object).
+
+----------
+
+OptionMenuToEntry derived from the base-class OptionMenuValue
+
+We will now derive a simple variant of OptionMenuValue named OptionMenuToEntry,
+which links to an Entry (see __init__) and updates this Entry automatically
+when a new selection is made (indicating it is a new -not yet "gotten with get"-
+selection with a green background). When the 'Show Chosen Option' button is
+pressed, it shows the option in the Entry (actually, it is already there), but
+with a white background. Finally, for this class, reset also puts an empty
+string with a white background into the Entry.
+
+As with OptionMenu/OptionMenuValue, an OptionMenuToEntry is a slight variant of
+an OptionMenuValue, so it is a good candidate to define via inheritance. All
+operators/methods working on OptionMenuValue make sense working on
+OptionMenutoEntry: most (e.g. grid, config, get) work purely by inheritance,
+but we must change the parameters of the __init__ method, add a put method, and
+override the reset method to do something different.
+
+Observe how the OptionMenuToEntry stores and uses its own entry reference,
+how reset calls the overridden OptionMenuValue.reset before blanking the Entry,
+how put fills the Entry with a green background, and how the command for the
+'Show Chosen Entry' button now calls get/put to accomplish its task: we no
+longer need the option_to_entry function.
+
+from tkinter import *
+
+# ... define OptionMenuValue class
+
+#OptionMenuToEntry: with title,linked_entry, and option_tuple
+#get is an inherited pull function; put is a push function, pushing
+#  the selected option into the linked_entry (replacing what is there)
+#  with a green backround; reset now resets this text too
+
+class OptionMenuToEntry(OptionMenuValue):
+    def __init__(self,parent,title,linked_entry,*option_tuple,**configs):
+        self.entry = linked_entry
+        OptionMenuValue.__init__(self,parent,title,*option_tuple,command=self.put,**configs)
+  
+    def reset(self):
+        OptionMenuValue.reset(self)
+        self.put('','white')
+        
+    def put(self,option,bg='green'):
+        self.entry.delete(0,len(self.entry.get()))
+        self.entry.insert(0,option)
+        self.entry.config(bg=bg)
+
+
+root = Tk()
+root.title('Widget Tester')
+main = Frame(root)
+main.pack(side=TOP,anchor=W)
+
+e = Entry(main) 
+e.grid(row=2,column=2)
+
+omte = OptionMenuToEntry(main, 'Choose Option', e, 'option1','option2','option3')
+omte.grid(row=1,column=1)
+omte.config(width = 10)
+
+
+b= Button(main,text='Show Chosen Option',command=lambda : omte.put(omte.get(),'white'))
+b.grid(row=1,column=2)
+
+b = Button(main,text='Reset Option',command=omte.reset)
+b.grid(row=1,column=3)
+
+root.mainloop()
+
+Not counting the class definitions, this is 15 lines of code, shrunk from 16
+lines.
+
+So, we have seen how we can start with a powerfule class (MenuOption) and easily
+specialize it, via inheritance (multiple times), to operate a bit differently.
+In this way it is easy to define widgets with exactly the behavior that we need.
+It is common to use inheritance when defining/refining advanced GUI widgets.
+
+----------
+
+PrivacyError derived from the base-class Exception 
+
+We have seen that Python defines many exceptions and we have used a variety of
+them (either raising them or handling them in except clauses of try/except
+statements). We can easily define our own exception classes using inheritance.
+In the mix-in inheritance example below, we will refer to PrivacyException,
+which is defined as follows.
+
+class PrivacyError(Exception):
+    pass # inherits everything (including __init__) and overrides nothing
+
+So here, the whole purpose is to define a class name (which we can name when we
+raise an exception, and can name when we handle an exception in a try/except
+statements).
+
+In fact, all Exceptions are arranged in an inheritance hierarchy. If we write
+"except Foo" in a try/except, it handles a raised exception that is from the
+Foo class or any class derived from Foo. Technically, if x refers to an
+exception object, it handles any exception class for which isinstance(x,Foo)
+is True (recally this means exactly x is an object constructed from the Foo
+class or any class derived from Foo.
+
+So we can create a hierarchy of exception classes, some more general (higher
+up in the hierarchy, matching more general -many possible- exception classes)
+and some more specific (lower in the hierarachy). In a try/except statement
+with multiple except parts, the first one matching (by isinstance) executes its
+block. So with many except parts, we must order them in such a way that they
+are handled correctly (often meaning specific exceptions before general ones). 
+
+For example, there might be a FileError exception for general file errors. We
+might define
+
+class InputError (FileError ): ...
+class OutputError(FileError ): ...
+class EOFError   (InputError): ...
+
+Now if we wrote
+
+except EOFError  :... handles only EOFError
+
+or
+
+except InputError:... handles both InputError and EOFError
+
+or
+
+except FileError :... handles FileError, InputError, OutputError, and EOFError
+
+So writing 
+
+except EOFError  :... one way
+except FileError :... another way
+
+would handle EOFError in one way, and all other FileError in another way
+
+Python checks whether the exception object raised is an instance of the
+exception named in the except clause. So, for except EOFError, Python checks
+whether isintance(raised_exception_object,EOFError).
+
+In fact, we can write a a single class or a tuple/list of classes after the
+except keyword. For a single class Python checks whether the exception is an
+instance of that class; for a tuple/list it checks whether the exception is an
+instance of any class in the list. So
+
+except (InputError,EOFError): ...one way
+except OutputError          : ...another one way
+
+would handle inputError and EOFError in one way, and OutputError another way.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="example1"><h1>Mix-in Inheritance Examples</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Now we will switch to a discussion of mix-in inheritance. Typically a mix-in
+base class is something small that other classes can be derived from, to
+inherit their behavior. For example, the Privacy class (itself derived from
+object) ensures that certain attributes are never changed: its __setattr__
+method raises PrivacyError (see above) if the attribute is in the set of the
+'privates' attribute: if o is constructed from a class that is derived from
+Privacy, then if we write o.attr = ..., and attr is one of the strings in
+o.privates, then Python will raise PrivacyError in the inherited __setattr__
+method.
+
+The reasoning behind how Privacy works (see the Test class that is derived from
+it) depends on our knowledge of how attributes are located: inside the object
+or inside the class the object was constructed from. Here is the actual code and
+an analysis of what is happening.
+
+class PrivacyError(Exception):
+    pass # inherit __init__/constructor
+        
+
+class Privacy:
+    def __setattr__(self,attr_name,new_value):
+        print('__setattr__:',attr_name,'to be set to',new_value,'; privates = ',self.privates) # for illustration
+        if attr_name in self.privates:
+            raise PrivacyError('Privacy: attempt to set private: '+
+                               attr_name+' to '+str(new_value))
+        else:
+            self.__dict__[attr_name] = new_value
+
+class Test(Privacy): #mix-in a single base class: Privacy
+    privates = {'y'} # y attribute of Test objects cannot be changed after __init__
+
+    def __init__(self,x,y):
+        self.privates = set() # allow setting x y attributes; privates found here
+        self.x = x  
+        self.y = y
+        del self.privates # use class name privates above for future privacy
+
+        
+t = Test(0,1)
+t.x = 'changed'
+t.y = 'changed'
+
+Note the print statement in Privacy.__setattr__. When we run this program it
+prints
+
+__setattr__: privates to be set to set() ; privates =  {'y'}
+__setattr__: x to be set to 0 ; privates =  set()
+__setattr__: y to be set to 1 ; privates =  set()
+__setattr__: x to be set to changed ; privates =  {'y'}
+__setattr__: y to be set to changed ; privates =  {'y'}
+Traceback (most recent call last):
+  File "C:\Users\pattis\Desktop\python32\ztest\experiment.py", line 35, in <module>
+    t.y = 'changed'
+  File "C:\Users\pattis\Desktop\python32\ztest\experiment.py", line 10, in __setattr__
+    attr_name+' to '+str(new_value))
+__main__.PrivacyError: Privacy: attempt to set private: y to changed
+
+Here is an explanation of all the actions (some are a bit subtle)
+
+(1) When Python defines the Test class it has two attributes: privates is a
+name in the class namespace bound to {'y'} and __init__ is bound to its defined
+method.
+
+(2) When Python executes t = Test(0,1), Test.__init__ is called.
+
+  (2a) When Python executes self.privates = {}, it calls the __setattr__ method
+  inherited from Privacy; at this point it looks up self.privates, doesn't find
+  'privates' in the object (yet; see the result of this statement) so it tries
+  to look up the attribute in the Test class, where its value is {'y'}; since
+  'privates' -which is being bound- is not in this set, __setattr__ binds the
+  'privates' attribute to {} IN THE OBJECT being constructed.
+
+  (2b) When Python executes self.x = x, it calls the __setattr__ method
+  inherited from Privacy; at this point it looks up self.privates, and finds
+  'privates' IN THE OBJECT (see 2a), where its value is {}; since 'x' is not in
+  this set, __setattr__ binds the 'x' attribute to 0 in the object being
+  constructed.
+
+  (2c) When Python executes self.y = y, the same series of events happen (as
+  in 2b), and  __setattr__ binds the 'y' attribute to 1 in the object being
+  constructed.
+
+  (2d) When Python executes del self.privates it removes the 'privates'
+  attribute from the self object. After __init__ finishes, the object created
+  will not have a 'privates' attribute, so in the future when Python looks up
+  self.privates in __setattr__, it will find the 'privates' attribute not in
+  the object but instead in the Test class (bound to {'y'}) from which the
+  object was constructed.
+
+(3) When Python executes t.x = 'changed',  it calls the __setattr__ method
+  inherited from Privacy; at this point it looks up self.privates, and finds
+  'privates' in the Test class (bound to {'y'}); since 'x' is not in this set,
+  __setattr__ binds the 'x' attribute in t's object to 'changed'.
+
+(3) When Python executes t.y = 'changed',  it calls the __setattr__ method
+  inherited from Privacy; at this point it looks up self.privates, and finds
+  'privates' in the Test class (bound to {'y'}); since 'y' is in this set,
+  __setattr__ raises an exception.
+
+Here is a second, simpler definition and use (in Test) of Privacy, but with a
+bit of a difference in meaning. In the code below, any new attribute is allowed
+to be added to the namespace of an object (e.g., in the Test.__init__ or
+elsewhere) but once an attribute is in the namespace of an object, it cannot be
+rebound if it appears in the 'privates' attribute. Here are the changed classes.
+
+class Privacy:
+    def __setattr__(self,attr_name,new_value):
+        print('__setattr__:',attr_name,self.privates) # for illustration
+        if attr_name in self.__dict__ and attr_name in self.privates:
+            raise PrivacyError('Privacy: attempt to set private: '+
+                               attr_name+' to '+str(new_value))
+        else:
+            # either defining a first time or not private
+            self.__dict__[attr_name] = new_value
+
+
+class Test(Privacy):
+    privates = {'y',} # y attribute of Test1 objects cannot be changed
+
+    def __init__(self,x,y):
+        self.x = x  
+        self.y = y
+
+The same lines of code
+
+t = Test(0,1)
+t.x = 'changed'
+t.y = 'changed'
+
+now produce very simlar results (the only difference is that printing
+self.privates is always {'y'}). But when __init__ sets attribute 'y' Privacy
+allows it, because 'y' is not currently bound to any value.
+
+__setattr__: x {'y'}
+__setattr__: y {'y'}
+__setattr__: x {'y'}
+__setattr__: y {'y'}
+Traceback (most recent call last):
+  File "C:\Users\Pattis\workspace\inheritance\privacy.py", line 25, in <module>
+    t.y = 'changed'
+  File "C:\Users\Pattis\workspace\inheritance\privacy.py", line 10, in __setattr__
+    attr_name+' to '+str(new_value))
+__main__.PrivacyError: Privacy: attempt to set private: y to changed
+
+
+----------
+
+As a second mix-in example we will define a class that implements an interesting
+__str__ method. Then, we will write the Test class shown above to mix-in both
+this class and Privacy. But first, let's use our knowledge of inheritance to
+better understand what happens when __str__ is called on an object constructed
+from the Test class, which does not define a __str__ method. Assume as above,
+t = Test(0,1).
+
+Notice the Test class defined above defines no __repr__ or __str__ functions.
+When we call print(t), Python converts t to a str (the only things it can print)
+by calling t.__str__(). Now, the t object itself defines no __str__ attribute,
+so Python tries to look up this attribute in the Test class, but it also doesn't
+define a __repr__ or __str__ method. So Python next looks in the base class of
+Test, which is Privacy; but it also doesn't define a __repr__ or __str__ method.
+So Python next looks in the base class of Privacy, which is object. Now the
+object class does define only a __repr__ method (which __str__ calls too). It
+returns a string like '<__main__.Test object at 0x027482F0>' showing just the
+name of the class of t and its location in memory (all objects come froma class
+and have a location in memory). So, that is how a class that doesn't define
+__repr__ or __str__ methods ultimately produces a string representing the 
+class: it calls the one inherited from the object class.
+
+The mix-in class Str_All_Attributes defines only a __str__ method, as follows.
+It returns a string saying what class the object is an instance of, and then
+lists (on separate lines) each attribute of the object, in alphabetical order,
+and its value.
+
+class Str_All_Attributes:
+    def __str__(self):
+        from goody import type_as_str
+        answer = 'Instance of ' +type_as_str(self)+'\n'
+        for a in sorted(self.__dict__):
+            answer += '  ' + a + ' -> ' + str(self.__dict__[a]) + '\n'
+        return answer
+
+Now we can define Test as follows, using both mix-in classes
+
+class Test(Privacy,Str_All_Attributes):
+
+When we define t = Test(0,1) and call print(t) Python looks up the __str__
+attribute using the bread-first search discussed in the previous lecture.
+
+Python tries to look up the attribute in the t object itself, but it doesn't
+define a __repr__ or __str__ method. Python next tries to look up this
+attribute in the Test class, but it also doesn't define a __repr__ or __str__
+method. So Python next looks in the first base class of Test, which is Privacy;
+but it also doesn't define a __repr__ or __str__ method. So Python next looks
+in the second base class, which is Str_All_Attributes. Now this class does
+define a __str__ method. It prints the string as
+
+Instance of __main__.Test
+  x -> 0
+  y -> 1
+
+By defining
+
+class Test(Privacy,Str_All_Attributes):
+
+Any Test objects will check rebinding attempts via the __setattr__ method
+inherited from Privacy and will print via the __str__ method inherited from
+Str_All_Attributes.
+
+So, it is very simple to derive a class from a variety of mix-in base classes,
+and have the derived class inherit all the behaviors of the mixin classes. But
+note that if two mix-in base classes define the same method, if that method is
+called, it will be called only from the class that is the first one found in
+the standard breadth-first search in the inheritance hierarchy. Therefore, one
+must be carefully when using mix-in inheritance.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Define a class name Controlled_Keys_Dict that allows us to specify that some
+keys are unchangable: they can be set to associate with a value, but only if
+they are not already in the dictionary (if they are already in the dictionary
+they cannot be changed). For d in this class, we can call d.control(...) to
+specify which keys are controlled (its argument can be any iterable). Thus if
+we call d.control(d.keys()) it would controll all the keys currently in that
+dictionary.
+
+2) Suppose we define
+
+t1 = Test(0,1)
+t2 = Test(0,1)
+t1.privacy = {'x'}
+
+Can we change t1.x? t1.y? t2.x? t2.y? Explain your reasoning.
+
+3) Write a version of Str_All_Attributes that includes not only the
+attributes of the object, but all its inherited attributes. See the
+inheritancetool2 module for some useful code.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

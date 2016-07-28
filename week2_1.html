@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 2 File Reading -->
+<head>
+	<meta charset="utf-8" />
+	<title>File Reading</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height: 100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+			<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<div id="title">
+			<h1 id="title">Week Two: File Reading</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#simple">Simple and Space Efficient Code</a></h4></li>
+				<li><h4><a href="#read">The .readlines() and .read() methods</a></h4></li>
+				<li><h4><a href="#parse">Reading Files and Parsing</a></h4></li>
+				<li><h4><a href="#questions">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Reading information from files is a common and important operation in Python. In
+this lecture we will discuss various options for reading files, and characterize
+them based on simplicity and efficiency (mostly with regards to efficiency in
+the use of space/memory, which is important when reading very large files).
+
+In a nutshell, you should avoid the use of the .read() and .readlines() methods
+and instead iterate over files (using a standard for loop or a for loop in a
+comprehension).
+
+The last section defines the parse_line function (available in the goody module)
+and how to use it, making reading files that contain multi-type records (fields
+of values) easy. One parameter binds to a tuple/list of function objects, each
+specifying how to convert the field in its position (a substring of each line)
+into a value of the appropriate type.
+</pre>
+
+<a name="simple"><h1>Simple and Space Efficient Code</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+To start, let's suppose we are reading a file where each line in the file is
+just a string of text. The simplest and most efficient way to read such a file
+is iterating over an "open" (file) object.
+
+  for line in open(file_name):  # where file_name is a string naming a file
+      process(line)             # where process is a function or some code block
+
+Typically, we need to strip off the newline character(s) at the end of each line
+as it is read from the file, before it is processed further. We can strip off
+this information by calling .rstrip('\n'). The code would become
+
+for line in open(file_name):
+    process(line.rstrip('\n'))
+
+or
+
+for line in open(file_name):
+    line = line.rstrip('\n')
+    process(line)
+
+  Technically the os module binds the name linesep to the character(s) forming
+  a newline on that operating system. For PCs os.linesep is '\r\n'; on Macs it
+  is '\n'. So, we could call .rstrip(os.linesep) on the line. But when we read
+  a line from a text file in Python, it converts any newline character(s) to
+  just the single character '\n', regardless of the operating system. This
+  makes it easier to write Python code that works on all operating systems.
+
+Note that if we call .rstrip() with no arguments, all white-space characters
+(including the newline character(s), spaces, and tabs) are stripped. We can use
+this simpler alternative if we don't meaningfully process whitespace at the ends
+of lines, but if we need to preserve it, we must call rstrip('\n'). 
+
+Recall that there are NO MUTATOR methods on strings: so, when we call the
+line.rstrip(...) method, it does not mutate the object associated with line, but
+instead it produces a new string that has the same contents except with the
+requested character(s) stripped off its right end; we pass this new string as
+an argument to the process function, or rebind line to that new string.
+
+So, the left code is correctly by the right code is INCORRECT
+
+  for line in open(file_name): 	      	   for line in open(file_name):
+      line = line.rstrip('\n')		       line.rstrip('\n') # does NOTHING!
+      process(line)			       process(line)
+
+The for loops in the code fragments above are all space efficient, because at
+any time Python stores only one line of the file in memory (although the file
+itself is likely cached/stored in a memory buffer). Note that if we wanted to
+create a list of lines read from the file (where the newline character(s) are
+removed from each string), we can write the following simple comprehension.
+
+line_list = [line.rstrip('\n') for line in open(file_name)]
+
+Note that in this example, line_list occupies about the same amount of space as
+the file: all lines are stored in memory (one per list entry) at the same time.
+If we can process lines independently of each other (process each one without
+know the previous or subsequent lines) we should NOT write code to store a list
+of all the lines, because it is not space efficient.
+
+Finally, in ICS-32 you learned (if you are reading this in ICS-33)/will learn
+(if you are reading this in ICS-31) that we can use open as a context manager in
+a with statement, which handles file exceptions and automatically closes the
+file when the context manager finishes (which is often useful/important, but
+not always). With the open context manager, we would write the above code
+fragments as
+
+with open(file_name) as open_file:
+    for line in open_file:
+        process(line.rstrip('\n'))
+
+or
+
+with open(file_name) as open_file:
+    line_list = [line.rstrip('\n') for line in open(open_file)]
+
+Using context managers does not change the space efficiency of the file reading.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="read"><h1>The .readlines() and .read() methods</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We can apply the .readlines() method to an open file: it produces a list of all
+the lines in the file, where each line still ends in the newline character '\n'.
+
+So, if open_file refers to the following open file,
+
+Line 1
+Line 2
+Line 3
+
+calling open_file.readlines() returns the list
+
+['Line 1\n', 'Line 2\n', Line 3\n']
+
+If we wanted to call .readlines() and process every string in the file (without
+the '\n' characters at the end) we would write 
+
+for line in open(file_name).readlines():
+    process(line.rstrip('\n'))
+
+Notice that this code is longer than the loop given in the previous section,
+and is less space efficient, because it first computes a list of all the lines
+in the file, storing it in memory at one time, and then it iterates over the
+strings in that list; the loop in the previous section stores in memory only
+one line at a time of the file, while it process that line.
+
+If we wanted to create a list of lines without the '\n' characters at the end,
+we could write 
+
+line_list = [line.rstrip('\n') for line in open(file_name).readlines()]
+
+which is similar to but also more complicated than the code in the previous
+section.
+
+Finally, if we wanted to compute a list of lines WITH the '\n' characters at
+the end, then calling
+
+line_list = open(file_name).readlines()
+
+which is simpler than the comprehension code below
+
+line_list = [line for line in open(file_name)]
+
+and does occupy the equivalent amount of storage. So this is one of the few
+places (and not really common) where calling the .readlines() method is useful.
+
+----------
+
+We can apply the .read() method to an open file: it produces one giant string
+that contains all the lines in the file, each ended by the newline character
+'\n'.
+
+So, if open_file refers to the following open file,
+
+Line 1
+Line 2
+Line 3
+
+calling open_file.read() returns the string
+
+'Line 1\nLine 2\nLine 3\n'
+
+We can split this string into a list of strings by calling the .split method.
+
+line_list = open(file_name).read().split('\n')
+
+and this code is simpler than what we have seen before, which is equivalent to
+
+line_list = [line.rstrip('\n') for line in open(file_name)]
+
+The .read() code above is a bit less space efficient than the comprehension,
+because it stores both the entire file string and a list of all the lines in
+the file at the same time; the comprehension stores the list of all the lines
+in the file, but not a string whose contents is the entire file itself.
+
+Likewise, if we wanted to process every string in the file (without the '\n'
+characters at the ends) we can write 
+
+for line in open(file_name).read().split('\n'):
+    process(line)
+
+The for loop code is more complicated than the loop in the previous section, and
+it uses space much less efficiently: this code stores the entire file (and a
+list of lines in the file) in memory at one time; the loop in the previous
+section stores in memory only one line at a time of the file. Not that because
+of the call to split after read, there is no need for a call to split inside the
+loop.
+
+Bottom Line:
+
+There is little to be gained by reading files by calling the .readline() and the
+.read() method. Iterate directly over the "open" file with a standard for loop
+or a for loop in a comprehension.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="parse"><h1>Reading Files and Parsing</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Some text files contain lines that store other types or mixed-types of
+information. Suppose that we wanted to read a text file that stored strings
+representing numbers (one number per line). We can easily rewrite our original
+code to the following, calling the int conversion function on each rstripped
+line.
+
+for line in open(file_name):
+    process( int(line.rstrip('\n')) )
+
+Here we are assuming process takes an integer value as an argument.
+
+In some files each line is a "record": a fixed number of fields of values, with
+possibly different types, separated by some special character (often a space or
+punctuation character like a comma or colon). To process each record in a file,
+we must 
+
+  (1) read its line
+  (2) separate its fields of values (still each value is a string)
+  (3) call a conversion function for each string to get its value
+
+The goody module contains the parse_lines function (technically a generator,
+which we will study in ICS-33) that easily supports reading records from files
+(similarly to how lines are read from "open" files).
+
+def parse_lines(open_file, sep, conversions):
+    for line in open_file:
+        yield [conv(item) for conv,item in
+                  zip(conversions,line.strip('\n').split(sep))]
+
+Here sep is a special character used to separate the fields in the record;
+conversions is a tuple (or list) of function objects: they are applied in
+sequence to the string values of the separated fields. When we iterate over a
+call to parse_lines (simlar to iterating over a call to "open"), the index
+variable is bound to a list of the values of the fields in the record.
+
+For example, the following file contains fields of a name (str) followed by two
+test scores (ints) all separated by commas.
+
+Bob Smith,75,80
+Mary Jones,85,90
+
+We could read this file and print out the names of each student and their
+average test score by
+
+for fields in parse_lines( open(file_name), ',' , (str,int,int) ):
+  print(fields[0], (fields[1]+fields[2])/2)
+
+Here fields is repeatedly bound to a 3-list containing a name (str) followed
+by two test scores (ints). fields is first bound to ['Bob Smith', 75, 80] and
+then to ['Mary Jones', 85, 90]. 
+
+-----
+1) Note that if we specified conversions as (str,int) it would return the
+2-lists ['Bob Smith', 75] followed by ['Mary Jones', 85] (because looping over
+a zip stops when one of its arguments runs out of values: here each line
+contains more field values than conversion functions).  Accessing fields[2]
+in the code above would raise an IndexError exception.
+
+2) Likewise (because looping over a zip stops when one of its arguments runs
+out of values), if the a line contains a name and 3 integer values, only the
+name and first two integers would be returned in the 3-list: the line
+
+Paul White,80,75,85
+
+returns only the 3-list ['Paul White', 80, 75]
+
+So parse_lines would not raise any exceptions in the code above.
+
+We could define a more complicated parse_lines function that checked and
+immediately raised an exception if the number of separated field values in a
+record was not equal to the length of the tuple of conversion functions.
+-----
+
+A simpler way to write such code is to use multiple index variables and 
+unpacking (as we do when we write: for k,v in adict.items()).
+
+for name,test1,test2 in parse_lines(open(file_name),',',(str,int,int)):
+  print(name, (test1+test2)/2)
+
+With this for loop, the first error noted above would also raise an exception
+because there would not be three values to unpack into name, test1, and test2;
+the second error would again go unnoticed.
+
+Finally, note that besides using the standard conversion function(s) like str
+and int, we can define our own conversion function(s). For example, suppose that
+each record in the file specified a string name, some number of 
+int quiz results separated by colons, and an int final exam, with these three
+fields (name, quizzes, final) separated by commas. Such a file might look like
+
+Bob Smith,75:80,90
+Mary Jones,85:90:77,85
+
+Here Bob took two quizzes but Mary took three. We could define
+
+def quiz_list(scores):
+    return [int(q) for q in scores.split(':')]
+
+and then write
+
+for name,quizzes,final in parse_lines(open(file_name),',',(str,quiz_list,int)):
+  print(name, sum(quizzes)/len(quizzes), final)
+
+which would print
+
+Bob Smith 77.5 90
+Mary Jones 84.0 85
+
+Note that 77.5 is (75+90)/2 and 84 is (85+90+77)/3. If we instead wrote
+
+for fields in parse_lines(open(file_name),',',(str,quiz_list,int)):
+  print(fields)
+
+it would print the 3-lists
+
+['Bob Smith', [75, 80], 90]
+['Mary Jones', [85, 90, 77], 85]
+
+Of course, we can also use lambdas instead of named functions; below we have
+substituted a lambda for the quiz_list function.
+
+for fields in parse_lines(open(file_name),',',
+                          (str,
+                           lambda scores : [int(q) for q in scores.split(':')],
+                           int)):
+  print(fields)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="questions"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Suppose that we want to process the lower case version of every word on
+every line (where the words on a line are separated by colons) in a file named
+file.txt. Which of the following code fragments correctly does so? For those
+that don't, explain why they fail. For example, if the file contained the three
+lines:
+
+  See spot
+  See spot run
+  Run spot run
+
+it should process the following words in the following order:
+  'see', 'spot', 'see', 'spot', 'run', 'run', 'spot', 'run'.
+
+for line in open('file.txt'):
+    for word in line.rstrip().lower().split():
+        process(word)  
+
+for line in open('file.txt'):
+    for word in line.rstrip().split().lower():
+        process(word)  
+
+for line in open('file.txt'):
+    for word in line.lower().rstrip().split():
+        process(word)  
+
+for line in open('file.txt'):
+    for word in line.lower().split().rstrip():
+        process(word)  
+
+for line in open('file.txt'):
+    for word in line.split().rstrip().lower():
+        process(word)  
+
+for line in open('file.txt'):
+    for word in line.split().lower().rstrip():
+        process(word)  
+
+for line in open('file.txt').read().lower().split('\n'):
+    process(word)  
+
+for line in open('file.txt').read().split('\n').lower():
+    process(word)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

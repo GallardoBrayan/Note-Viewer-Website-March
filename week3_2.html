@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 3 Class OverLoading -->
+<head>
+	<meta charset="utf-8" />
+	<title>Class Operator Overloading I</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h2 id="title">Week Three: Class Operator Overloading I</h2></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#init">__init__</a></h4></li>
+				<li><h4><a href="#len">__len__</a></h4></li>
+				<li><h4><a href="#bool">__bool__</a></h4></li>
+				<li><h4><a href="#repr">__repr__ and __str__</a></h4></li>
+				<li><h4><a href="#relational">Relational Operators</a></h4></li>
+				<li><h4><a href="#unary">Unary Arithmetic Operators</a></h4></li>
+				<li><h4><a href="#binary">Binary Arithmetic Operators</a></h4></li>
+				<li><h4><a href="#delimiters">Incrementing Arithmetic Delimiters</a></h4></li>
+				<li><h4><a href="#vector">Vector Class</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Now that we have reviewed the fundamentals of classes, we are going to cover
+some new material about them: how we can write certain class methods that are
+used by Python in a special way: we don't call these methods directly, but
+Python calls them automatically based on our us of []s, operators, etc. All
+these special methods have their names writen between double underscores (just
+like __init__ which is also one of these special methods).
+
+Most of these methods (but not all) are invoked by Python operators (whose
+arguments are instances of the class that they are defined in) so we call this
+technique "operator overloading": it means overloading (giving more than one
+meaning to) the standard operators, applying to objects constructed from
+programmer-defined classes (which really is an application of "polymorphism",
+which translates to "many forms"). Overloading has a good, not bad, connotation
+here. By studying operator overloading, we will better understand how Python
+executes our programs, and be able to write classes that are more powerful, by
+exploiting our understanding of this mechanism.
+
+Note that this material is also covered in Lutz, "Learning Python", in
+Chapter 29. While learning this material, we illustrate each overloaded
+operator simply with methods defined in a "simple" class, Vector. Later we will
+apply this technique to a bigger examples; but, a typical class has only some
+of its operators overloaded: not all operators are meaningfully overloaded for
+every class.
+</pre>
+
+<a name="init"><h1>__init__</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The example that we will use throughout this lecture is storing and manipulating
+Vectors: a mathematical quantity that represents a point in N-dimensional space.
+We will represent a Vector by a tuple of coordinates; the length of the tuple
+(its number of coordinates) specifies the dimension of the space in which the
+vector resides.
+
+We'll start with __init__ because you have probably already written many of
+these methods. Recall that when you "call the class" (write the class name
+followed by parentheses), you can supply it with some arguments. Python creates
+an object (something that has a namespace/__dict__) for the instance of the
+class and then calls __init__ with a reference to the object it created and all
+the  other arguments in the "call of the class".  So calling Vector(a,b,c) leads
+Python to call Vector.__init__(self,*args) where self refers to the empty
+object Python just created and the *args combines all its matching positional
+arguments into a single tuple.
+
+class Vector:
+    def __init__(self,*args):
+        self.coords = args
+
+Note that self.coords = ... establishes a new name in the namespace of the
+constructed object and initializes it to the tuple args. In light of the last
+lecture, I should have named this self/instance variable _coords or __coords,
+but for simplicity's sake, I'll leave it as coords (I do access that variable,
+but only, for illustration purposes, like directly below).
+        
+Like the methods that we will discuss below, we don't call __init__ directly,
+but Python does, automatically, when we "call the Vector class" to construct a
+new object from that class.
+
+Note that we can use __init__ another way in Python: we can call __init__ on any
+existing Vector object explicitly, to reinitialize its coords attribute.
+
+v = Vector(0,0)
+print(v.coords)
+
+v.coords = (1,1)
+print(v.coords)
+
+v.__init__(5,5,5,5,5)
+print(v.coords)
+
+prints
+  (0, 0)
+  (1, 1)
+  (5, 5, 5, 5, 5)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="len"><h1>__len__</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+We can call the len function on any object. It translates into a call of the
+parameterless __len__ method on the object. The len functioin is defined, and
+automatically imported from the builtins module, as approximately the following
+code:
+
+def len(x):
+    return x.__len__()
+
+Note that some objects (e.g., those of class/type int) do not define a __len__
+method, for example the int class. So, if we call len(1), Python raises an
+exception and reports:
+
+  TypeError: object of type 'int' has no len()
+
+This is exactly because len(1) calls/returns 1.__len__() which FEOOP translates
+into type(1).__len__(1) which is int.__len__(1) but the int class defines no
+__len__ function, so Python raises an exception.
+
+In fact, Python requires that the len function always return an integer value,
+so a more accurate definition of len is
+
+def len(x):
+    answer = x.__len__()
+    if type(answer) is not int:
+      raise TypeError(str(type(x))[8:-2]+' object cannot be interpreted as an integer')
+    return answer
+
+Note that str(type(1)) returns the string "<class 'int'>"; likewise
+str(type(Vector(0,0)) returns the string "<class '__main__.Vector'>": slicing
+[8,-2] respectively produces 'int' and '__main__.Vector'. In fact, my goody
+module includes the type_as_str function, who body performs the conversion and
+slicing.
+
+def type_as_str(x):
+    return str(type(x))[8:-2]
+
+The following code extends our Vector class to illustrate this method. The len
+method returns the dimension of the vector: the number of values in the tuple
+used to represent the vector.
+
+class Vector:
+    def __init__(self,*args):
+        self.coords = args
+
+    def __len__(self):
+        print('Calling __len__')
+        return len(self.coords)
+
+
+v = Vector(0,0)
+print(len(v))
+
+This script prints 'Calling __len__' and then 2.
+
+What do you think would happen if we changed the last statment in __len__ from
+return len(self.coords) to return len(self)? Check your intuition by running
+this code and justifying the result it produces.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="bool"><h1>__bool__</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Whenever Python needs to interpret some object as a boolean value, it calls the
+parameterless method __bool__ on the object. For example, if we write an "if"
+or "while" statement whose boolean test is just an object, Python attempts to
+call the __bool__function on that object to determine whether its boolean
+equivalent represents True or False.
+
+Using the definition of Vector above (defining just __init__ and __len__) and
+the test function below
+
+def test(x):
+    if x:
+        print(True)
+    else:
+        print(False)
+
+when we execute the script
+
+v = Vector(0,0)
+test(v)
+v = Vector(2,2)
+test(v)
+v = Vector()
+test(v)
+
+it prints
+
+  Calling __len__
+  True
+  Calling __len__
+  True
+  Calling __len__
+  False
+
+Why is __len__being called?
+
+The actual rule in Python for evaluating an object as if it were a boolean
+value is to first try to call __bool__ on the object (which cannot be done
+above, because a __bool__ method is not defined) and return its result; if that
+method is not present, Python instead returns whether its len is != 0. If
+there is no __len__ function Python just returns True (the mechanism to do this
+is actually related to inheritance, a topic we will cover late in the quarter).
+
+This rule explains why we can test list, tuple, set, and dict objects as
+booleans: if any is empty (len = 0) it represents False, if any is not empty, it
+represents True.  Also, the object None has a boolean value of False (the
+NoneType class specifies a __bool__ method that always return False).
+
+So, when v = Vector(0,0) or v = Vector(2,2), len(v) is 2 which is != 0, so it
+is treated as True. When v = Vector(), len(v) is 0 which is not != 0 so it is
+treated as False.
+
+But we want to interpret vectors as bool values differently. We will define
+Vector so that an instance is True if self.coords is not the origin: any of the
+coordinates in self.coords is not 0.
+
+class Vector:
+    def __init__(self,*args):
+        self.coords = args
+
+    def __len__(self):
+        print('Calling __len__')
+        return len(self.coords)
+
+    def __bool__(self):
+        print('Calling __bool__')
+        return not all( v==0 for v in self.coords )
+
+Here we use the any function applied to a tuple of bool values, created by a
+comprehension, each specifying whether one coordinate in self.coords isn't zero.
+
+So the boolean value for Vector(0,0) would return False, and so would Vector()
+(because all(()) is True). But Vector(2,2) would return True: all return their
+values because Python uses the __bool__ function supplied above, and doesn't
+have to (nor does it) call the len function to compute an answer.
+
+Note, if we wrote
+
+        return any( v!=0 for v in self.coords )
+
+we would get the same result, except for Vector(), because any(()) is False.
+So according to our definition, the one value corresponding to a 0-dimensional
+vector has the boolean value True.
+
+--------------------
+
+Interlude: Short-Circuit Logical Operators: and their real meanings
+
+The operators and/or are called short-ciruit operators, because unlike other
+operators (which evaluate both of their operands before being applied), short-
+circuit operators evaluate only their left operand first, and sometimes don't
+need to evaluate their right operand: True or ... is True and False and ... is
+False. So if the "or" operator's left operand is True, it doesn't need to
+evaluate its right operand: the result is always True; and if the "and"
+operator's left operand is False, it doesn't need to evaluate its right operand:
+the result is always False. This rule saves time, but it is more important for
+another reason (discussed below).
+
+If the left operands of and/or is True/False it must evaluate the right operand
+in order to compute its result.
+
+So, for example, if we wrote the following if/test (assume d is a dict)
+
+  if k in d.keys() and d[k] == 0:
+      ....
+
+Python would first evaluate the expression: k in d.keys(). When False it would
+determine the value of the "and" operator is already known, and it is False. It
+would not have to evaluate d[k] == 0, which is a good thing, because evaluating
+d[k] would throw a KeyError exception, because k is not a key in d: just what
+i in d.keys() is checking. 
+
+So, while short-circuit operators can save a little time, that is not their
+most important purpose; avoiding raising exceptions is the primary reason that
+and/or operators are short-circuit.
+
+Even without short-circuit operators, we could write this same statement as
+
+  if k in d.keys():
+      if d[k] == 0:
+          ....
+
+But that requires a nested if statement and is much more cumbersome to write. It
+is better to spend some time learning about short-circuit operators now, and
+then be able to use them appropriately later, to write simpler code.
+
+----------
+Going really deep into and/or
+
+Finally, the exact meaning of and/or is a bit more subtle, and concerns the
+boolean interpretation of values (i.e., the __bool__ methods). Let's look at and
+first. If the boolean interpretation (computed by __bool__) of the left operand
+of "and" is as False, we know that we don't have to evaluate the right operand.
+We said that the result is False, but realy the result is the actual value of
+left operand, not its boolean interpretation. So [] and ... evaluates to [] (a
+value whose boolean interpretation is False).
+
+Likewise if the boolean interpretation (computed by __bool__) of the left
+operand of "or" is True, we know that we don't have to evaluate the right
+operand. We said that the result is True, but realy the result is the actual
+value of left operand, not its boolean interpretation. So [1] or ... evaluates
+to [1] (a value whose boolean value is True).
+
+Similarly, if the boolean interpretation of the left operand of "or" is False,
+we need to evaluate the right operand to compute the result of "or", and the
+result will be the value of just the right operand (not its boolean
+interpretation): so (any value considered False) or [] is [], and (any value
+considered False) or [1] is [1].
+
+Likewise, if the boolean interpretation of the left operand of "and" is True, we
+need to evaluate the right operand to compute the result of "and", and the
+result will just be the value of the right operand (not its boolean
+interpretation): so (any value considered True) and [] is [], and (any value
+considered True) and [1] is [1].
+
+Most programmers use logical operators where boolean values are needed (like in
+"if" and "while" loops), so regardless of their strange results, we are
+interested only in the boolean interpretation of the result (which correponds
+to our intution about and/or). But the reality in Python is a bit subtler, and
+sometimes programmers do rely on understanding the exact meaning of the and/or
+operators.
+----------
+
+Note that "not" has only one operand, so there is no way to short-circuit it.
+Also, note that "not" always returns a bool value (unlike what we learned
+above). That is, not [] evaluates to True; not [1] evalutes to False.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name=" "><h1> </h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="repr"><h1>__repr__ and __str__ (and other conversion functions)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python can call two methods that should return string representations of an
+object. The __str__ method is called when the conversion function str is called:
+so again, this is like len: Python translates str(x) into type(x).__str__(x).
+
+For example, the print function calls str on all the arguments that it prints.
+If there is no __str__ method in this class, Python tries calling the __repr__
+method as a backup to produce the string (if we call repr(x) Python returns
+x.__repr__() for this method, similarly to what it does for len(x) and str(x)):
+if that fails, Python reverts to its standard method for computing a string
+value objects: a bracket string with the name of the object's class and the
+location of this object in memory (as a hexidecimal number).
+
+So in the Vector class as it was defined above, without defining __repr__ or
+__str__, if we write
+
+v = Vector(0,0)
+print(v)
+
+Python prints something like
+
+  <__main__.Vector object at 0x027CE470>
+
+The requirement for __repr__ is that it returns a string, which if passed as the
+argument to the eval function, would produce an object with the same state. So
+if v = Vector(0,0) the repr(v) should return 'Vector(0,0)'. For Vector, we
+can define __repr__ as follows
+
+    def __repr__(self):
+        return 'Vector('+','.join(str(c) for c in self.coords)+')'
+
+Note that join expects an iterable as its argument, and it expects each object
+produced to be a string. So, we specify a tuple comprehension that is the str
+conversion of every coordinate in self.coords.
+
+Now, if we executed the code above, Python prints the following (there is still
+no definition of __str__, so __repr__ is called).
+
+  Vector(0,0)
+
+And sure enough, writing
+
+x = eval(repr(v))
+print(type(x),x)
+
+would print
+
+  <class '__main__.Vector'> Vector(0,0)
+
+Here x refers to an object whose state was the same as v's object state.
+
+In fact, similar to the len function, Python requires that the str function
+always return a str value, so a more accurate definition of str is
+
+def str(x):
+    answer = x.__str__()
+    if type(answer) is not str:
+      raise TypeError('__str__ returned non-string (type '+type_as_str(answer)+'))
+    return answer
+
+__str__ should return a string that nicely formats interesting aspects (maybe
+all instance variables, maybe not) of the object. Some objects have more
+instance variables than those needed to construct the object. The __str__ below
+just returns the Vector as a list of its coordinates, prefeaced by its
+dimension. So if v = Vector(0,0) then str(v) returns '(2)[0,0]'
+
+    def __str__(self):
+        return '('+str(len(self))+')'+str(list(self.coords))      # using +
+       #return '({d}){c}'.format(d=len(self),c=list(self.coords)) # using format
+
+Unlike for __repr__, Python places no requirements for result that __str__ 
+returns, we can use our judgement as to how best to show the string
+representation of objects. Typically we use __str__ for debugging, when calling
+the print function, which automatically calls the str function on all its
+positional arugments.
+    
+Finally the other type coversion functions: int, float, complex, oct, hex, and
+trunc call the Python methods __int__  __float__  __complex__  __oct__  __hex__
+__trunc__.
+
+So, we could define
+
+    def __int__(self):
+        return len(self.coords))
+
+If we did, and assumed v = Vector(0,0), then int(v) would return 2; if we
+did not define any __int__ function, then calling int(v) would raise the
+following exception: 
+
+  TypeError: int() argument must be a string or a number, not 'Vector'
+
+Of course, the real int conversion function looks more like
+
+def int(x):
+    answer = x.__int__()
+    if type(answer) is not int:
+      raise TypeError('__int__ returned non-string (type '+type_as_str(answer)+'))
+    return answer
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="relational"><h1>Relational operators</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+__lt__ (__gt__, __le__, __ge__, __eq__, __ne__): < (>, <=, >=, ==, and !=)
+
+In this section, the overloaded operators that we discuss are really operators,
+and we overload their meaning to compute values on new classes/types. Python
+translates any occurrence of a relational operator into a call on the
+appropriate method for its LEFT operand: x < y is translated to x.__lt__(y)
+which by the Fundamental Equation of Object Oriented Programming is translated
+into type(x).__lt__(x,y) or, assuming Vector is a class and x is of type Vector,
+Vector.__lt__(x,y).
+
+Please note that int is just a class in Python, so it translate 12 < x into
+type(12).__lt__(12,x) which is equivalent to int.__lt__(12,x). That is really
+what is happening in Python when we use the < operator: using < with an integer
+first/left argument calls the method __lt__ defined in the class the first/left
+object 12 is constructed from (and 12 is an int).
+
+When studying relational operators, we will first look at comparing objects from
+the same class, and then we will extend our understanding to how Python compares
+objects from different classes (which is a bit more subtle).
+
+--------------------
+1) Comparing objects from the same class:
+
+We will start our discussion by defining these relational operators to work
+when comparing two objects from the Vector class. Later we will discuss how to
+expand them to compare against other types (here, just float).
+
+If we wrote
+
+x = Vector(0,0)
+y = Vector(2,2)
+print(x < y)
+
+Python raises the exception:
+
+  TypeError: unorderable types: Vector() < Vector()
+
+Likewise, it raises the same exception for
+
+print(x < 10)
+
+Python raises the exception:
+
+   TypeError: unorderable types: Vector() < int
+
+And finally, it raises the same exception for
+
+print(10 < x)
+
+Python raises the exception:
+
+   TypeError: unorderable types: int < Vector()
+
+Unorderable here means that there is no way known to Python go determine whether
+a Vector is less than an int, or wheether an int is less than a Vector()
+
+Note that the cause of the problem in the first two cases is that the Vector
+class defines no __lt__ method. Python translate x < ... into
+type(x).__lt__(x,...) which is equivalent here to Vector.__lt__(x,...). But
+there is no __lt__ method defined in the Vector class.
+
+In the third case the int method does define a __lt__ method, but it does not
+know how to compare integers to Vectors. Vectors are a type defined by us, so
+there is no way the int class, which has been built into the Python system, can
+know about them. Python translate 10 < x into type(10).__lt__(10,x) which is
+equivalent here to int.__lt__(10,x).
+
+So, there is no built-in meaning for comparing an object of class/type Vector
+with any object of any type. There is no Vector.__lt__ method. But, by defining
+a __lt__ method in Vector, there is a method for Python to call when
+it needs to compute the < operator on two operands, whose left/first operand is
+an instance of the Vector class.
+
+So to start, let's add the following two definitions to the Vector class. Also
+assume we have imported the math module (by import math). Here, distance
+computes the distance from the origin to the coordinate specified by the Vector;
+one Vector is less than another if its distance is smaller.
+
+    def distance(self):
+        return math.sqrt( sum( v**2 for v in self.coords ) )
+
+    def __lt__(self,right):
+        return self.distance() < right.distance()
+
+Notice the < operator in __lt__ is not recursive! Python calls the __lt__
+method above when comparing two objects constructed from the Vector class; but
+inside this method the < operator is called on two float value returned by the
+sqrt function in distance, so it calls the __lt__ method defined in the float
+class:
+
+   self.distance() < right.distance()
+
+   type(self.distance()).__lt__(self.distance() , right.distance())
+
+   float.__lt__(self.distance(),right.distance())
+
+to compute the result: calling a __lt__ method defined in a different class.
+
+The __lt__ method above would be recursive if its body were return self < right
+(causing inifinite recursion, a topic that we will cover in depth later).
+
+So now, when evaluating x < y in the example below, the method call
+Vector.__lt__ is found and it is called with arguments (x,y): as in
+Vector.__lt__(x,y).
+
+x = Vector(0,0)
+y = Vector(2,2)
+print(x < y)
+
+Python prints: True
+
+What if we changed the print to print(x > y) and executed the code? Would Python
+throw an exception because there is no __gt__ method defined in class Vector?
+
+It turns out Python is able to compute the correct answer. How Python evaluates
+> in this case is a bit more complicated. It first tries to call
+Vector.__gt__(x,y) but an exception is raised because __gt__ is not defined in
+Vector. Mathematically, x > y is true exactly when y < x is true: so, Python
+tries to use the __lt__  method to compute the __gt__ method if we reverse the
+operands: Vector.__gt__(x,y) is the same as Vector.__lt__(y,x). So Python tries
+to evaluate y < x, which means Vector.__lt__(y,x) which successfully computes
+its answer: False.
+
+So, we can let Python implicitly call __lt__ with the operands reversed, as
+above, or we can explicitly implement __gt__ either directly (as we did for
+__lt__) or we can implement __gt__ by having it explicitly call __lt__ with the
+arguments reversed. Either
+
+    def __gt__(self,right):
+        return self.distance() > right.distance()
+
+    def __gt__(self,right):
+        return right < self # or right.__lt__(self) or Vector.__lt__(right,self)
+
+So there are a variety of implicit and explicit ways in which we can use the
+__gt__ method to compute the correct result. Finally, note that we can get the
+same behavior by defining only __gt__ which Python will call with reversed
+operands if it needs to compute the __lt__ and that method is undefined.
+
+Python can use __lt__ to compute __gt__ and __gt__ to compute __lt__ as needed.
+So, writing one of these pairs allows Python to compute both relations.
+
+In the next secton we will see why it is useful to define both explicitly.
+
+What if we changed the print to print(x <= y) and executed the code?
+
+Python again raises the exception:
+
+  TypeError: unorderable types: Vector() <= Vector()
+
+In fact, the __le__ and __ge__ pair of methods are opposites like __lt__ and
+__gt__. If we define the __le__ method, and Python needs to compute x >= y, it
+will try the call to Vector.__le__(y,x), because x >= y is true exactly when
+y <= x is true. And if we define the __ge__ method and Python needs to compute
+x <= y it will translate the call to Vector.__ge__(y,x), because x <= y when
+y >= x.
+
+Finally, if we don't define an __eq__ method, Python substitutes the "is"
+operator; if we don't define a __ne__ method Python call __eq__ and negates
+the result. So unlike the other pairs, in this pair, an undefined  __ne__ method
+calls __eq__ but an undefined __eq__ will not call __ne__, it uses the "is"
+operator. For example, with neither __eq__ nor __ne__ defined
+
+x=Vector(0,0)
+y=Vector(0,0)
+z=x
+
+print(x == y, x is y, x == z, x is z)
+print(x != y, x is not y, x != z, x is not z)
+
+Prints
+
+  False False True True
+  True True False False
+
+Here  ==/is and !=/is not  produce the same results because we have not defined
+__eq__ or __ne__ methods
+
+----
+is vs. == interlude
+
+Recall that the "is"  operator is called the object-identity operator. It
+evaluates to True when its left operand refers to the SAME OBJECT as its right
+operand. In the pictures that we have been drawing, this means the left/right
+references (arrows) refer to the same object.
+
+The == operator (when present) should compare objects by their state. It is
+possible that two different objects (objects for which "is" evaluates to False)
+store the same state, so for them == should evaluate to True. This is the case
+for the objects x and y shown above: they refer to different objects, but each
+of the objects referred to has the same state: the self.coord reference of each
+refers to a tuple containing (0,0).
+----
+
+So, if we define the __eq__ method as follows (True when the tuples are same
+regardless of identity)
+
+    def __eq__(self,right):
+        return self.coords == right.coords
+
+print(x == y, x is y, x == z, x is z)
+print(x != y, x is not y, x != z, x is not z)
+
+now prints
+
+  True False True True
+  False True False False
+
+So in summary, to get all six relational operators to work correctly for
+comparing two objects of the same class, we can define all six or choose one of
+__lt__/__gt__, one of __le__/__ge__, and always __eq__ to define, and Python
+will call one of these to compute the correct value for any of the undefined
+relational operators.
+
+Note that although Python doesn't do it, we can implement all the relational
+operators using only < (or > or <= or >= we show only < below): although this
+approach might not be efficient in execution, the last 5 methods would be the
+same in every class, all depending on the meaning of __lt__. In fact, here is
+the equivalence (each proven by the law of trichotomy: x < y, x == y, or x > y)
+
+Relation |  < only + logical operators
+---------+------------------------------
+ x <  y  |      x <  y
+ x >  y	 |      y <  x
+ x <= y	 | not (y < x)
+ x >= y	 | not (x < y)
+ x == y	 | not (x < y or y < x)
+ x != y	 |      x < y or y < x,  or we could write not(x == y), using ==
+
+So, we could write each of these operators as illustrated above and be able to
+compare values from the Vector class in all possible ways. We will later see
+how to use a mix-in via class inheritence to simplify this process. You can
+also look in the functools module in Python's library for the total_ordering
+decorator, which supplies the other operators so long as the class defines one
+of __lt__, __le__, __gt__, or __ge__ and also supplies the __eq__ method.
+
+--------------------
+2) Comparing objects from different classes:
+
+Now we will discuss what we must do if we also want Python to be able to compare
+objects of different types: here compare objects from the Vector type with
+objects of a numeric type (int or float). In the example below, again, assume x
+refers to an object constructed from the Vector class.
+
+Writing the code print(x < 15) won't magically work. As you would suspect,
+this will not end well, because Python raises the exception: 
+
+  AttributeError: 'int' object has no attribute 'distance'
+
+(in the body of the __lt__ method). The current definition assumes type(right)
+is Vector, but here it is an int. Now, maybe it makes NO sense to do such a
+comparison, so raising this exception is as good as doing anything else; or,
+maybe we should test whether type(right) in (int,float) and raise a different
+exception with a better message. The accepted exception to raise is TypeError,
+which with the correct string would produce the same result as if the method
+were not defined (see below).
+
+But if it makes sense to compare a Vector and an int/float, we can write more
+code to fix the "problem", expressing how to compare Vectors to integers/floats.
+Suppose that we decide for __lt__ to compare the distance of the Vector value
+with the int/float. For  these semantics, we can rewrite __lt__ as 
+
+    def __lt__(self,right):
+        if type(right) is Vector:
+            return self.distance() < right.distance()
+        elif type(right) in (int,float):
+            return self.distance() < right
+        else:
+            raise TypeError('unorderable types: Vector() < '+type_as_str(right)+'()')
+
+Here, if the type of right object is Vector, we do the standard comparison we
+did before, but if the type is either int or float, we perform the necessary
+call (on the distance method) before doing the standard numeric comparison with
+the right numeric value. If type(right) is neither Vector nor int nor float, we
+raise the TypeError exception, meaning trying to do the comparison is not valid.
+
+Now it is time to explore an interesting asymmetry when Python evaluates
+relational operators, and how to avoid any possible problems.
+
+-----
+(1) If we extend __lt__ to cover a right argument that is an int (as we did
+above) and do not define an explicit __gt__ method similarly, then Python will
+try, but fail to compute print(x > 15) correctly: remember that Python would
+first translate this expression into type(x).__gt__(x,15)  which is equivalent
+to Vector.__gt__(x,15); if Vector.__gt__ is not defined, Python tries to compute
+x > 15 equivalently by computing 15 < x. But this expression won't work
+correctly, because Python will translate 15 < x into type(15).__lt__(15,x)
+which is equivalent to int.__lt__(15,x); but the int class does not (and cannot
+-see the next paragraph) know how to compare an int object to a Vector object.
+Python would raise the exception: TypeError: unorderable types: int() > Vector()
+
+(2) If we define a __gt__ method
+
+    def __gt__(self,right):
+        return right < self # or right.__lt__(self) or Vector.__lt__(right,self)
+
+then 15 < x would call int.__lt__(15,x) and fail to produce a result, so Python
+would translate it to x > 15 and call Vector.__gt__(x,15), but that would be
+computed as 15 < x, which would get us back where we started and cause infinite
+recursion. Technically, an exception is raised: RuntimeError: maximum recursion
+depth exceeded.
+
+(3) If we define a __gt__ method
+
+    def __gt__(self,right):
+        if type(right) is Vector:
+            return self.distance() > right.distance()
+        elif type(right) in (int,float):
+            return self.distance() > right
+        else:
+            raise TypeError('unorderable types: Vector() < '+type_as_str(right)+'()')
+
+Now Python translates 15 < x into type(15).__lt__(15,x) which is equivalent to
+int.__lt__(15,x); but the __lt__ method defined in int raises an exception when
+it tries to process the second argument: an object constructed from class Vector
+which int doesn't know about. But in this case, Python next tries to evaluate
+15 < x by evaluating x > 15, which translates into type(x).__gt__(x,15) which is
+equivalent to Vector.__gt__(x,15), which now computes the correct answer
+(assuming we have defined __gt__ properly in the Vector, as illustrated above).
+-----
+
+The int/float classes were written before we wrote the Vector class, so they
+know nothing about comparing ints/floats to objects constructed from the
+Vector class. And, we cannot change the int/float class to compare against
+objects constructed from the Vector class. The int/float classes are built into
+Python. So, it is the Vector class that must know how to compare ints/floats
+against objects constructed from the Vector class. Thus, if it makes sense to
+compare objects of the Vector class against ints/floats (and objects of any
+other already defined classes) we must define all 6 relational operators in
+class Vector, each one explicitly performing its comparison.
+
+Recall that chained relational operators are translated into pairwise
+comparisons joined by "and": e.g., a < b < c == d is translated into
+a < b and b < c and c == d.
+
+Finally note that we can make a < b do whatever we want. We could make it print
+values, change the state of a or b, do whatever we can do with Python code. But
+
+Here is where beginners might go wild by adding all sorts of strange meanings
+to using the < operator; but more experienced programmers will ensure that all
+relational operators are pure accessors and just return a bool value (not even
+one that can be interpreted as a bool value using the __bool__ method) without
+making any state changes in the arguments.
+
+We can summarize the rule Python uses to determine how to compute x < y:
+
+  (1) Try to call type(x).__lt__(x,y)
+
+  (2) If this produces a result, that is the result of the comparison
+
+  (3) If there is no such __lt__ method, or calling it raises an exception,
+        (which is handled by Python internally), then try to compute y > x: call
+        type(y).__gt__(y,x); if this produces a result, that is the result of
+        the expression
+ 
+  (4) If there is no such __gt__ method Python raises a TypeError; if there
+        is a method, but calling it raises an exception, Python propagates the
+        exception (Python doesn't handle it internally)
+
+  1< v  	    	   	is translated to
+  1.__lt__(v)		which by FEOOP is translated to
+  type(1).__lt__(1,v)	which Python translates to
+  int.__lt__(1,v)	which raises an exception: 
+                        int doesn't know about Vector; so Python tries
+  v.__gt__(1)		which by FEOOP is translated to
+  type(v).__gt__(v,1) 	which Python translates to
+  Vector.__gt__(v,1)	which correctly computes the result for Vector and int
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="unary"><h1>Unary arithmetic operators: + - ~ (and functions: abs round floor ceil trunc)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Continuing with overloading operators, when Python recognizes a unary arithmetic
+operator (or a binary arithmetic operator, see the next section) it translates
+it into the appropriate method call for the class/type of its argument: for
+example, it translates -x into type(x).__neg__(x). Suppose that we wanted the
+__neg__ operator for Vector to return a Vector object with all of its coords
+negated. Generally, as described above, __neg__ should not mutate its operand
+but should leave its operand unchanged and return a new Vector object, whose
+state is initialized to the appropriate one. Here is a __neg__ method with these
+semantics. Note it returns a newly constructed object (of class Vector) with the
+appropriate contents,
+
+    def __neg__(self):
+        return Vector( *tuple(-c for c in self.coords) )
+
+Notice the use of tuple to create the appropriate negated tuple, and the use of
+* to translate the n-tuple to n different positional arguments needed in the
+call to Vector's __init__. Here is an example of it code running
+
+v = Vector(1,-2,3)
+print(v)
+print(-v)
+print(v)
+
+which produces the following results; note v's state before and after printing
+-v is the same: there is no mutation. Of course we could write v = -v which
+also has no mutation, but the name v would be rebound to the object produced by
+calling __neg__, so if we printed v again we would see a different result. 
+
+  (3)[1, -2, 3]
+  (3)[-1, 2, -3]
+  (3)[1, -2, 3]     note that the object v refers to was not mutated
+
+There are two other unary arithmetic operators that we can overload: + and ~
+whose methods go by the names __pos_ and __invert__. For Vectors, pos should
+return the same vector. Invert is a bit-wise operator, which we won't overload.
+So writing ~v would raise an exception.
+
+    def __pos__(self):
+        return self
+
+Note that we could return a copy of self, return Vector(*self.coords) but
+because Vector is immutable we can share it safely, without the possibility of
+it changing (unless the program does somthing bad like v.coords.append(2).
+
+In addition, while discussing arithmetic here, the following unary functions 
+(all defined in the math module) abs, round, floor, ceil, trunc work by calling
+one of these special methods on its argument (much like len, described above):
+so abs(x) returns as its result x.__abs__(). Therefore, if we defined the
+following __abs__ method in the Vector class, it returns an object constructed
+from the Vector class (containing the absolute values of all the coordinates)
+
+    def __abs__(self):
+        return Vector( *tuple(abs(c) for c in self.coords) )
+
+then running the script
+
+v = Vector(1,-2,3)
+print(v)
+print(abs(v))
+print(v)
+
+would print
+
+  (3)[1, -2, 3]
+  (3)[1, 2, 3]
+  (3)[1, -2, 3]     note that the object v refers to was not mutated
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="binary"><h1>Binary Arithmetic Operators: + - * / // % divmod ** << >> & | ^</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Now lets move from unary to binary arithmetic operators, where there are more
+operators and they are it bit harder to write correctly. We will start by
+discussing one method in particular __add__ and also discuss the need for
+another related method __radd__. What we learn about these methods applies
+identically to all the arithmetic operators, so we will not dicuss them in
+detail here.
+
+Binary arithmetic operators, like relational operators, are written in between
+their two operands. Python translates the call x + y into type(x).__add__(x,y).
+As with the relational operators and unary arithmetic operators, neither operand
+should be mutated, and the method should return a new object initialized with
+the correct state. Here is an example of the + operator overloaded for Vector:
+to work correctly, the right operand must also be of type Vector and both must
+have the same number of coordinates (len of the coords attribute) and the
+resulting Vector object has that length, with coordinates that are the pairwise
+sum of the coordinates in the two Vectors. Later we will write code so that +
+adds Vectors and the values of the int/float numeric types.
+
+    def __add__(self,right):
+        if type(right) is not Vector:
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+        assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+        return Vector( *(c1+c2 for c1,c2 in zip(self.coords,right.coords)) )
+
+and an example of it running
+
+v1 = Vector(0,1)
+v2 = Vector(2,2)
+print(v1+v2)
+
+which produces the result
+
+  (2)[2, 3]
+
+Note that we know that type(self) is Vector: that is why the __add__ method in
+the Vector class is called. Note also that print(v1+1) raises and prints the
+exception
+
+  TypeError: unsupported operand type(s) for +: '__main__.Vector' and 'int'
+
+and if we define v3 = Vector(2,2,2), then print(v1+v3) results in the exception
+
+  AssertionError: Vector.__add__: operand self((2)[0, 0]) has different dimension that operand right((3)[2, 2, 2])
+
+Now recall that we allowed objects from class Vector to compare to int/float
+using relational operators: let's also allow addition between Vectors and these
+numeric types. Adding a Vector and a numeric value will add that numeric value
+to EACH COORDINATE in the Vector.
+
+    def __add__(self,right):
+        if type(right) not in (Vector,int,float):
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+        if type(right) in (int,float):
+            return Vector( *(c+right for c in self.coords) )
+        else:
+            assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+            return Vector( *(c1+c2 for c1,c2 in zip(self.coords,right.coords)) )
+
+Note that the assertion about lengths is now moved into the else: it shouldn't
+be checked when type(right) is an int or float. An an example of it running is
+
+v = Vector(0,0)
+print(v+1)
+print(v+1.)
+
+which produces the results
+
+(2)[1, 1]
+(2)[1., 1.]
+
+We can write this code equivalently as follows, puting the Vector case first,
+then the (int,Float) cases, and finally the error case. Either code is
+reasonable.
+
+    def __add__(self,right):
+        if type(right) is Vector:
+            assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+            return Vector( *(c1+c2 for c1,c2 in zip(self.coords,right.coords)) )
+        elif type(right) in (int,float):
+            return Vector( *(c+right for c in self.coords) )
+        else:
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+
+What if we also wanted to allow the expression 1+v? If we try to execute
+this code, unsurprisingly Python responds by raising an exception:
+
+  TypeError: unsupported operand type(s) for +: 'int' and 'Vector'
+
+because Python calls int.__add__(1,v) and the int class has no clue about
+objects of the Vector class (and we cannot change the int class to process
+Vectors correctly).
+
+Recall that we covered this problem when discussing __lt__: because the class
+of the left operand was used there too, to call the method (sometimes called
+"left-operand dispatch"), we would have to change the definition of __lt__ in 
+the int class to know about class Vector, which we cannot do.
+
+This problem was solved for relational operators by Python automatically
+reversing the operands and calling the __gt__ method: 1 < v always has the same
+value as v > 1, where the __gt__ method for v (defined in class Vector) can
+include code that checks whether its right operand it an int and process it
+accordingly.
+
+But for binary arithmetic operators, Python cannot always find an equivalent
+operator to transpose the operands, so it uses a different mechanism to solve
+this problem. For examples 1-v is not the same as v-1.
+
+-----
+This is because in mathematics, although operators on some operands (ints and
+floats with + and *) are commutative, they aren't always. Matrix multiplication
+is the first example of non-commutivity that mathematics students often see. For
+matrices m1 and m2, m1*m2 does not produce the same value as m2*m1. Likewise
++ is not commutative on strings: 'ab' + 'cd' is not equal to 'cd' + 'ab'.
+Because of non-commmutivity, Python solves this problem for arithmetic operators
+by using a different mechanism than the one it uses for relational operators.
+-----
+
+For every binary arithmetic operator, Python also allows us to define a "right"
+version of it: where the method name is prefixed by an r: so __add__ has an
+equivalent __radd__ method ("right add"). Here is how we could define __radd__
+in the Vector class to successfully compute expressions of the form
+int() + Vector().
+
+    def __radd__(self,left):
+        if type(left) not in (int,float):               # see note (1) below
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(left)+'\' and \''+type_as_str(self)+'\'')        
+        return Vector( *(left+c for c in self.coords) ) # see note (2) below
+
+By FEOOP, when Python evaluates 1+v, it first tries int.__add(1,v); it doing so
+raises an exception because the int class doesn't know how to operate on
+Vector operands. Then, Python translates the + into type(v).__radd__(v,1) using
+"right-operand dispatch". This methods determines what to do if the left
+operand is an int/float. In the method below, relating to the + operator, the
+self parameter is the right operand and the left parameter is the left operand.
+
+An example of __radd__ running is
+
+v = Vector(0,0)
+print(1+v)
+
+which produces the result
+
+(2)[1, 1]
+
+Note: Two interesting questions are, (1) why doesn't the __radd__ method need
+to also check whether type(left) is a Vector and (2) why doesn't its body check
+whether self is a Vector.
+
+(1) If left were a Vector, then __radd__ would never be called, because the
+left (Vector) argument would result in Python calling the equivalent of
+Vector.__add__(left,self) which knows how to compute a Vector result, so it
+would never call __radd__ for Vector.
+
+(2) self must be a Vector because Python is calling __radd__ in the Vector
+class, so the right argument must be a Vector. If we originally had something
+like 1+1 (where the right operand wasn't a Vector) it would never call __radd__
+in the Vector class.
+
+
+A Note on Commutivity to Simplify __radd__:
+
+For arithmetic types/operators that are commutative (e.g., a+b == b+a, which is
+true for Vectors) we can write __radd__ by simply calling __add__ with the
+arguments reversed: e.g., 
+
+    def __radd__(self,left):
+        self + left  # or self.__add__(left)
+
+So 1+v is translated into int.__add(1,v) which fails, so is translated into
+Vector.__radd__(v,1) which returns the result of Vector.__add__(v,1) which is
+v+1, which has the same value as 1+v because of commutivity.
+
+Again, there are many mathematical structures where + and * are commutative,
+although  operators like - and / are typically not commutative. In fact, some
+interpretations of + and/or * are not commmutative (e.g., multiplying matrices).
+So, we must be careful to write the normal and right versions of all binary
+arithmetic operarators correctly.
+
+We now get a point where we can really test our understanding. Here is the rule
+Python uses to determine how to compute x + y:
+
+  (1) Try to call type(x).__add__(x,y)
+
+  (2) If this produces a result, that is the result of the expression
+
+  (3) If there is no such __add__ method, or calling it raises an exception,
+        (which is handled by Python internally) then call type(y).__radd__(y,x);
+        if this produes a result, that is the result of the expression
+
+  (4) If there is no such __radd__ method Python raises a TypeError; if there
+        is a method, but calling it raises an exception, Python propagates the
+        exception (Python doesn't handle it internally)
+
+For the main example above, here is how Python sees this process
+
+  1+v  	    	   	is translated to
+  1.__add__(v)		which by FEOOP is translated to
+  type(1).__add__(1,v)	which Python translates to
+  int.__add__(1,v)	which raises an exception: 
+                        int doesn't know about Vector; so Python tries
+  v.__radd__(1)		which by FEOOP is translated to
+  type(v).__radd__(v,1) which Python translates to
+  Vector.__radd__(v,1)	which correctly computes the result for Vector and int
+
+
+We have now explored (in about 150 lines of text and code) the relationship
+between the + operator and __add__ and __radd__ methods. Here is the complete
+list of  operators and their related methods: + - * / // % divmod ** << >> & | ^
+translate to __add__  __sub__  __mul__  __truediv__  __floordiv__  __mod__
+ __divmod__ __pow__ __lshift__  __rshift__  __and__  __or__  __xor__; also
+there is a right form for each of these method: __radd__, __rsub__, __rmul__, 
+etc.
+
+One final comment, for arithmetic - operator, if one has defined - and __neg__ 
+correctly, one can often implement the __sub__ method as self + -right, which
+uses the __neg__ and __add__ methods to compute subtraction: again, this can be
+a bit inefficient, but it is very easy to code. If efficiency is an issue, we
+can rewrite __sub__ more directly, to execute more quickly.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="delimiters"><h1>Incrementing Arithmetic Delimiters: += -= *= /= //= %= **= <<= >>= &= |= ^=</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Again in this section we will look at one incrementing arithmetic delimiter,
++=. Technically this is not an operator, because we cannot compose bigger
+expressions with it: += is more like = (a delimiter) than + (an operator). This
+same discussion applies similarly to all the other delimiters. For every
+arithmetic operator method, there is another method prefaced by i that we can
+write and Python will try to call (e.g. __add__ and __iadd__).
+
+Recall that the meaning of x += y is similar to x = x + (y). We parenthesize y
+in case it is an expression that contains any operators whose precedence is
+lower than +. When Python executes x += y, it tries to execute
+x = type(x).__iadd__(x,y): if that method is available and doesn't raise an
+exception, that is the result; if it cannot find that method or it raises an
+exception, Python executes the code x = x + (y), which also can fail if __add__
+is not defined for the types of x and y.
+
+Here is an example of the __iadd__ method for the Vector class, which works for
+incrementing objects of the Vector type/class by a Vector or an int.
+
+    def __iadd__(self,right):
+        if type(right) not in (Vector,int,float):
+            raise TypeError('unsupported operand type(s) for +='+
+                            ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+        if type(right) in (int,float):
+            return Vector(*tuple(c+right for c in self.coords))
+        else:
+            assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+            returns Vector(*tuple(c1+c2 for c1,c2 in zip(self.coords,right.coords)))
+
+Here is the complete list of arithmetic incrementing delimiters and their
+related methods: += -= *= /= //= %= **= <<= >>= &= |= ^= translate to __iadd__
+ __isub__  __imul__  __itruediv__  __ifloordiv__  __imod__  __idivmod__
+__ipow__  __lishift__  __irshift__  __iand__  __ior__  __ixor__.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="vector"><h1>Vector Class</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+import math
+from goody import type_as_str
+
+class Vector:
+    def __init__(self,*args):
+        self.coords = args
+
+    def __len__(self):
+        return len(self.coords)
+
+    def __bool__(self):
+        return all( v==0 for v in self.coords )
+
+    def __repr__(self):
+        return 'Vector('+','.join(str(c) for c in self.coords)+')'
+
+    def __str__(self):
+        return '('+str(len(self))+')'+str(list(self.coords))      # using +
+       #return '({d}){c}'.format(d=len(self),c=list(self.coords)) # using format
+
+    def distance(self):
+        return math.sqrt( sum( v**2 for v in self.coords ) )
+
+    def __lt__(self,right):
+        if type(right) is Vector:
+            return self.distance() < right.distance()
+        elif type(right) in (int,float):
+            return self.distance() < right
+        else:
+            raise TypeError('unorderable types: Vector() < '+type_as_str(right)+'()')
+
+    def __gt__(self,right):
+        if type(right) is Vector:
+            return self.distance() > right.distance()
+        elif type(right) in (int,float):
+            return self.distance() > right
+        else:
+            raise TypeError('unorderable types: Vector() < '+type_as_str(right)+'()')
+
+    def __eq__(self,right):
+        return self.coords == right.coords
+    
+    def __le__(self,right):
+        return self < right or self == right
+
+    def __ge__(self,right):
+        return self > right or self == right
+
+    def __neg__(self):
+        return Vector( *tuple(-c for c in self.coords) )
+
+    def __pos__(self):
+        return self
+
+    def __abs__(self):
+        return Vector( *tuple(abs(c) for c in self.coords) )
+    
+    def __add__(self,right):
+        if type(right) not in (Vector,int,float):
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+        if type(right) in (int,float):
+            return Vector( *(c+right for c in self.coords) )
+        else:
+            assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+            return Vector( *(c1+c2 for c1,c2 in zip(self.coords,right.coords)) )
+    
+    def __radd__(self,left):
+        if type(left) not in (int,float): # see note below
+            raise TypeError('unsupported operand type(s) for +'+
+                            ': \''+type_as_str(left)+'\' and \''+type_as_str(self)+'\'')        
+        return Vector( *(left+c for c in self.coords) )
+    
+#     def __iadd__(self,right):
+#         if type(right) not in (Vector,int,float):
+#             raise TypeError('unsupported operand type(s) for +='+
+#                             ': \''+type_as_str(self)+'\' and \''+type_as_str(right)+'\'')        
+#         if type(right) in (int,float):
+#             return Vector( *tuple(c+right for c in self.coords))
+#         else:
+#             assert len(self) == len(right), 'Vector.__add__: operand self('+str(self)+') has different dimension that operand right('+str(right)+')'
+#             return Vector( *tuple(c1+c2 for c1,c2 in zip(self.coords,right.coords)))
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Using your knowledge of the or operator, and the boolean interpretation of
+string values, explain what the following statement
+
+   x = string1 or string2
+
+assigns to x in each of the following cases (of empty and non-empty strings)
+
+  string1  |  string2
+  ---------+----------
+    ''     |     'a'
+    ''     |     ''
+    'a'    |     ''
+    'a'    |     'b'
+
+Rewrite this statement as an equivalent (a) conditional statement and
+(b) conditional expression.
+
+
+2) Assume that we define x = C(['0']) where the class C is defined by
+
+class C:
+    def __init__(self,los):
+        self.los = los
+
+    def __lt__(self,right):
+        if type(right) is C:
+            return self.los < right.los
+        elif type(right) is int:
+            return self.los < [d for d in str(right)]
+        else:
+            raise TypeError('unorderable types: C() < '+type_as_str(right)+'()')
+
+    def __gt__(self,right):
+        return right < self
+
+Explain in detail (as I did in this lecture) how Python attempts to evaluate
+12 < x and whether it succeeds or fails, and if it fails -hint: it fails- how
+and why it fails.
+
+Answer the same question, if we replaced the defintion of __gt__ above by
+
+    def __gt__(self,right):
+        return C.__lt__(right,self)
+
+3) Assume that we define the class C below
+
+class C:
+    def __init__(self,los):
+        self.los = los
+
+    def __add__(self,right):
+        if type(right) is C:
+            return C(self.los + right.los)
+        elif type(right) is int:
+            return C(self.los + [d for d in str(right)])
+        else:
+            raise TypeError('unaddable types: C() + '+type_as_str(right)+'()')
+
+In what cases can we guarantee that when __add__ is called, self is guaranteed
+to be an object constructed from class C? Explain how we can call this method
+with a self object that is not constructed from class C.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

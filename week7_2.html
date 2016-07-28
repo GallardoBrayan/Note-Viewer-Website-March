@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 7 Inheritance II -->
+<head>
+	<meta charset="utf-8" />
+	<title>Inheritance II</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Seven: Inheritance II</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#visual">Visualizing Multiple-Inheritance Hierarchies</a></h4></li>
+				<li><h4><a href="#locate">Locating Attributes in Multiple-Inheritance Hierarchies</a></h4></li>
+				<li><h4><a href="#meaning">The true meaning of the isinstance function</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+This short lecture extends our discussion of inheritance from single-inheritance
+to multiple-inheritance: we will learn how to visualize multiple-inheritance
+relationships (not as a N-ary tree, but as a more complicated network) and how
+to generalize the rules Python uses for locating attributes. We can use the
+inheritancetool.py module, along with any classes forming an inheritance
+hierarchy, to see how Python locates such attributes. We can use this tool with
+the module defining the Counter/Modular_Counter classes, and with the
+inheritancesample.py module, which defines a more complicated hierarchy
+discussed below.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="visual"><h1>Visualizing Multiple-Inheritance Hierarchies</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Visualizing Multiple-Inheritance Hierarchies
+
+Examine the class structure below, which we have simplified by showing just
+the class statement with a body of pass.
+
+class B1a     : pass	   # object is the base class of the derived class B1
+class B1(B1a) : pass	   # B1a is the base class of the derived class B1
+class B2      : pass	   # object is the base class of derived class B2
+class C(B1,B2): pass	   # B1 and B2 (in that order) are the base classes of C
+
+We can visualize the relationship betweeen the derived and base classes using
+the same building blocks we used for single-inheritance: a derived class refers
+upward to its direct base class. The three pictures below are all logically
+equivalent: although the "location" of some of the classes  are different in the
+pictures, in all cases B1 is the first/left base class from which C is derived;
+B2 is the second/right base class from which C is derived; B1 is derived solely
+from B1a, and B1a and B2 themselves are each derived from the base class
+object.
+
+        object			object			  
+         ^   ^                   ^   ^	         	  
+        /     \		        /     \			
+      B1a     B2 	      B1a     |		     B1a --> object
+       ^       ^               ^      |		      ^       ^
+       |       |	       |      |		      |       |
+       B1      /              B1     B2		      B1      B2
+        ^     /                ^      ^		       ^      ^
+         \   /		        \    /		        \    /
+           C                       C		           C
+
+Because of the extra complexity of multiple-inheritance, the relationships can
+form a complex network that cannot be captured by a simple N-ary tree: for
+example above C has two paths to the root, object, which is disallowed in trees.
+
+For a reason described in the next section, we will prefer the LEFTMOST
+visualization: it allows us to more easily apply the rules for locating
+attributes.
+
+To draw these inheritance networks, we start at the most derived class, and
+then draw all its base classes (in the order they appear in the class
+definition, mirroring the left to right ordering), directly above the class(es)
+derived from them, with arrows leading from the derived class to the base class.
+For the example above, because C is dertived from B1 and B2 (in that order),
+they appear (in that left to right order) above C; because B1 is derived from
+B1a, and B1a is derived from object, B1a appears above B1 and object appears
+above B1a; because B2 is derived from object, object appears above B2 also.
+
+These networks can get messy to visualize, with more complicated relationships
+among the classes, but the picture layout is not what is important: what is
+important is the individual logical relationships (which derived classes refer
+to which base classes), which are directly used to locate attributes.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="locate"><h1>Locating Attributes in Multiple-Inheritance Hierarchies</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The rules Python uses for locating an attribute in an inheritance hierarchy is
+now easy to state (if you understand the concept of pre-order search (a kind of
+depth-first search), discussed in the second trees lecture, although applied
+here to networks.
+
+  Python first tries to find the attribute in the instance object; if Python
+  fails, it performs a pre-order search (left before right) upward from the
+  class the object was constructed from (which appears at the bottom of the
+  network), towards the root/object class. If it reaches any base class that
+  has not already searched all of its derived classes, that base class is not
+  searched now; instead the derived class searches its remaining (to the right)
+  base classes; and if it has searched all its base classes, it derived class
+  searches its remaining (to the right) base classes, etc.
+
+In the inheritance network above, if c is an object constructed from class C,
+and the attribute isn't found in c, Python searches the following classes in
+following order, getting the attribute from the first class that defines it:
+C, B1, B1a, B2, object. Here is why: It starts at C, then searches C's lefmost
+base class B1, then searches B1's leftmost base class B1a. But when it sees
+B1a's leftmost base class, object,  has another derived class (B2) that has not
+been searched, Python doesn't search object yet. Instead it tries to search
+B1a's other base classes; there are none, so it tries to seach B1's other base
+classes; there are none, so it tries to search C's other base classes, and
+there is one, B2. Then it seaches  B2's base classes, object, which is now
+actually searched, because both of its base classes have been searched.
+Finally, object has no base class to search..
+
+How does the search know how to go from a derived class to its base class(es)?
+Every class object has a __bases__ attribute that is a list of its base
+classes; the order that it uses for the base classes in the list is the same
+order the base classes appear in the class definition. So, the arrows shown in
+the pictures above are really stored in Python class objects in the list named
+__bases__. The arrows go only from derived classes to base classes, not base
+classes to derived classes. So while every derived class knows the base classes
+it is derived from, a base class does not know what derived classes are derived
+from it.
+
+Finally, when applied to a single-inheritance hierarchy, this algorithm
+degenerates (each  __bases__ list has only one value in it) into looking from a
+derived class to its single base class, to the single base class of that base
+class, etc. until reaching the object class. We are already familiar with that
+process.
+
+In fact, Python has a function getattr (note, no underscores) that performs
+exactly this task. It takes up to 3 arguments: an object (required), an
+attribute for that object (as a string; required), and the value to return if
+it cannot find that attribute for an object (optional). If the third argument
+is not supplied, Python will raise AttributeError if it cannot find that
+attribute for the object.
+
+The order of classes that Python uses to search for an attribute name is 
+computed when a class is defined and stored in the class name __mro__; it is
+also retrievable by the method mro. So if C refers to a Class, then C.__mro__
+or C.mro() is a list of classes (starting with C), in the order they are
+searched.
+
+The term "mro" stand for "method resolution order", but it applies to all
+attributes, not just methods (so a better name would be aro). The code directly
+below shows how the mro is used when searching for an attribute. It is followed
+by code that computes the mro for each newly defined derived classes (based on
+the mros computed for its base classes
+
+The pgetattr function (pseudo getattr) defined below shows how Python locates
+the value associated with any attribute of an_object. It locates the attribute
+in an_object itself, or searches its inheritance hierarchy starting with the
+class from which an_object is constructed. The inheritancetool.py module
+includes this code (and the algorithm below used in computing the __mro__ list)
+
+Note here how using *default will bind default to (,) which is the empty tuple
+if no third argument is supplied
+
+def pgetattr(an_object, attr,*default):
+    # Try to locate attr in in object itself
+    # Otherwise try to locate it in the classes in the __mro__ list
+    #   based on the type of an_object (in order), which starts with
+    #   type(an_object).
+    # Finally return default[0] (if a third argument, and no more, was specified) or
+    #   raise AttributeError if it was not
+
+    if attr in an_object.__dict__:
+        return an_object.__dict__[attr]
+    else:
+        for c in type(an_object).__mro__:
+            if attr in c.__dict__:
+                return c.__dict__[attr]
+    
+    if len(default) == 1:
+        return default[0]
+
+    raise AttributeError("'"+type_as_str(an_object)+"' object has no attribute '"+attr+"'")
+
+The actual getattr function a bit more complicated than pgetattr because it
+works with some Python features that we have not discussed. But the general
+outline is the same.
+
+Now, let us see the algorithm to computer the __mro__ attribute of a derived
+class, based on the __mro__ attributes of the base classes it is derived from.
+The order requires 
+
+  (1) Base classes must be searched in the order they appear in each derived
+        class definition.
+  (2) A derived class must be searched before any of the base class it was
+         derived from.
+
+This algorithm is known as the "C3 linearization algorith"
+If there is no order that satsifies all these requirements (see below for an
+example) then Python will raise a TypeError exception when the class is defined.
+
+The following function compute the mro: it contains print statements (controlled
+by the debugging parameter) to help illustrate its computation.
+
+# bases is all the bases the new class is derived from
+def compute_mro(*bases, debugging=False):
+    # constraints is a list of lists; each inner list specifies the constraints
+    #   for a base class or the new class (last, specified by *bases)
+    # mro is the final order for searching all the base classes
+    constraints = [list(c.__mro__) for c in bases] + [list(bases)]
+    mro         = []
+    
+    # While there are constraints to satisfy
+    while constraints:
+        if debugging: print('\nConstraints =',constraints)
+        
+        # Find the first candidate in an inner constraint-list that does not appear anywhere
+        #   but as the first in all other inner constraint-lists
+        for const in constraints:
+            candidate = const[0]
+            if debugging: print('Trying candidate:',candidate)
+            if not any([candidate in later[1:] for later in constraints]):
+                if debugging: print('Selected candidate:',candidate)
+                break
+        else: # for finished without breaking; no candidate is possible!
+            raise TypeError('Cannot create a consistent method resolution order (MRO) for bases ' +\
+                               ', '.join(str(b)[8:-2] for b in bases))
+
+        # That candidate is next in the mro
+        mro.append(candidate)
+        
+        # Remove candidate from being the first in any inner constraint-list
+        for const in constraints:
+            if const[0] == candidate:
+                if debugging: print('Removing candidate from:', const)
+                del const[0]
+                
+        # If any innner constraint-list has been reduced to [], remove it
+        constraints = [c for c in constraints if c != []]
+        
+    return tuple(mro)
+
+Given classes following classes, used at the start of this lecture note
+  class B1a     : pass	# __mro__ is (B1a,object)
+  class B1(B1a) : pass  # __mro__ is (B1,B1a,object)
+  class B2      : pass  # __mro__ is (B2,object)
+
+We can compute the mro for 
+  class C(B1,B2): pass
+
+by calling print('\nmro =',compute_mro(B1,B2,debugging=True)) which produces the
+following results; match it with the English description of how the order (also
+appearing at the start of the lecture note).
+
+  Constraints = [[<class '__main__.B1'>, <class '__main__.B1a'>, <class 'object'>], [<class '__main__.B2'>, <class 'object'>], [<class '__main__.B1'>, <class '__main__.B2'>]]
+  Trying candidate: <class '__main__.B1'>
+  Selected candidate: <class '__main__.B1'>
+  Removing candidate from: [<class '__main__.B1'>, <class '__main__.B1a'>, <class 'object'>]
+  Removing candidate from: [<class '__main__.B1'>, <class '__main__.B2'>]
+
+  Constraints = [[<class '__main__.B1a'>, <class 'object'>], [<class '__main__.B2'>, <class 'object'>], [<class '__main__.B2'>]]
+  Trying candidate: <class '__main__.B1a'>
+  Selected candidate: <class '__main__.B1a'>
+  Removing candidate from: [<class '__main__.B1a'>, <class 'object'>]
+
+  Constraints = [[<class 'object'>], [<class '__main__.B2'>, <class 'object'>], [<class '__main__.B2'>]]
+  Trying candidate: <class 'object'>
+  Trying candidate: <class '__main__.B2'>
+  Selected candidate: <class '__main__.B2'>
+  Removing candidate from: [<class '__main__.B2'>, <class 'object'>]
+  Removing candidate from: [<class '__main__.B2'>]
+
+  Constraints = [[<class 'object'>], [<class 'object'>]]
+  Trying candidate: <class 'object'>
+  Selected candidate: <class 'object'>
+  Removing candidate from: [<class 'object'>]
+  Removing candidate from: [<class 'object'>]
+
+  mro = [<class '__main__.B1'>, <class '__main__.B1a'>, <class '__main__.B2'>, <class 'object'>]
+
+Note that we must prepend the C class itself to the result computed:
+The actual mro for C is
+
+  mro = (<class '__main__.C'>, <class '__main__.B1'>, <class '__main__.B1a'>, <class '__main__.B2'>, <class 'object'>)
+
+Now, look at the following example of class that CANNOT meet the requirements:
+
+class A     : pass   # __mro__ is (A, object)
+class B     : pass   # __mro__ is (B, object)
+class C(A,B): pass   # __mro__ is (C, A, B, object)
+class D(B,A): pass   # __mro__ is (D, B, A, object)
+class E(C,D): pass   # __mro__ is not possible
+
+Note here that for derived class E, the rules for its base class C require
+searching A before B, but the rules for its base class D require searching B
+before A. So given the definition of A, B, C, and D, calling 
+
+We can compute the mro for 
+  class E(C,D): pass   # __mro__ is not possible
+
+by calling print('\nmro =',compute_mro(C,D,debugging=True))  which produces the
+following results.
+
+  Constraints = [[<class '__main__.C'>, <class '__main__.A'>, <class '__main__.B'>, <class 'object'>], [<class '__main__.D'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>], [<class '__main__.C'>, <class '__main__.D'>]]
+  Trying candidate: <class '__main__.C'>
+  Selected candidate: <class '__main__.C'>
+  Removing candidate from: [<class '__main__.C'>, <class '__main__.A'>, <class '__main__.B'>, <class 'object'>]
+  Removing candidate from: [<class '__main__.C'>, <class '__main__.D'>]
+
+  Constraints = [[<class '__main__.A'>, <class '__main__.B'>, <class 'object'>], [<class '__main__.D'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>], [<class '__main__.D'>]]
+  Trying candidate: <class '__main__.A'>
+  Trying candidate: <class '__main__.D'>
+  Selected candidate: <class '__main__.D'>
+  Removing candidate from: [<class '__main__.D'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
+  Removing candidate from: [<class '__main__.D'>]
+
+  Constraints = [[<class '__main__.A'>, <class '__main__.B'>, <class 'object'>], [<class '__main__.B'>, <class '__main__.A'>, <class 'object'>]]
+  Trying candidate: <class '__main__.A'>
+  Trying candidate: <class '__main__.B'>
+  Traceback (most recent call last):
+  Traceback (most recent call last):
+    File "C:\Users\Pattis\workspace\inheritance\inheritancetool.py", line 85, in <module>
+      print('\nmro =',compute_mro(C,D,debugging=True))
+    File "C:\Users\Pattis\workspace\inheritance\inheritancetool.py", line 68, in compute_mro
+      raise TypeError('Cannot create a consistent method resolution order (MRO) for bases ' + ', '.join(str(b)[8:-2] for b in bases))
+  TypeError: Cannot create a consistent method resolution order (MRO) for bases __main__.C, __main__.D
+
+In such a case, the class raising the exception will not be defined: it cannot
+be defined because it can have no legal search order for its attributes.
+
+Here is a recursive version of the compute_mro function (sans debugging print
+statements).
+
+def compute_mro_r(*bases):
+    def merge(constraints):
+        if constraints == []:
+            return ()
+        else:
+            for const in constraints:
+                candidate = const[0]
+                if not any([candidate in later[1:] for later in constraints]):
+                    break
+            else: # for finished without breaking; no candidate is possible!
+                raise TypeError('Cannot create a consistent method resolution order (MRO) for bases ' +\
+                                   ', '.join(str(b)[8:-2] for b in bases))
+            
+            return (candidate,) + \
+               merge([const[1:] if const[0] == candidate else const for const in constraints if const != [candidate]])
+    return merge([list(c.__mro__) for c in bases] + [list(bases)])
+
+Going back to the definitions
+
+  class B1a     : pass	# __mro__ is (B1a,object)
+  class B1(B1a) : pass  # __mro__ is (B1,B1a,object)
+  class B2      : pass  # __mro__ is (B2,object)
+
+We can compute the mro for 
+  class C(B1,B2): pass
+
+by computing compute_mro_r(B1,B2) which we can visualize as (dropping the
+  '__main__.' from each class name)
+
+= merge((B1a,object), (B1,B1a,object), (B2,object))
+= (B1) + merge((B1a,object), (B1a,object), (B2,object))
+= (B1) + (B1a) + merge((object,), (object,), (B2,object))
+= (B1) + (B1a) + (B2) + merge((object,), (object,), (object,))
+= (B1) + (B1a) + (B2) + (object)
+= (B1, B1a, B2, object)
+
+The actual mro for C is (C, B1, B1a, B2, object) 
+
+Finally, __mro__ is as read-only attribute; after Python computes it, its value
+cannot be changed (recall all the __setattr__ variants we wrote.
+
+Finally, in the next lecture we will see many examples of single-inheritance
+and multiple-inheritance. As of the end of this lecture, you should be able to
+understand how Python treats all inheritance hierarchies in terms of locating
+attributes.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="meaning"><h1>The true meaning of the isinstance function (given inheritance)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Python's boolean function isinstance has two parameters: the first should be
+bound to an instance object; the second to a class object. Before inheritance,
+our understanding of the call isinstance(o,C) meant return True if instance
+object o was constructed from class object C: we could restate this computation
+using the is operator as equivalent to: type(o) is C.
+
+But now that we know about inheritance we can clarify the the meaning of the
+isinstance function: it is a bit more general. The isinstance(o,C) function
+call still returns True if type(o) is C, but it also returns True if type(o)
+is any class derived from C (meaning type(o) is derived from class C in one or
+more steps). Stated another way, if isinstance(o,C) is True, it means that when
+searching for attributes in o, eventually class C will be searched (if the
+attribute is not found earlier), by the Fundamental Equation of Object-Oriented
+Programming generalized in this lecture.
+
+So, while 
+
+  type(o) is C
+
+truly asks whether o is an instance object constructed from class C,
+isinstance(o,C) is asking whether C will be searched when trying to find
+attributes in o. In the following picture isinstance(o,C) is True.
+
+               C
+               ^
+               |
+.....other Base Classes of type(o).....
+               ^
+               |
+   type(o): actual class of o
+
+Given what we learned above, we can easily describe the operation of
+isinstance(o,C) in Python as
+
+  C in type(o).__mro__
+
+since type(o).__mro__ contains o's actually class and all the base classes its
+class is derived from.
+
+Note that isinstance(o,Object) is always True.
+
+A very interesting fact is that if isinstance(o,C) is True and if a is an
+attribute defined in class C, then writing o.a will always find a binding for
+the attribute a (and never raise AttributeError): the binding will either come
+from C itself (if the search goes all the way back to C) or from some class
+derived from C that redefines/overrides this attribute.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Given the following class definitions, draw the inheritance network and
+indicate in what order the class objects are searched for attributes.
+
+class A          : pass
+class B          : pass
+class C(A,object): pass
+class D          : pass
+class E(D,B)     : pass
+class F(B,C)     : pass
+class G(E,F)     : pass
+
+2) Rewrite the pgetattr function to return a list (empty, one value, or
+multiple values) that contains all the values found in the inheritance
+hierarchy of the given attribute name.
+
+3) For what second argument will isinstance always return True, no matter what
+the first argument?
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

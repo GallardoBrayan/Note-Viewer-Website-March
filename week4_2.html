@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 4 Iterators via Classes -->
+<head>
+	<meta charset="utf-8" />
+	<title>Week Four: Two</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Four: Iterators via Classes</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#fix">Fixing a Sharing Problem with prange</a></h4></li>
+				<li><h4><a href="#store">Classes that Store Interesting Data</a></h4></li>
+				<li><h4><a href="#decorators">Iteraterable Decorators</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In this lecture we will first learn how to fix a problem (related to sharing
+objects) with the prange class that we wrote in the last lecture, by using a
+nested class for iteration. Next, we look at a type that stores and manipulates
+data, and also allows iteration over its data. Finally, we will begin to explore
+functions and classes that operate on iterables and produce other iterables
+(e.g., sorted and reversed are two examples built into Python, but there are
+many other interesting and useful ones). We will finish the week with a lecture
+about a special kind of function called a generator, which provides an
+simple and excellent mechanism for writing iterators (and iterators that
+decorate iterators). All this material will become even more important and
+useful when we spend a week talking about inheritance among classes.
+</pre>
+
+<a name="fix"><h1>Fixing a sharing problem with prange</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In the last lecture we discussed various classes that implemented the iterator
+protocol (by implementing the methods __iter__ and __next__). Typically in these
+cases (for both the Countdown and prange classes) the main purpose of the class
+was to create an object to iterate over once. That is, we processed objects from
+these classes only (or primarily) by iterating over them. Contrast these classes
+to the list, tuple, set, and dict class: while we often iterate over these
+objects, we also peform many other useful operations on them too: e.g.,
+examining and/or updating data in them.
+
+Often we construct an object from Countdown and prange only for use in a for
+loop: e.g., for i in prange(...) : .... We don't even bind this object to a
+name, so the objects are used just in the for loop and cannot be reused.
+
+But at the end of the last lecture we started discussing sharing, and we will
+start our discussion here by looking at another example of sharing, and how to
+fix a defect in our first implementation of the prange class (so that it behaves
+more like range). It will involve defining and constructing a class nested in
+the prange class, whose sole purpose is to construct an object returned by
+__iter__ and provide a __next__ method for this object to allow us to iterate
+over it. We will see that when we write iterators for other classes, controlling
+more complicated data, this same technique works nicely.
+
+To illustate the defect, we first define the following function, which uses a
+doubly-iterating comprehension to return all pairs of values produced by its
+argument iterators. Here i1 and i2 are two objects that are iterable.
+
+def all_pair(i1,i2):
+    return [(x,y) for x in i1 for y in i2]
+
+this code is equivalent to
+
+def all_pair(i1,i2):
+    answer = []
+    for x in i1:
+        for y in i2:
+            answer.append((x,y))
+    return answer
+    
+Now let's run this function in various interesting ways, with range/prange (in
+one case, illustrating a difference in how these classes perform).
+
+r = range (3)
+p = prange(3)
+
+print(all_pair(r,p))	# use range and prange
+print(all_pair(p,r))	# use prange and range
+print(all_pair(r,r))	# use only range, but twice
+print(all_pair(p,p))	# use only prange, but twice
+
+These four print statements produce the following results. Notice the first
+three result are the same (producing tuples containing all pairs of the values
+in the range), but differ from the fourth (producing only the first of the
+tuples). The difference occurs when the same prange iterable argument is passed
+to both parameters.
+
+[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+[(0, 0), (0, 1), (0, 2)]
+
+The problem is that when __iter__ is called on a prange, it returns the object
+itself on which __iter__ was called. The last use of p (using it twice in a
+call to all_pair) above produces the wrong results. Both for loops in the
+all_pair function share the iterator/object: the outer loop initializes it and
+gets the first value, then the inner loop re-initializes it and gets the values
+0, 1, 2; when the inner for loop exhausts the iterator, it is also exhausted in
+the outer for loop (so the outer loop immediately terminates after producing
+only 3 tuples). Python's standard range function doesn't suffer from problem,
+and we will fix prange to operate likewise.
+
+As a reminder, here is how prange defined __iter__ and __next__ in the previous
+lecture.
+
+    def __iter__(self):
+        self.n = self.start
+        return self # must return an object on which __next__ can be called
+    
+    def __next__(self):
+        if self.step > 0 and self.n >= self.stop or \
+           self.step < 0 and self.n <= self.stop:
+            raise StopIteration
+        save = self.n
+        self.n += self.step
+        return save
+
+__iter__ sets a new instance name n (at least new since __init__ which did not
+set it) and returns self; __next__ (written in prange) uses this instance name
+and the stop/step instance names to advance the iterator. The problem is that
+when all_pair tries to doubly iterate over the same prange object it will be
+using the same object in the first/outer iteration as the second/inner
+iteration. When the second/inner iteration starts it calls __iter__ on the same
+object, clobbering the state being maintained by the first/outer iteration
+(because both are using the same prange object). When the second iteration
+finishes, Python thinks the first is finished too (the one object being used has
+its self.n set beyond its last value, which is why the second/innner iteration
+stopped. So, after generating (0,0), (0,1), and (0,2) and finishing the second
+iteration, Python thinks that the first iteration has finished too.
+
+We will now fix this problem.
+
+Here is how we do it. We define the local class prange_iter inside the __iter__ 
+method. Every time we call __iter__ it creates a new object with its OWN STATE,
+so multiple iterations on the same prange object don't interact badly with each
+other because nested loops call __iter__ multiple times, and each call creates
+it own prange_iter object with its own state. The prange_iter class has just two
+methods: __init__  to initialize it with the information needed to iterate over
+the prange object, and __next__ to advance the iteration of the prange object.
+
+The __init__ method defines the instance names n, stop, and step (note that
+start is not needed: it is used to initialize self.n); the __next__ method has
+exactly the same code as the method above (but now applying to the prange_iter
+object; of course, this code never referred to self.start). The final line of
+code in __iter__ just constructs and returns the necessary prange_iter object
+using prrange values: prange_iter(self.start,self.stop,self.step). This object
+is constructed from a class that implements __next__ (as required). The __next__
+defined is the same as before, but now in defined in prange_iter instead of
+prange itself.
+
+    def __iter__(self):
+        class prange_iter:
+            def __init__(self,start,stop,step):
+                self.n    = start
+                self.stop = stop
+                self.step = step
+            def __next__(self):
+                if self.step > 0 and self.n >= self.stop or \
+                   self.step < 0 and self.n <= self.stop:
+                    raise StopIteration
+                save = self.n
+                self.n += self.step
+                return save
+
+        return prange_iter(self.start,self.stop,self.step)
+
+All of the examples in this lecture will contain code like this, with the
+__iter__ method defining a LOCAL or NESTED CLASS (this local class defines only
+the __init__ and__next__ methods) and returning an object constructed from this
+local/nested class.
+
+The total amount of code isn't much bigger, but it is certainly more complicated
+to define and use the nested class inside the __iter__ method (and think about
+it). Now every call to __iter__ returns a different object that has a __next__,
+so two uses of the same prange object (as in all_pair(p,p) above) will now work
+correctly. Finally, we could also write the following code, which declares
+prange_iter not inside __init__ but in the prange class itself. The code for
+class prange_iter is identical (except outdented) but the call to __iter__ is
+now just one line calling the constructor for this class.
+
+    class prange_iter:
+        def __init__(self,start,stop,step):
+            self.n    = start
+            self.stop = stop
+            self.step = step
+
+        def __next__(self):
+            if self.step > 0 and self.n >= self.stop or \
+               self.step < 0 and self.n <= self.stop:
+                raise StopIteration
+            save = self.n
+            self.n += self.step
+            return save
+        
+    def __iter__(self):
+        return prange.prange_iter(self.start,self.stop,self.step)
+
+Generally, names should be defined in the most restricted place they can be,
+to avoid accidental misuse. This rule means that the original definition of
+prange_iter (inside the __iter__ method) is probably the best location to
+define it.
+
+But, let's look at one other issue that favors the definition directly above.
+Imagine that we wanted to be able to write the following
+
+r = prange(10)
+for i in r.iter_skip(2):           # skip 2nd, 4th, 6th, ... values: 
+    print(i,end='')
+
+We can also write this without the name r as just
+
+for i in prange(10).iter_skip(2):  # skip 2nd, 4th, 6th, ... values: 
+    print(i,end='')
+
+In both cases, the code prints 13579, not 123456789.
+
+That is, we wanted to be able to iterate through this range normally and also
+by skipping values it would normally produce. We can solve this problem more
+easily using the code directly above, with both the __iter__ and .iter_skip
+methods constructing and returning prange_iter objects as follows (which we
+couldn't do if prange_iter were defined inside __iter__)
+
+    class prange_iter:
+        def __init__(self,start,stop,step):
+            self.n    = start
+            self.stop = stop
+            self.step = step
+
+        def __iter__(self):
+            return prange.prange_iter(self.n,self.stop,self.step)
+
+        def __next__(self):
+            if self.step > 0 and self.n >= self.stop or \
+               self.step < 0 and self.n <= self.stop:
+                raise StopIteration
+            save = self.n
+            self.n += self.step
+            return save
+        
+    def __iter__(self):
+        return prange.prange_iter(self.start,self.stop,self.step)
+
+    def iter_skip(self,multiple):
+        return prange.prange_iter(self.start,self.stop,self.step*multiple)
+
+The iter_skip method just multiplies the prange's step by multiple, when it
+constructs an iterable. The final observation here concerns why an __iter__
+method is defined inside the prange_iter class. We have seen that when we write
+
+  for i in r.iter_skip(2):  # skip 2nd, 4th, 6th, ... values: 
+
+Python translates it into a while loop, with the initializing definition
+
+  _hidden = iter(r.iter_skip(2))
+
+So iter(...) is called on the prange_iter object returned by calling
+r.iter_skip(2). So, this object must have an __iter__ method, which just
+returns a copy of itself: the same object that r.iter_skip(2) already
+constructed and returned. Without the __iter__ method in the prange_iter class,
+Python would throw an exception when calling iter(...) on the prange_iter
+object that a call to .iter_skip returns.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="store"><h1>Classes that store interesting data and have iterators over the data</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Examine the definition of the following class that stores and processes
+histograms. For simplicity we will assume it processes percentages (ints from
+0 to 100) and places them in 10 bins: 0-9, 10-19, 20-29, ... 80-89, 90-100;
+note that the last bin really reprsents 11 values, while all the others
+represent 10 values. Of course we will focus on the how to accomplish iteration
+for objects of this class (iterating over the counts in their bins) but there
+are other interesting aspects about this class that we will discuss first (and
+we could always generalize or add methods to make this class even more
+powerful).
+
+class Percent_Histogram:
+    def __init__(self,init_percents=[]):
+        self.histogram = 10*[0]    # [0,0,0,...,0,0] length 10
+        for p in init_percents:
+            self.tally(p)
+         
+    # Called when 0<= p <=100: 100//10 is 10 but belongs in index 9
+    def _tally(self,p):
+        self.histogram[p//10 if p< 100 else 9] += 1
+    
+    def clear(self):
+        for i in range(10):         # vs self.histogram = 10*[0]
+            self.histogram[i] = 0
+
+    # tally allows any number of arguments, collected in a tuple
+    def tally(self,*args):
+        if len(args) == 0
+            raise IndexError('Percent_Histogram.tally: no value(s) to tally')
+        for p in args:
+            if 0 <= p <= 100:
+                self._tally(p)
+            else:
+                raise IndexError('Percent_Histogram.tally: '+str(p)+' outside [0,100]')
+
+    # allow indexing for bins [0-9]
+    # but can mutate these values only through __init__, clear, and tally
+    # no __setitem__ defined
+    def __getitem__(self,bin_num):
+        if 0 <= bin_num <= 9:
+            return self.histogram[bin_num]
+        else:
+            raise IndexError('Percent_Histogram.__getitem__: '+str(bin_num)+' outside [0,9]')
+
+    # standard __iter__: defines a class with __init__/__next__ and returns
+    #   an object from that class
+    def __iter__(self):
+        class PH_iter:
+            def __init__(self,histogram):
+                self.histogram = histogram          # sharing
+                # self.historgram = list(histogram) # copying
+                self.next = 0
+            def __next__(self):
+                if self.next == 10:
+                    raise StopIteration
+                answer = self.histogram[self.next]
+                self.next += 1
+                return answer
+
+        return PH_iter(self.histogram)
+            
+    # To reconstruct a call the __init__ that reproduces the correct counts in
+    #   the histogram, we supply the correct number of values, but all at the
+    #   start of the bin: e.g., if bin 5 has 3 items, the repr has three 50s
+    def __repr__(self):
+        param = []
+        for i in range(10):
+            param += self[i]*[i*10]
+        return 'Percent_Histogram('+str(param)+')'
+    
+    # a 2-dimensional display; do you understand the use of .format here?
+    def __str__(self):
+        return '\n'.join(['[{l: >2}-{h: >3}] | {s}'.format(l=10*i,h=10*i+9 if i != 9 else 100,s=self[i]*'*') for i in range(10)])
+
+Notes:
+
+0) The __init__ method uses the idiom 10*[0] which you should know. If not,
+experiment with it.
+
+1) The _tally function is supposed to be called by only methods defined in this
+class. It puts a number in the range [0,100] into the correct bin, treating 100
+specially (it belongs in bin 9, but p//10 would put it in bin 10, which doesn't
+exist).
+
+2) The clear method sets each bin in the list to 0; we could have allocated a
+new list as shown in the comment, but generally that takes more time and
+occupies more space.
+
+3) By using *args, the tally method can have any number (0 or more) of
+positional arguments. All arguments are collected into tuple that is iterated 
+over to process the value individually. If there is not at least one value, or
+any value is out of range, this method raises an exception.
+
+4) The __getitem__ method allows us to index all the bins, 0-9 inclusive of a
+Histogrm object. Note that we can set values into these bins (i.e., mutate the
+list), only via __init__ and tally. So we call this information read-only: we
+can read it but not write/change it.
+
+5) We use the now standard way to implement __iter__, by defining a class that
+defines __next__ and returning an object from that class. We will discuss how
+changing self.histogram = histogram vs. self.histogram = list(histogram) changes
+the iterator.
+
+6) The __repr__ method doesn't know what numbers went into the bins, but we can
+use the lowest number in each bin, repeated by the count in the bin, to specify
+a list needed to construct an equivalent object (with the equivalent number of
+values in each bin) with the construtor.
+
+7) The __str__ method returns a two-dimensional plot of the histogram. Do you
+all know how to use the format method for strings? If not you should look it
+up (it is described online using something like EBNF) and practice using it. You
+should certainly be able to tell me why the string that .format is called on
+produces the result you'll see.
+
+When Python executes the following script:
+
+quiz1 = Percent_Histogram([50, 55, 70, 75, 85, 100])
+quiz1.tally(20,30,95)
+print(repr(quiz1))
+for count in quiz1:
+    print(count,end=' ')
+print(quiz1)
+
+It prints the following information:
+
+Percent_Histogram([20, 30, 50, 50, 70, 70, 80, 90, 90])
+0 0 1 1 0 2 0 2 1 2 
+[ 0-  9] | 
+[10- 19] | 
+[20- 29] | *
+[30- 39] | *
+[40- 49] | 
+[50- 59] | **
+[60- 69] | 
+[70- 79] | **
+[80- 89] | *
+[90-100] | **
+
+Normally we would use this class in a program that reads a file of scores.
+Now, what would happen if we executed the following code?
+
+for count in quiz1:
+    print(count,end=' ')
+    quiz1.tally(100)
+
+It would print: 0 0 1 1 0 2 0 2 1 11 (and at this point quiz1[9] is 12)
+
+Note that mutating the quiz1 object during each iteration would result in the
+new, accumulated values for the results produce by the iterator (in the last
+bin). That is because the PH_iter object refers to (shares) the same list that
+the Histogram class created (and that the tally method increments). So that
+sharing results in the iterator always returning the most up-to-date value in
+the list.
+
+What if we wanted to have the iterator produce the values in the histogram when
+the iteration started, and not show any updates after that. The change is
+trivial: in PH_iters's __iter__ method we change
+
+                self.histogram =  histogram
+to 
+                self.histogram =  list(histogram)
+
+Now instead of this iterator object sharing the list being using for the
+histogram, it has its own copy: a new/different list, but storing all the
+original list's values. So, changes to the original list will not change the
+self.histogram list and therefore not change the result of the iteration. The
+cost: extra space used for the list (not much, because the list always contains
+just 10 values) and some extra time to construct the list.
+
+So, we need to decide (and document) the semantics for our iterators. Can you
+tell (and if so, with what code) what decision was made concerning this issues
+for the list iterator, and discuss why you think the designers made that
+decision?
+
+In fact, because there are iterators for lists built-into Python, we could in
+fact simplify __iter__ to delegate to the list class:
+
+    def __iter__(self):
+        return iter(self.histogram)
+
+for sharing behavior; and for copying behavior
+
+    def __iter__(self):
+        return iter(list(self.histogram))
+
+because the list class supports an __iter__ method, on whose restult __next__
+can be called. So defining and advancing our own indexes in the PH_iter class
+is not strictly necessary. But this code illustrates how the list iterator
+works and such simplifications are not possible for other classes that store
+more complicated data structures.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="decorators"><h1>Iteraterable Decorators: Classes that are initialized by/implement iterable</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Since iterators are so important, it is useful to have a grab-bag of classes
+(this lecture) and generators (next lecture) that operate on iterables to
+produce more iterables. When a class takes as an argument an object that has
+methods implementing a certain protocol and returns an object that implements
+the same protocol, the class is called a decorator. We will write a bunch of
+classes that decorate iterables below (and even more in the next lecture). These
+are all pretty simple to think about, and while the code is complicated, it is
+complicated in the same way each time.
+
+In all these examples, you will not see an explicit "raise StopIteration";
+instead, this exception is raised when calling some next on the iterable it is
+iterating over.
+
+Here is a first example of a decorator for iterable and a refinement of it.
+The Repeat class takes an iterable as an argument and implements an __iter__
+method that repeats that iterator over and over: whenever it runs out of
+values to produce, the entire sequence of values is produced again.
+
+We can test this class with any iterable, and strings are the simplest, so we
+will demonstrate this class using a string. If we run the script
+
+for i in Repeat("abcde"):
+    print(i,end=''))
+
+Python would print: abcdeabcdeabcde ... and keep going forever
+
+Here is that class
+
+class Repeat:
+    def __init__(self,iterable):
+        self.iterable = iterable
+        
+    def __iter__(self):
+        class Repeat_iter:
+            def __init__(self,iterable):
+                self.iterable = iterable       # remember for reuse in next
+                self.iterator = iter(iterable) # remember for direct use in next
+            
+            def __next__(self):
+                try:
+                    return next(self.iterator)
+                except StopIteration:
+                    self.iterator = iter(self.iterable) # reuse iterable
+                    return next(self)               # calls __next__ recursively
+
+        return Repeat_iter(self.iterable)
+
+This uses the same define-a-class-in-the-__iter__-method used in the prange and
+Histogram classes above.
+
+We can generalize this class to Repeat an iterator either at most some fixed
+number of times or forever, using the following class. If the second argument
+to __init__ is an integer, it repeats the iterable at most that many times; if
+there is no second argumment, the iterator repeats forever (as above).
+
+class Repeat:
+    def __init__(self,iterable,max_times=None):
+        self.iterable  = iterable
+        self.max_times = max_times
+        
+    def __iter__(self):
+        class Repeat_iter:
+            def __init__(self,iterable,max_times):
+                self.iterable       = iterable
+                self.max_times_left = max_times
+                self.iterator       = iter(iterable)
+            
+            def __next__(self):
+                if self.max_times_left != None and self.max_times_left <= 0:
+                    raise StopIteration
+                else:
+                    try:
+                        return next(self.iterator)
+                    except StopIteration:
+                        if self.max_times_left != None:
+                            self.max_times_left -= 1 
+                        self.iterator = iter(self.iterable)
+                        return next(self) # calls __next__ recursively
+
+        return Repeat_iter(self.iterable,self.max_times)
+
+If we run the script
+
+for i in Repeat("abcde",3):
+    print(i,end=''))
+
+Python would print: abcdeabcdeabcde
+
+Here is a third decorator for iterables. It returns all the values in an
+iterable, but never the same value twice. We call this class Unique. It works
+by keeping a set in each Unique_iter object that remembers and bypasses
+returning any value already returned from that iterator object.
+
+class Unique:
+    def __init__(self,iterable):
+        self.iterable = iterable
+        
+    def __iter__(self):
+        class Unique_iter:
+            def __init__(self,iterable):
+                self.iterated = set()
+                self.iterator = iter(iterable)
+            
+            def __next__(self):
+                answer = next(self.iterator)
+                while answer in self.iterated:
+                    answer = next(self.iterator)
+                self.iterated.add(answer)
+                return answer
+
+        return Unique_iter(self.iterable)
+
+If we run the script
+
+for i in Unique('Mississippi'):
+    print(i,end='')
+
+Python prints: Misp
+
+We can also generalize this class by specifying the maximum number of times a
+value can be returned (with a default argument of 1, which brings us back to
+version of Unique specified above, since it allows values to be returned only
+once). This is a trivial but interesting example of generalizing classes with
+backward compatibility of use. Here we replace a set of "iterated-over" values
+by a dictionary with these values as keys associated with the number of times
+this value has been returned.
+
+from collections import defaultdict  
+class Unique:
+    def __init__(self,iterable,max_times=1):
+        self.iterable  = iterable
+        self.max_times = max_times
+        
+    def __iter__(self):
+        class Unique_iter:
+            def __init__(self,iterable,max_times):
+                self.times     = defaultdict(int)
+                self.iterator  = iter(iterable)
+                self.max_times = max_times
+            
+            def __next__(self):
+                answer = next(self.iterator)
+                while self.times[answer] >= self.max_times:
+                    answer = next(self.iterator)
+                self.times[answer] += 1
+                return answer
+
+        return Unique_iter(self.iterable,self.max_times)
+
+If we run the script:
+
+for i in Unique('Mississippi',2):
+    print(i,end='')
+
+Python prints: Missipp
+
+As another example, we will write the Filter class, which is supplied with
+a predicate function (of one argument that returns a bool), indicating whether a
+value should be produced by the iterable or filtered out, causing next to be
+called again, until it finds a value to return that is ok by the predicate.
+
+class Filter:
+    def __init__(self,iterable,predicate):
+        self.iterable  = iterable
+        self.predicate = predicate
+        
+    def __iter__(self):
+        class Filter_iter:
+            def __init__(self,iterable,predicate):
+                self.iterator  = iter(iterable)
+                self.predicate = predicate
+            
+            def __next__(self):
+	        answer = next(self.iterator)
+		while self.predicate(answer) == False:
+		    answer = next(self.iterator)
+		return answer
+
+        return Filter_iter(self.iterable,self.predicate)
+
+If we run the script:
+
+for i in Filter('abcdefghijklmnopqrstuvwxyz',lambda x : x not in 'richardpattis'):
+    print(i,end='')           
+
+Python prints all the letters not in my name: befgjklmnoquvwxyz 
+
+Notice that the Repeat, Unique, and Filter classes all implement their iterators
+similarly, with the same pattern of code. In the next lecture we will rewrite
+these decorators -and even more decorators- much more simply as generators, 
+which allow us to capture the pattern above much more easily.
+
+Here is a last decorator for iterables. Its calls to next return all the values
+in an iterable but in sorted order. In this implementation we collect all the
+values from the iterator into a list and then sort the list and return its
+iterator (since the values are all in the correct order). We cannot know what
+smallest value to return until we have seen all the values.
+
+class psorted: # pseudo-sorted: works just like sorted
+    def __init__(self,iterable,key=None,reverse=False):
+        self.result = list(iterable) # put all values in a list
+        self.result.sort(key=key,reverse=reverse)
+        
+    def __iter__(self):
+        return iter(self.result)
+
+Actually, "sorted" in Python is simpler: it is a function that returns a list
+(so it still returns something that is iterable). So, psorted might be more
+clearly written as
+
+def psorted(iterable,key=None,reverse=False):
+    result = list(iterable)                   # put all values in a list
+    result.sort(key=key,reverse=reverse)      # calling sort returns None
+    return result			      # so return in another statement
+
+Finally, notice how we can combine these decorator classes below. Suppose I
+want to print out all the letters in my name in alphabetical order, with no
+repetition of letters. I can do it with the following script. Note that the
+string argument to psorted is iteratble, and psorted itself returns an iterable
+(so the argument to Unique is iterable) and finally Unique is iterable as well
+(which is needed by the for loop)
+
+for i in Unique(psorted('richardpattis')):
+    print(i,end='')
+
+It prints: acdhiprst
+
+What would the following script print? It reverse the order of the classes
+being constructed.
+
+for i in psorted(Unique('richardpattis')):
+    print(i,end='')
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Explain what happens (and why) if we write the following loops
+
+   for c in Repeat(''): ...?
+   for c in Repeat('',4): ...?
+
+each with an empty iterator (produces no values). Explain alternative (more
+reasonable?) behavior and how we can implement it.
+
+2) Explain what happens in each of the following situations, which uses a list
+as the iterable being decorated: will the appended value be printed.
+
+  l = [...] # some list
+  i = 0
+  for u in Unique(l):
+      print(u)
+      i += 1
+      if i == 1:
+          l.append(...) # append a value to l that is not already there
+
+  l  = [...] # some list
+  ui = Unique(l)
+  l.append(...) # append a value to l that is not already there
+  for u in ui:
+      print(u)
+
+Explain how we could modify the Unique class to get the opposite behavior.
+
+3) Here is another way to write the __next__ method in the Filter_iter class.
+Compare this loop with the one in the code above as to simplicity/clarity.
+
+                while True:
+                    answer = next(self.iterator)
+                    if self.predicate(answer):
+                        return answer
+
+4) Expain why the iterable passed as an argument to the psorted class must
+be finite.
+
+5) Define a preversed class similar to the sorted class above, which acts as a
+decorator for iterables. You may not use reversed in your code. Hint: it uses
+a combination of creating a list from the iterable and the iterator in the
+Histogram class (although using a range iterator might simplify the code).
+
+6) Define a Random class, which acts as a decorator for iterables: it returns
+each value with a probability (a float between 0-never- and 1-always) specified
+when the object is constructed. Account for the fact that the iterator might
+produce an infinite number of values. Write this in a straightforward way, then
+write it in a simpler way using the Filter class.
+
+7) Define a Skipping class, which acts as a decorator for iterables: it skips
+the first n values (n is specified as an argument to __init__) and then 
+produces the same value as its iterable argument. So the following loop skips
+the first three values when iteratin over the string 'abcdefg'
+
+  for c in Skipping('abcdefg',3):
+      print(c,end='')
+
+and prints: defg
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

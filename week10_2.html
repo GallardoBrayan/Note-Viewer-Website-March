@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 10 Review -->
+<head>
+	<meta charset="utf-8" />
+	<title>Review for Final Exam</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h2 id="title">Week Ten: Quick Review for Final Exam</h2></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#extension">Review/Extension</a></h4></li>
+				<li><h4><a href="#text">Text Patterns</a></h4></li>
+				<li><h4><a href="#classes">Classes</a></h4></li>
+				<li><h4><a href="#iterators">Iterators</a></h4></li>
+				<li><h4><a href="#functional">Functional Programming</a></h4></li>
+				<li><h4><a href="#self">Self-referential data types</a></h4></li>
+				<li><h4><a href="#inheritance">Inheritance</a></h4></li>
+				<li><h4><a href="#analysis">Analysis of Algorithms</a></h4></li>
+				<li><h4><a href="#tools">Tools</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+The final exam is worth 200 points. I have not written the final version of this
+exam yet, but I expect it to be like the midterm in format: about 10 questions
+(some might have multiple parts), each covering about 1 week of material for the
+10 week quarter (although there will be no questions on material covered the last
+week). So, it is cumulative. Over this 120 minute test, that is about 12 minutes
+per question (to read and answer it).
+
+We have covered way too much material for you to re-read everything. I suggest
+primarily reviewing the quizzes and midterm, and then the programming
+assignments: not reading them in depth, but being familiar with them and their
+major themes. Of course you will be analyzing and writing code on the final
+exam, but I expect there also to be a small number of questions to be answered
+in English or with pictures/diagrams.
+
+I will write in more detail a few days before the exam, after I have written it.
+I will provide the same kind of material I provided for the midterm.
+
+Here is my view of the material that we covered.
+</pre>
+
+<a name="extension"><h1>Review/Extension</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  data types: list (sorting), tuple/named-tuple, set/frozenset, dict/defaultdict
+  iterators (including interating over sorted/reversed data)
+  comprehensions
+  function calls (argument/parameter binding options)
+  lambdas
+  exception/handling with try/except
+  classes (__dict__ for object name spaces)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="text"><h1>Text Patterns</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  regular expressions
+    matching language (e.g., what * and ? mean)
+    extracting groups for matching
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="classes"><h1>Classes</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  the fundamental equation of object oriented programming
+  operator overloading via method definition
+    misc: __init__, __len__, __bool__, __str__/__repr__
+    relational
+    arithmetic
+    container: __getitem__, __setitem__, __delitem__, __contains__
+    function call: __call__
+    iterators: __iter__, __next__
+    attribute: __getattr__, __setattr__, __delattr__, __getattribute__
+    context managers: __enter__, __exit__
+  decorators
+    mostly functions/classes decorating functions
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="iterators"><h1>Iterators</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  how iterators work: translating for loops into while loops with calls to iter/next
+  general review of use/illustrations of how to write some builtin (range)
+  implementation with nested classes
+  implementation with generators
+    space efficiency (iteration over many value without storing them all)
+  decorators for iterators: e.g., repeat, unique, filter 
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="functional"><h1>Functional Programming</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  recursive programming for standard Python data structures: int, string, list
+  proof rules and their application to write/prove code correct
+  map/filter/reduce (+ lambdas)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="self"><h1>Self-referential data types</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  linked lists: pictures and hand-simulation
+  binary trees/structure trees
+  iterative and recursive functions
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="inheritance"><h1>Inheritance</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  type vs isinstance
+  inheriting/using/overriding: state, __init__, other methods
+  locating attribute names in an inheritance hierarchy
+    (really a network if multiple inheritance is used)
+    (updating the fundamental equation of object-oriented programmming)
+  simple examples: defaultdict, lists indexed at 1, GUI widgets
+  mixin examples: Privacy, general-purpose __str__
+  handling exceptions in an inheritance hierarachy
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="analysis"><h1>Analysis of Algorithms</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  complexity classes & Big-O notation: their meaning (doubling signatures)
+    common complexity classes: O(1), O(Log2 N), O(N), O(N Log2 N), O(N**2), ...
+  complexity classes for standard Python operations
+  analysis of code: code -> complexity
+  empirical analysis: timing -> complexity
+  minor: approximating logarithms base 2; 1+2+..+N = N(N+1)/2
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="tools"><h1>Tools</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+  performance: my Performance class, profiler
+  correctness: unittests
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lange="en">
+<!-- Week 7 Inheritance I -->
+<head>
+	<meta charset="utf-8" />
+	<title>Inheritance I</title>
+	<style>
+	body {
+		background : #b3d9ff;
+		margin : 0;
+		padding: 0;
+		font-family : Futura;
+	}
+	#wrapper {
+		width: 960px;
+		height: auto;
+		background: #cce5ff;
+		border-left: 5px solid #737373;
+		border-right: 5px solid #737373;
+		overflow : auto;
+		margin : 0 auto;
+		padding: 10px;
+	}
+	#header {
+		width:100%;
+		height:100px;
+		border-bottom: 3px solid #000;
+		clear: right;
+		display: flex;
+  		flex-direction: row;
+  		justify-content: space-between;
+	}
+	#header > img {
+		margin: 15px 0px 0px 0px;
+	}
+	#social {
+		float: right;
+		margin: 20px 30px 0px 0px;
+	}
+	#social ul li {
+		float: left;
+		list-style: none;
+		padding-right: 5px;
+	}
+	#sidebar {
+		float: left;
+		width: 275px;
+		height: 100%;
+	}
+	#menu {
+		float: left;
+		height: auto;
+		width: 200px;
+	}
+	#menu ul li {
+		list-style : none;
+		padding: 0px;
+		text-align: center;
+	}
+	#menu ul li a {
+		color: #666666;
+		text-decoration: none;
+		display: block;
+	}
+	#menu ul li a:visited{
+		color:purple;
+	}
+	#menu ul li a:hover {
+		color:black;
+	}
+	#content {
+		float: left;
+		width: 655px;
+		height: 100%;
+		padding-left: 15px;
+		letter-spacing : 1;
+		border-left: 3px solid black;
+	}
+	h1 {
+		text-align: center;
+		padding : 5px;
+		border-bottom: 1px solid black;
+	}
+	p {
+		text-indent: 50px;
+		line-height: 25px;
+	}
+	.top a {
+		color : #666666;
+		text-decoration: none;
+	}
+	#readMore {
+		text-align: right;
+	}
+	#readMore a:visited {
+		color:purple;
+	}
+	#footer {
+		clear: both;
+		width: 100%;
+		height: 80px;
+		color: black;
+		border-top: 3px solid black;
+	}
+	h5 {
+		text-align: center;
+		color: #666666;
+	}
+	#title {
+    		position: relative;
+    		margin: 15px;
+    		border-bottom: none;
+    	}
+	</style>
+</head>
+
+<body>
+
+<div id="wrapper">
+	<div id="header">
+		<a name="top"></a>
+				<img src="https://janikvonrotz.ch/wp-content/uploads/2015/10/Python-Logo.png" width="232" height="101" alt="Logo" title="python">
+			<!-- Page Title -->
+			<div id="title">
+			<h1 id="title">Week Seven: Inheritance I</h1></div>
+			<a name="top"></a>
+		<div id="social">
+			<ul>
+				<li><a href="https://github.com/GallardoBrayan" target="_blank"><img src="http://icons.iconarchive.com/icons/limav/flat-gradient-social/512/Github-icon.png" width="55" height="55"alt="github" title="github"></a></li>
+			</ul>
+		</div> <!-- End of social -->
+	</div> <!-- End of header -->
+	<div id="sidebar">
+		<div id="menu">
+			<ul>
+				<li><h4><a href="index.html">Home</a></h4></li>
+				<li><h4><a href="#overview">Overview</a></h4></li>
+				<li><h4><a href="#class">Class Inheritance in Python</a></h4></li>
+				<li><h4><a href="#equation">Fundamental Equation of Object-Oriented Programming</a></h4></li>
+				<li><h4><a href="#example">Example of Inheritance</a></h4></li>
+				<li><h4><a href="#designrules">Inheritance Design Rules</a></h4></li>
+				<li><h4><a href="#problems">Problems</a></h4></li>
+			</ul>
+		</div> <!-- End of menu -->
+	</div> <!-- End of sidebar -->
+	<div id="content">
+
+<a name="overview"><h1>Overview</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+This is the first of three lectures on inheritance. This lecture discusses the
+general principles involved in defining classes in an inheritance hierarchy and
+using the hierarchy to find attributes of objects. It focuses on the rules
+needed to understand single inheritance, showing an example using counters. The
+second lecture discusses multiple inheritance and generalizes these rules; it
+actually includes code that illustrates how classes reference each other and
+how attributes are found by Python in complicated inheritance hierarchies. The
+third lecture discusses various concrete uses of inheritance and how we can use
+inheritance to simplify real programming.
+
+Just an inheritance (of money) makes the life of descendants easier,
+inheritance (of attributes) makes derived classes easier to write.
+</pre>
+
+<a name="class"><h1>Class Inheritance in Python</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+At present we know about defining classes and constructing objects that are
+instances of classes. We have explored various relationships between an object
+and the class from which it was constructed (including adding attributes to
+objects after they are constructed and adding attributes to classes after they
+are defined).
+
+We have studed the Fundamental Equation of Object-Oriented Programming (FEOOP)
+to determine how Python locates attributes for objects, mostly meaning how
+methods are called on objects: by first trying to locate the attribute in the
+object itself, and if that fails, locating the attribute in the class from
+which the object was constructed. Objects mostly store their own state
+attributes (data), while the classes they are constructed from mostly store
+their behavior attributes (methods). So objects keep their own state but share
+the methods that operate on them; sometimes, though, objects can store special
+methods that apply only to them and class object store state that is shared by
+objects as well.
+
+To get to full object-oriented programming, we must also learn how to define
+derived classes from base classes (aka create subclasses from superclasses)
+and learn how objects constructed from these derived/sub classes behave in
+regards to inherited state and behavior: specifically, we will learn that all
+classes are defined in an inheritance hierarchy and learn how attibutes of
+instance objects can found by searching the objects themselves first, and if
+needed search the inheritance hierarchy.
+
+Fundamentally, what inheritance is about is writing small derived classes that
+reuse attributes from base classes in a natural way. The attribute location
+process is captured by augmenting the meaning of The Fundamental Equation of
+Object-Oriented Programming for class inheritance hierarchies (below we discuss
+a simple extension for single-inheritance, which is the most common kind of
+inheritance; in the next lecture we discuss the more complicated but complete
+extension for multiple inheritance).
+
+We can define a trivial class with no state/behavior (not even an __init__
+method) in Python by just writing
+
+  class C:
+      pass
+
+Note the lack of parentheses after the class name C (just a colon). This means
+that the class C is implicitly a class derived from the "object" class (yes,
+there is a class named "object" in Python: try x = object() and print(x)); the
+object class acts as the root of Python's inheritance hierarchy. The object
+class itself is defined in the builtins module and serves as the base class by
+default of any classes defined with no explicit base class.
+
+In fact, this class defines very many methods (e.g.,  __repr__, __setattr__,
+etc.). We can call the repr function (which calls the __repr__ method) on
+objects constructed from classes that don't define __repr___ and Python will
+still find a __repr__ method too call. Because, if we do not define such
+methods in our classes, they are inherited; when we do define a method like
+__repr__ in a derived class, it overrides (see this term defined and explained
+below) the __repr__ method inherited from the "object" class.
+
+If we want to specify one or more different base classes when definining a
+class, we must put their names between the parentheses, separated by commas.
+
+So, the meaning of class C: -with no parentheses- is the same as
+
+  class C(object):
+      pass
+
+In both cases we illustrate the base/derived inheritance relationship with the
+simple hierarchy: the derived class refers upward to its direct base class.
+
+    object
+       ^
+       |
+       C
+
+There actually is a reference in the derived class C to the base class
+"object" which we will use in the next lecture: the arrow's direction is
+meaningful.
+
+Note that many other classe that we know inherit only from the object class
+(list, set, and dict), and we shall soon see that defaultdict inherits from
+dict). Here is how we show the inheritance hierarchy of these classes.
+
+                 object
+              ^     ^     ^
+             /      |      \
+           list    set    dict
+                           ^
+                           |
+                      defaultdict
+
+If we use only single-inheritance the resulting inheritance hierarchy is an
+N-ary tree with object at its root. Derived classes are children of their base
+classes. Note that the derived classes can themselves be base classes of other
+derived classes (e.g., dict). Eventually (tracing from any class towards the
+root of the inheritance hierarchy) -following arrows from a derived class to
+its base class- will lead upward in the inheritance tree until the root (the
+object class) is reached. The situation gets a bit more complicated when
+multiple-inheritance is allowed (more details in the next lecture).
+
+So in this lecture we will being seeing class definitions like
+
+  class Derived_Class(Base_Class):			# single-inheritance
+
+and in the next lecture like
+
+  class Derived_Class(Base_Class1, Base_Class2, ...):	# multiple-inheritance
+
+Many languages support just single-inheritance (a derived class can have only
+one direct base class: Java and Smalltalk are examples of such languages) but
+Python (like C++) supports multiple inheritance: a derived class can have many
+direct base classes. Once we understand the general principal of locating
+attributes in a single-inheritance hierarchy, we can generalize the look up
+rules for multiple-inheritance hierarchies (where our knowledge of
+pre-order traversal, from the lectures on trees, will be important to our
+understanding; forgot what that was? go back and read about it).
+
+Finally, note an asymmetry: a derived class specifically states the name of
+(and refers to) its base classes, but a base class says nothing about (and
+doesn't refer to or know anything about) its derived classes. There is no way
+for a base class to know what derived classes will inherit from it: so derived
+classes can access attributes in their base classes, but base classes cannot
+access attributes in their derived classes.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="equation"><h1>The Fundamental Equation of Object-Oriented Programming
+(generalizing for single-Inheritance)</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+At present we know that instance objects refer to the class objects they are 
+constructed from, and we can use the type function on any instance to return a
+reference to the class object that it was constructed from. When we look up an
+attibute of an instance, Python first looks for the attribute in the namespace
+of the instance object itself, but it if doesn't find the attribute there, it
+looks for the attribute in the class the object was constructed from. We
+captured this rule in the Fundamental Equation of Object-Oriented Programming
+(shown again below) in its current form, but soon expanded for inheritance. So,
+if m is a method, we have seen that
+
+  o.m(...)  -> type(o).m(o,...) for method attributes
+  o.a       -> type(o).a        for data attributes
+
+When locating a method attribute for instance o, if it is not found in o itself
+(it typically isn't) Python uses the attribute in the type(o) class: the class
+o was constructed from, calling that method with o as the first argument (which
+is why methods defined in classes all have the first parameter named self). By
+this mechanism, an object doesn't need to store in its own namespace all the
+methods that operate on it. The methods are mostly stored (and shared) in the
+class object for the instance object, and located there as needed.
+
+This mechanism works for non-method attributes too: if any data attribute is not
+found in the instance object's namespace (although state is typically found
+there), Python will try to locate it by using the namespace of the class the
+instance object was constructed from. So, it is possible for objects to share
+data in its class's namespaces, just as methods are shared.
+
+A useful example of data sharing might occur in a Person class. Suppose that
+we need to store how many fingers every person (object constructed from that
+class) has. We could store this information by adding an attribute to every
+person object (e.g., person1.fingers = 10). But the vast majority of people
+have 10 fingers, so we could store Person.fingers = 10 (an attribute in the
+Person class). Now if we don't store the fingers attribute in the person1
+object, it will be found in the Person class object, with value 10. If person1
+has fewer than 10 fingers, we can store person1.fingers = 9; now, for person1,
+the fingers attribute will be found in the object itself, not in its class.
+Using this approach, we can save space by storing the fingers attribute only
+for people not having 10 fingers (likely to be a small percentage of all the
+people objects).
+
+We now generalize this look up mechanism for single-inheritance hierarchies:
+Python first tries to find the attribute in the instance object; if Python
+fails, it next tries to find the attribute in the class object from which the
+instance was constructed; if Python fails, it tries to find the attribute in
+the base class of the class from which the instance was constructed; ... If
+Python does not find an attribute in a class, it next tries to find it in the
+base class of that class, and continues until it reaches the object class: if
+Python fails to find the attribute in the object class, it raises an
+AttributeError exception.
+
+Pictorally, where Python looks for an o.attribute
+
+                                   object                  <-- looks here last
+                            (root of hierarchy)
+                                      ^
+                                      |
+                                     ...
+                                      ^
+                                      |
+                                    class		   <-- looks here 3rd
+                                      ^
+                                      |
+Look here 1st -->      o    -->     class		   <-- looks here 2nd
+                  (instance)   (constructed from)
+                                      ^
+                                      |
+                                    class		   <-- doesn't look here
+                                      ^
+                                      |
+                                    class		   <-- doesn't look here
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="example"><h1>A very simple but representative example of Inheritance</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+Examine the following two simple classes (which are in the counts.py module that
+you can download with this lecture). We can examine and use the Counter class by
+itself (it is a fully working class), but Counter also acts as the base class
+of the derived Modular_Counter class. Together, most interesting issues
+concerning inheritance are illustrated simply in these two classes, in which
+Counter is the base class and Modular_Counter is the derived class.
+
+class Counter:                      # implicitly use object as its base class
+    hierarchy_depth = 1		    # object is depth 0, Counter is 1 beneath it
+    counter_base = 0  		    # how many times Counter.__init__ called
+
+    def __init__(self,init_value=0):
+        assert init_value >= 0,\
+            'Counter.__init__ init_value('+str(init_value)+') < 0'
+        self._value = init_value
+        Counter.counter_base += 1    
+
+    def __str__(self):
+        return str(self._value)
+        
+    def reset(self):
+        self._value = 0
+        
+    def inc(self):
+        self._value += 1
+        
+    def value_of(self):
+        return self._value
+    
+    
+    
+class Modular_Counter(Counter): # explicitly use Counter as its base class
+    hierarchy_depth = Counter.hierarchy_depth + 1 # 1 more than Counter's depth
+    counter_derived = 0         # how many times Modular_Counter.__init__ called
+
+    def __init__(self,init_value,modulus):
+        assert modulus >= 1,\
+            'Modular_Counter.__init__ modulus('+str(init_value)+') < 1'
+        assert 0 <= init_value < modulus,\
+            'Modular_Counter.__init__ init_value('+str(init_value)+') not in [0,'+str(modulus)+')'
+        Counter.__init__(self,init_value)
+        self._modulus = modulus
+        Modular_Counter.counter_derived += 1    
+    
+    def __str__(self):
+        return Counter.__str__(self)+' mod '+str(self._modulus)
+        
+    # Note, calling self.value_of() and self.reset is equivalent to (and
+    #   preferred to) calling Counter.value_of(self) and Counter.reset(self)
+    # But it is critical that Counter.inc(self) is called that way, because
+    #   calling self.inc() would be an infinitely recursive call to inc.
+    def inc(self):
+        if self.value_of() == self._modulus - 1:
+            self.reset()
+        else:
+            Counter.inc(self)
+        
+    def modulus_of(self):
+        return self._modulus
+
+The main script at the bottom of the module creates Counter and Modular_Counter
+objects and then allows the user to type in commands using the names c and
+mc (including defining new/more names). You can put more code down there using
+c and mc, or enter commands that are executed by calling the exec function.
+
+if __name__ == '__main__':
+    import prompt
+
+    c = Counter(0)
+    mc = Modular_Counter(0,3)
+
+    while True:
+        try:
+            exec(prompt.for_string('Command'))
+        except Exception as report:
+            import traceback
+            traceback.print_exc()
+
+----------
+
+The Counter base class
+
+First we will discuss the Counter class, and then discuss the Modular_Counter
+class, which is derived from the base class Counter.
+
+The Counter class defines two class state names (hierarchy_depth, which doesn't
+change and counter_base which is incremented in __init__) and the class method
+names __init__, __str__, reset, inc, and value_of.
+
+(1) hierarchy_depth is an int representing the depth of the Counter class in
+the N-ary inheritance tree: it is 1, because it is below the root of the tree,
+the object class (which has depth 0).
+
+(2) counter_base is an int that counts how many times __init__ in the Counter
+class is called (it is called when we construct Counter objects, but also when
+we construct Modular_Counter objects: which calls __init__ directly: it is
+common for __init__ in the derived class to call __init__ in its base class
+(base classes for multiple inheritance).
+
+(3) __init__ initalizes each Counter object to have one piece of state: an int
+that is always (so it must start) >= 0 representing the counter's value. It
+verifies this property of init_value first, and then increments counter_base.
+
+So, understand the following difference: the Counter class object stores the
+attributes hierarchy_depth and counter_base attribute (as well as all the other
+method attributes). Each object constructed from the Counter class stores its
+own _value attribute (and shares the attributes in the Counter class using the
+Fundamental Equation of Object-Oriented Programming).
+
+(4) __str__ is a query that returns a string representing the Counter object's
+_value attribute.
+
+(5) reset is a command that resets the Counter object's _value attribute to 0
+
+(6) inc is a command that increases the Counter object's _value attribute by 1
+
+(7) value_of is a query that returns the _value attribute of the Counter object
+The difference between (4) and (7) is that (4) returns a str while (7) returns
+an int.
+
+Using the code in main, we can construct and experiment with objects from the
+Counter class: looking up state/calling methods on c (an object already
+constructed in the code) or constructing more Counter objects and doing the
+same on them. For example, try
+
+c = Counter(0) 	    	    	 # OK
+
+print(c.hiearchy_depth)		 # prints 1
+print(c.counter_base)		 # prints 1 (because c = ...)
+
+c.inc()				 # OK
+c.inc()				 # OK
+c.inc()				 # OK
+
+print(c)			 # prints 3
+print(c.value_of())		 # prints 3
+
+
+----------
+
+The Modular_Counter derived class
+
+Now we will move on to discussing the Modular_Counter class. We will classify
+every attribute usable in this class as
+
+(a)a new attribute defined in the class (not an inherited attribute)
+(b)an inherited attribute (not defined/overridden)
+(c)an inherited attribute (re)defined in the class (overriding an inherited one)
+
+These last two options rely on an understanding of what it means for a derived
+class to override an inherited attribute. A derived class overrides an inherited
+attribute if it defines an attribute (using the same name) as an attribute it
+inherits: one defined in its base class, the base class of its base class, etc.
+all the way back to the object class at the root of the inheritance hierarchy.
+
+When we describe the Modular_Counter class below, we will discuss alld its
+defined  attributes in these terms. Generally a modular counter is a special
+kind of counter. In fact, derived classes are often specializations of base
+classes: but for inheritance to be natural, all operations on the base class
+must make sense on the derived class, although the derived class may change the
+meaning of (override) the inherited attributes and define new attributes).
+
+Modular counters can store values between 0 up to but not including the modulus
+(so the biggest a value can get is modulus-1): think of a counter for strikes
+in baseball as a modulus 3 counter. A batter goes from 0 strikes to 1 strikes
+to 2 strikes to being out, with the next batter starting again back at 0
+strikes.
+
+The Modular_Counter class defines two class names storing state:
+hierarchy_depth is (c), which doesn't change and counter_derived is (a) which is
+incremented in __init__) and the class method names __init__ is (c), __str__ 
+is (c), inc is (c), and modulus_of is (a). It also inherits and does not
+override (all are b) the attributes counter_base, reset, and value_of.
+
+(1) hierarchy_depth is an int representing the depth of the Modular_Counter
+class in the N-ary inheritance tree: it is 2, because it is derived from the
+Counter class, whose depth is 1.
+
+(2) counter_derived is an int that counts how many times __init__ in the
+Modular_Counter class is called (in this two-class hirerarchy, it is called
+only when we construct Modular_Counter objects).
+
+(3) __init__ initalizes each Modular_Counter object to have two pieces of state:
+first, an int that remains unchanged and must be >= 1 representing the
+counter's modulus; second, an int that is always (so it must start) >= 0 and
+< the modulus, representing the counter's value. It verifies these properties
+of modulus and init_value first, and increments counter_derived. Note that the
+_value attribute is not directly defined in this __init__ methdod, but instead
+is defined in the instance object when __init__ calls Counter.__init__ on this
+object (which adds to its attributes). The self passed to Counter's __init__
+is updated.
+
+(4) __str__ is a query that returns a string representing the Modular_Counter
+object's _value attribute, by calling Counter.__str__(self) concatenated with
+the word ' mod ' and the modulus attribute.
+
+(5) inc is a command that resets the Modular_Counter object's _value attribute
+to 0 if the current value is one less than the modulus, otherwise it increments
+the Modular_Counter's _value attribute by 1, by calling Counter.inc(self).
+
+(6) value_of is a query that returns the value attribute of the Modular_Counter
+object.
+
+Generally in programming, the methods in a class should refer to a state
+attribute (by a.o) ONLY IF IT IS DEFINED IN THAT SAME CLASS. That is why in
+Modular_Counter's __init__, _value is not defined directly, but is instead
+defined/initialized  by calling Counter's __init__; it is also why
+Modular_Counter's inc method calls the inherited methods reset, inc, and
+value_of, instead of directly manipulating its _value attribute.
+
+In this approach, we consider state names to be private and should be used only
+within the class that is responsible for defining and manipulating that
+attribute. It is that class that ensures the integrity/invariant of that
+attribute.
+
+In contrast, generally method names are considered public and usable with any
+object (unless they start with  _ or __).
+
+Because we can refer to all the state and behavior attributes in Python, Python
+programmers don't always follow this rule (although we have seen how to use
+__setattr__ to disallow changing an attribute in an object). Java and C++
+programmers must define each attribute as public (usable anywhere) or private
+(usable only within the class in which it is defined) and the computer ensures
+and enforces that private attributes are examined/changed only in the class
+that defines them (there are other, more subtle options in these languages).
+
+----------
+
+Constructing an Object from a Derived Class
+
+When we call Modular_Counter(0,3) -or just Modular_Counter(modulus=3)- Python
+constructs an instance object whose class/type is Modular_Counter; this instance
+object starts with an empty namespace (dictionary). It checks the 2 assertions
+about the arguments: both are True, so Python calls
+Counter.__init__(init_value).
+
+Counter.__init__ checks its assertion: it is True, so it adds the binding _value
+to the namespace of the constructed Modular_Counter object passed to self and
+binds it to an int_value (here 0); it also increments Counter.counter_base: the
+attribute counter_base defined in the Counter class object
+
+Then, returning to Modular_Counter.__init__ Python adds the binding _modulus to
+the namespace of the constructed Modular_Counter object (so this object now has
+two attributes in its dictionary: _value and _modulus) and binds it to the
+modulus (here 3); it also increments Modular_Counter.counter_derived: the
+attribute counter_derived defined in the Modular_Counter class object.
+
+So, at this point the newly constructed Modular_Counter object has two
+attributes (_value (storing 0) and _modulus (storing 3)), the Counter class
+object has two attributes (hierarchy_depth (storing 1) and counter_base
+(storing 1), along with all its methods), and the Modular_Counter class object
+has two attributes (hierarchy_depth (storing 2) and counter_derived (storing 1),
+along iwth all its methods).
+
+Note that executing x = Modular_Counter(0,3) means type(x) is Modular_Counter;
+while executing x = Counter(0) means type(x) is Counter. The type function
+returns the class object from which any instance object is constructed.
+
+----------
+
+Avoiding Infinite Recursion in Methods called defined in Derived Classes
+
+Note carefully the __str__ method defined in the Modular_Counter class
+overrides the __str__ method this class inherits from the Counter class.
+
+    def __str__(self):
+        return Counter.__str__(self)+' mod '+str(self._modulus)
+
+Suppose we define x = Modular_Counter(0,3). Then the Fundamental Equation of
+Object-Oriented Programming tells us str(x) is executed as x.str() which is
+executed as type(x).__str__(x) or Modular_Counter.__str__(x). Which executes
+Counter.__str__(x)+... which returns '0'+....
+
+Now, what would happen if we instead defined
+
+    def __str__(self):
+        return str(self)+' mod '+str(self._modulus)
+
+Now, str(x) is still executed as x.__str__() which is still executed as
+type(x).__str__(x) or Modular_Counter.__str__(x). But now the body of this
+function calls str(x) which is executed again as type(x).__str__(x) or
+Modular_Counter.__str__(x) so we have created infinite recursion with this
+change.
+
+So generally, in a method that overrides an inherited method, if we want to
+call the inherited method, we must preface it with the class in which the
+inherited method is to be called. This was also done in the call to inc in the
+Modular_Counter's inc method. Notice that it was not done for the call to reset,
+which appears as just self.reset(); the reason is that the reset method
+inherited from the Counter class is not overridden in Modular_Counter, so when
+making a call to reset on a Modular_Counter object, if finds the reset attribute
+note in the Modular_Counter class, but in the Counter class, so it calls that
+method. This is all by the augmented Fundamental Equation of Object-Oriented
+Programming rule.
+
+Let us predict (and verify) what is printed (and why) in the following code.
+
+c = Counter(0) 	    	    	 # OK
+m = Modular_Counter(0,3)	 # OK
+
+print(c.hiearchy_depth)		 # 1
+print(c.counter_base)		 # 2 (from both c = ... and m = ...)
+print(c.counter_derived)	 # AttributeError exception
+
+print(m.hiearchy_depth)		 # 2
+print(m.counter_base)		 # 2 (same as c.counter_base)
+print(m.counter_derived)	 # 1 (from only m = ...)
+
+c.inc()				 # OK
+c.inc()				 # OK
+c.inc()				 # OK
+
+print(c.value_of())		 # 3
+print(c.modulus_of())		 # AttributeError exception
+
+m.inc()				 # OK
+m.inc()				 # OK
+m.inc()				 # OK
+
+print(m.value_of())		 # 0
+print(m.modulus_of())		 # 3
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="designrules"><h1>Inheritance Design Rules</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+In languages like Java/C++, if a class adds an attribute (state) to an object
+(mostly in __init__) then only THAT class is allowed to access that state
+directly as an attribute. That is, if x = C() and C's __init__ contains
+self.a = ... then if another class contains any attempt to refer to x.a or 
+rebind x.a (e.g., x.a = ....) it will raise an exception. Python does NOT have
+this restriction, but it is still considered bad design form to write such
+accesses/rebinding.
+
+To solve this problem, each class should define methods to access/set all the
+attributes it defines. That is why in there are reset/inc/value_of methods in
+the Counter class: so the ModularCounter class can examine/update the _value
+attribute defined in Counter. So,
+
+1) If a class adds an attribute to an object (e.g., in __init__) then methods
+defined in only that class should access the attribute directly.
+
+2) If other classes (including derived/subclasses) need to access/update the
+information stored in that attribute, then the defining class should define
+methods that do the job, which the other class should call.
+
+Some languages use the terms accessors/getters for methods that return the
+value of such attributres, and mutators/setters for methods that rebind an
+attribute to refer to a different value.
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+<a name="problems"><h1>Problems</h1>
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+1) Decribes what happen using the following defintions and code
+
+class B:
+    def __init__(self):
+        self.a = 1
+
+class D:
+    def __init__(self):
+        self.a = 2
+
+b = B()
+d = D()
+print(b.a)
+print(d.a)
+
+2) Suppose that we define the __str__ method in the Counter class to return a
+string representing value as a roman numeral; what will the statments
+print(Modular_Counter(2,3)) print? 
+
+3) Suppose that we define the print_it method in the Counter class as follows:
+
+    def print_it(self):
+        print(self.__str__())
+
+What is the result of defining c = Counter(0) and c.print_it(); same for
+mc = Modular__Counter(0,3) and mc.print_it()? Does defining print_it as follows
+change the result printed? Explain how each determines what value to print and
+what value it prints.
+
+    def print_it(self):
+        print(str(self))
+
+
+4) Define __repr__ functions in Count and Modular_Counter classes.
+
+5) Suppose that we defined
+
+ l = [counter(0), Modular_Counter(0,3), Modular_Counter(0,3), Counter(0)]
+
+What would be printed if we executed the code 
+
+for i in range(3):
+    for c in l:
+        c.inc()
+print(l)
+</pre>
+<div class="top"><h4><a href="#top">Back To Top</a></h4></div>
+
+	</div> <!-- End of content -->
+	<div id="footer">
+		<h5>2016 &copy Brayan Rafael Gallardo </br><a href="mailto:brgallar@uci.edu?subject=ICS 33 Notes">Contact me</a></h5>
+	</div>
+</div> <!-- End of wrapper -->
+
+</body>
+
+</html>
